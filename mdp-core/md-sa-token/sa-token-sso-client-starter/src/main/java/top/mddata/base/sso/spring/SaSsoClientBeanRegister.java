@@ -1,0 +1,40 @@
+package top.mddata.base.sso.spring;
+
+import cn.dev33.satoken.sso.SaSsoClientManager;
+import cn.dev33.satoken.sso.config.SaSsoClientConfig;
+import cn.dev33.satoken.sso.processor.SaSsoClientProcessor;
+import cn.dev33.satoken.sso.template.SaSsoClientTemplate;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+
+/**
+ * 注册 Sa-Token SSO 客户端 所需要的 Bean
+ * @author henhen
+ * @since 2026/1/10 18:11
+ */
+@ConditionalOnClass(SaSsoClientManager.class)
+public class SaSsoClientBeanRegister {
+    /**
+     * 获取 SSO Client 端 配置对象
+     * @return 配置对象
+     */
+    @Bean
+    @ConfigurationProperties(prefix = "sa-token.sso-client")
+    public SaSsoClientConfig getSaSsoClientConfig() {
+        return new SaSsoClientConfig();
+    }
+
+
+    /**
+     * 获取 SSO Client 端 SaSsoClientTemplate
+     *
+     * @return /
+     */
+    @Bean
+    @ConditionalOnMissingBean(SaSsoClientTemplate.class)
+    public SaSsoClientTemplate getSaSsoClientTemplate() {
+        return SaSsoClientProcessor.getInstance().getSsoClientTemplate();
+    }
+}

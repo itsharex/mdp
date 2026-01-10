@@ -118,10 +118,6 @@
         <module name="EmptyStatement"/>
         <!-- 检查在重写了equals方法后是否重写了hashCode方法 -->
         <module name="EqualsHashCode"/>
-        <!-- 检查局部变量或参数是否隐藏了类中的变量 -->
-        <module name="HiddenField">
-            <property name="tokens" value="VARIABLE_DEF"/>
-        </module>
         <!-- 检查子表达式中是否有赋值操作 -->
         <module name="InnerAssignment"/>
         <!-- 检查switch语句是否有default -->

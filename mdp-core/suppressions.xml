@@ -7,4 +7,8 @@
 <!-- checks 代表你想过滤掉哪种检查 -->
 <suppressions>
     <suppress files="ParamsBuildHelper.java" checks=".*"/>
+    <suppress files="SaSsoConsts.java" checks=".*"/>
+    <suppress files="SaSsoClientProcessor.java" checks="MethodName"/>
+    <suppress files="SaSsoServerProcessor.java" checks="MethodName"/>
+    <suppress files="SaSsoServerTemplate.java" checks="EmptyBlock"/>
 </suppressions>

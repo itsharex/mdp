@@ -21,6 +21,11 @@
 
     <modules>
         <module>sa-token-oauth2-client</module>
-        <module>sa-token-oauth2-client-stater</module>
+        <module>sa-token-oauth2-client-starter</module>
+        <module>sa-token-sso-core</module>
+        <module>sa-token-sso-client</module>
+        <module>sa-token-sso-client-starter</module>
+        <module>sa-token-sso-server</module>
+        <module>sa-token-sso-server-starter</module>
     </modules>
 </project>
