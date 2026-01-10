@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>sa-token-oauth2-client-stater</artifactId>
+    <artifactId>sa-token-oauth2-client-starter</artifactId>
     <name>${project.artifactId}</name>
     <description>sa-token oauth2 client</description>
 
