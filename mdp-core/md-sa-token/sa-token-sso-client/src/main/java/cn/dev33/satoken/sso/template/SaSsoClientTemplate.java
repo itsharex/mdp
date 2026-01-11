@@ -30,6 +30,7 @@ import cn.dev33.satoken.sso.util.SaSsoConsts;
 import cn.dev33.satoken.stp.parameter.SaLogoutParameter;
 import cn.dev33.satoken.util.SaFoxUtil;
 import cn.dev33.satoken.util.SaResult;
+import cn.hutool.core.util.StrUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -63,9 +64,9 @@ public class SaSsoClientTemplate extends SaSsoTemplate {
      * @param paramMap 查询参数
      * @return 查询结果
      */
-    public Object getData(Map<String, Object> paramMap) {
-        String getDataUrl = getClientConfig().splicingGetDataUrl();
-        return getData(getDataUrl, paramMap);
+    public Object getData(String clientId, Map<String, Object> paramMap) {
+        String getDataUrl = getClientConfig(clientId).splicingGetDataUrl();
+        return getData(clientId, getDataUrl, paramMap);
     }
 
     /**
@@ -75,8 +76,8 @@ public class SaSsoClientTemplate extends SaSsoTemplate {
      * @param paramMap 查询参数
      * @return 查询结果
      */
-    public Object getData(String path, Map<String, Object> paramMap) {
-        String url = buildCustomPathUrl(path, paramMap);
+    public Object getData(String clientId, String path, Map<String, Object> paramMap) {
+        String url = buildCustomPathUrl(clientId, path, paramMap);
         return strategy.getSendRequest().apply(url);
     }
 
@@ -85,9 +86,9 @@ public class SaSsoClientTemplate extends SaSsoTemplate {
      * @param paramMap 查询参数
      * @return /
      */
-    public String buildGetDataUrl(Map<String, Object> paramMap) {
-        String getDataUrl = getClientConfig().getGetDataUrl();
-        return buildCustomPathUrl(getDataUrl, paramMap);
+    public String buildGetDataUrl(String clientId, Map<String, Object> paramMap) {
+        String getDataUrl = getClientConfig(clientId).getGetDataUrl();
+        return buildCustomPathUrl(clientId, getDataUrl, paramMap);
     }
 
     /**
@@ -95,8 +96,8 @@ public class SaSsoClientTemplate extends SaSsoTemplate {
      * @param paramMap 请求参数
      * @return /
      */
-    public String buildCustomPathUrl(String path, Map<String, Object> paramMap) {
-        SaSsoClientConfig ssoConfig = getClientConfig();
+    public String buildCustomPathUrl(String clientId, String path, Map<String, Object> paramMap) {
+        SaSsoClientConfig ssoConfig = getClientConfig(clientId);
 
         // 构建 url
         // 如果 path 不是以 http 开头，那么就拼接上 serverUrl
@@ -108,8 +109,8 @@ public class SaSsoClientTemplate extends SaSsoTemplate {
         }
 
         // 构建参数字符串
-        paramMap.put(getParamName().getClient(), getClient());
-        String signParamsStr = getSignTemplate().addSignParamsAndJoin(paramMap);
+        paramMap.put(getParamName().getClient(), ssoConfig.getClient());
+        String signParamsStr = getSignTemplate(clientId).addSignParamsAndJoin(paramMap);
 
         // 拼接
         return SaFoxUtil.joinParam(url, signParamsStr);
@@ -125,8 +126,8 @@ public class SaSsoClientTemplate extends SaSsoTemplate {
      * @param back 回调路径
      * @return [SSO-Server端-认证地址 ]
      */
-    public String buildServerAuthUrl(String clientLoginUrl, String back) {
-        SaSsoClientConfig ssoConfig = getClientConfig();
+    public String buildServerAuthUrl(String clientId, String clientLoginUrl, String back) {
+        SaSsoClientConfig ssoConfig = getClientConfig(clientId);
 
         // 服务端认证地址
         String serverUrl = ssoConfig.splicingAuthUrl();
@@ -164,17 +165,17 @@ public class SaSsoClientTemplate extends SaSsoTemplate {
      * @param message /
      * @return /
      */
-    public String pushMessage(SaSsoMessage message) {
-        SaSsoClientConfig ssoConfig = getClientConfig();
+    public String pushMessage(String clientId, SaSsoMessage message) {
+        SaSsoClientConfig ssoConfig = getClientConfig(clientId);
 
         // 拼接 push-url 地址
         String pushUrl = ssoConfig.splicingPushUrl();
         SaSsoException.notTrue(!SaFoxUtil.isUrl(pushUrl), "无效 push-url 地址：" + pushUrl, SaSsoErrorCode.CODE_30023);
 
         // 组织参数
-        message.set(getParamName().getClient(), getClient());
+        message.set(getParamName().getClient(), ssoConfig.getClient());
         message.checkType();
-        String paramsStr = getSignTemplate().addSignParamsAndJoin(message);
+        String paramsStr = getSignTemplate(clientId).addSignParamsAndJoin(message);
 
         // 发起请求
         String finalUrl = SaFoxUtil.joinParam(pushUrl, paramsStr);
@@ -187,8 +188,8 @@ public class SaSsoClientTemplate extends SaSsoTemplate {
      * @param message /
      * @return /
      */
-    public SaResult pushMessageAsSaResult(SaSsoMessage message) {
-        String res = pushMessage(message);
+    public SaResult pushMessageAsSaResult(String clientId, SaSsoMessage message) {
+        String res = pushMessage(clientId, message);
         Map<String, Object> map = SaManager.getSaJsonTemplate().jsonToMap(res);
         return new SaResult(map);
     }
@@ -201,7 +202,7 @@ public class SaSsoClientTemplate extends SaSsoTemplate {
      * @return 构建完毕的URL
      */
     public SaSsoMessage buildCheckTicketMessage(String ticket, String ssoLogoutCallUrl) {
-        SaSsoClientConfig ssoConfig = getClientConfig();
+//        SaSsoClientConfig ssoConfig = getClientConfig(clientId);
         SaSsoMessage message = new SaSsoMessage();
         message.setType(SaSsoConsts.MESSAGE_CHECK_TICKET);
         message.set(getParamName().getClient(), getClient());
@@ -238,6 +239,30 @@ public class SaSsoClientTemplate extends SaSsoTemplate {
     }
 
     /**
+     * 获取底层配置的多个SsoClient配置对象
+     * @return /
+     */
+    public Map<String, SaSsoClientConfig> getClientConfigMap() {
+        return SaSsoClientManager.getClientConfigMap();
+    }
+
+    /**
+     * 获取底层使用的SsoClients配置对象
+     * @return /
+     */
+    public SaSsoClientConfig getClientConfig(String clientId) {
+        if (StrUtil.isEmpty(clientId)) {
+            return getClientConfig();
+        }
+        Map<String, SaSsoClientConfig> clientConfigMap = getClientConfigMap();
+        if (clientConfigMap.containsKey(clientId)) {
+            return clientConfigMap.get(clientId);
+        } else {
+            return getClientConfig();
+        }
+    }
+
+    /**
      * 获取当前项目 client 标识
      * @return /
      */
@@ -250,11 +275,11 @@ public class SaSsoClientTemplate extends SaSsoTemplate {
      *
      * @return /
      */
-    public SaSignTemplate getSignTemplate() {
+    public SaSignTemplate getSignTemplate(String client) {
         SaSignConfig signConfig = SaSignManager.getSaSignTemplate().getSignConfigOrGlobal().copy();
 
         // 使用 secretKey 的优先级：SSO 模块全局配置 > sign 模块默认配置
-        String secretKey = getClientConfig().getSecretKey();
+        String secretKey = getClientConfig(client).getSecretKey();
         if (SaFoxUtil.isEmpty(secretKey)) {
             secretKey = signConfig.getSecretKey();
         }

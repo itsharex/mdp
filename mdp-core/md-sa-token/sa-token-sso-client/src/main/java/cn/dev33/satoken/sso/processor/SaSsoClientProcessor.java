@@ -70,28 +70,28 @@ public class SaSsoClientProcessor {
      * 分发 Client 端所有请求
      * @return 处理结果
      */
-    public Object dister() {
+    public Object dister(String clientId) {
         ApiName apiName = ssoClientTemplate.getApiName();
 
         // 获取对象
         SaRequest req = SaHolder.getRequest();
-        SaSsoClientConfig cfg = ssoClientTemplate.getClientConfig();
+        SaSsoClientConfig cfg = ssoClientTemplate.getClientConfig(clientId);
 
         // ------------------ 路由分发 ------------------
 
         // sso-client：登录地址
         if (req.isPath(apiName.getSsoLogin())) {
-            return ssoLogin();
+            return ssoLogin(clientId);
         }
 
         // sso-client：单点注销
         if (req.isPath(apiName.getSsoLogout())) {
-            return ssoLogout();
+            return ssoLogout(clientId);
         }
 
         // sso-client：接收消息推送
         if (req.isPath(apiName.getSsoPushC())) {
-            return ssoPushC();
+            return ssoPushC(clientId);
         }
 
         // sso-client：单点注销的回调
@@ -107,7 +107,7 @@ public class SaSsoClientProcessor {
      * SSO-Client端：登录地址
      * @return 处理结果
      */
-    public Object ssoLogin() {
+    public Object ssoLogin(String clientId) {
         // 获取对象
         SaRequest req = SaHolder.getRequest();
         ParamName paramName = ssoClientTemplate.getParamName();
@@ -119,7 +119,7 @@ public class SaSsoClientProcessor {
          * 		情况2：ticket 有值，说明此请求从 sso-server 认证中心重定向而来，需要根据 ticket 进行登录
          */
         if (ticket == null) {
-            return _goServerAuth();
+            return _goServerAuth(clientId);
         } else {
             return _loginByTicket();
         }
@@ -129,15 +129,15 @@ public class SaSsoClientProcessor {
      * SSO-Client端：单点注销
      * @return 处理结果
      */
-    public Object ssoLogout() {
+    public Object ssoLogout(String clientId) {
         // 获取对象
-        SaSsoClientConfig cfg = ssoClientTemplate.getClientConfig();
+        SaSsoClientConfig cfg = ssoClientTemplate.getClientConfig(clientId);
 
         // 无论登录时选择的是模式二还是模式三
         // 		在注销时都应该按照模式三的方法，通过 http 请求调用 sso-server 的单点注销接口来做到全端下线
         //		如果按照模式二的方法注销，则会导致按照模式三登录的应用无法参与到单点注销环路中来
         if (cfg.getIsSlo()) {
-            return _ssoLogoutByMode3();
+            return _ssoLogoutByMode3(clientId);
         }
 
         // 默认返回
@@ -149,13 +149,13 @@ public class SaSsoClientProcessor {
      *
      * @return 处理结果
      */
-    public Object ssoPushC() {
-        SaSsoClientConfig ssoClientConfig = ssoClientTemplate.getClientConfig();
+    public Object ssoPushC(String clientId) {
+        SaSsoClientConfig ssoClientConfig = ssoClientTemplate.getClientConfig(clientId);
 
         // 1、校验签名
         Map<String, String> paramMap = SaHolder.getRequest().getParamMap();
         if (ssoClientConfig.getIsCheckSign()) {
-            ssoClientTemplate.getSignTemplate().checkParamMap(paramMap);
+            ssoClientTemplate.getSignTemplate(clientId).checkParamMap(paramMap);
         } else {
             SaSsoClientManager.printNoCheckSignWarningByRuntime();
         }
@@ -175,7 +175,8 @@ public class SaSsoClientProcessor {
         SaRequest req = SaHolder.getRequest();
         StpLogic stpLogic = ssoClientTemplate.getStpLogicOrGlobal();
         ParamName paramName = ssoClientTemplate.getParamName();
-        SaSsoClientConfig ssoConfig = ssoClientTemplate.getClientConfig();
+        String clientId = req.getParam(paramName.getClient());
+        SaSsoClientConfig ssoConfig = ssoClientTemplate.getClientConfig(clientId);
 
         // 获取参数
         Object loginId = req.getParamNotNull(paramName.getLoginId());
@@ -184,7 +185,7 @@ public class SaSsoClientProcessor {
 
         // 校验参数签名
         if (ssoConfig.getIsCheckSign()) {
-            ssoClientTemplate.getSignTemplate().checkRequest(req);
+            ssoClientTemplate.getSignTemplate(clientId).checkRequest(req);
         } else {
             SaSsoClientManager.printNoCheckSignWarningByRuntime();
         }
@@ -203,11 +204,11 @@ public class SaSsoClientProcessor {
      * 跳转去 sso-server 认证中心
      * @return /
      */
-    public Object _goServerAuth() {
+    public Object _goServerAuth(String clientId) {
         // 获取对象
         SaRequest req = SaHolder.getRequest();
         SaResponse res = SaHolder.getResponse();
-        SaSsoClientConfig cfg = ssoClientTemplate.getClientConfig();
+        SaSsoClientConfig cfg = ssoClientTemplate.getClientConfig(clientId);
         StpLogic stpLogic = ssoClientTemplate.getStpLogicOrGlobal();
         ParamName paramName = ssoClientTemplate.getParamName();
 
@@ -226,7 +227,7 @@ public class SaSsoClientProcessor {
             currSsoLoginUrl = SaHolder.getRequest().getUrl();
         }
         // 构建最终授权地址 url，形如：http://sso-server.com/sso/auth?redirectUrl=http://sso-client.com/sso/login?back=http://sso-client.com
-        String serverAuthUrl = ssoClientTemplate.buildServerAuthUrl(currSsoLoginUrl, back);
+        String serverAuthUrl = ssoClientTemplate.buildServerAuthUrl(clientId, currSsoLoginUrl, back);
         return res.redirect(serverAuthUrl);
     }
 
@@ -245,9 +246,10 @@ public class SaSsoClientProcessor {
         // 获取参数
         String back = req.getParam(paramName.getBack(), "/");
         String ticket = req.getParam(paramName.getTicket());
+        String clientId = req.getParam(paramName.getClient());
 
         // 1、校验 ticket，获取 loginId 等数据
-        SaCheckTicketResult ctr = checkTicket(ticket, apiName.getSsoLogin());
+        SaCheckTicketResult ctr = checkTicket(clientId, ticket, apiName.getSsoLogin());
 
         // 2、如果开发者自定义了 ticket 结果值处理函数，则使用自定义的函数
         if (ssoClientTemplate.getStrategy().getTicketResultHandle() != null) {
@@ -266,7 +268,7 @@ public class SaSsoClientProcessor {
      * SSO-Client端：单点注销 [模式三]
      * @return 处理结果
      */
-    public Object _ssoLogoutByMode3() {
+    public Object _ssoLogoutByMode3(String clientId) {
         // 获取对象
         SaRequest req = SaHolder.getRequest();
         SaResponse res = SaHolder.getResponse();
@@ -286,7 +288,7 @@ public class SaSsoClientProcessor {
         Object loginId = stpLogic.getLoginId();
         Object centerId = ssoClientTemplate.getStrategy().getConvertCenterIdToLoginId().run(loginId);
         SaSsoMessage message = ssoClientTemplate.buildSignoutMessage(centerId, logoutParameter);
-        SaResult result = ssoClientTemplate.pushMessageAsSaResult(message);
+        SaResult result = ssoClientTemplate.pushMessageAsSaResult(clientId, message);
 
         // 如果 sso-server 响应的状态码非200，代表业务失败，将回应的 msg 字段作为异常抛出
         if (result.getCode() == null || SaResult.CODE_SUCCESS != result.getCode()) {
@@ -303,11 +305,12 @@ public class SaSsoClientProcessor {
     /**
      * 封装：校验ticket，取出loginId，如果 ticket 无效则抛出异常 （适用于模式二或模式三）
      *
+     * @param clientId clientId
      * @param ticket ticket码
      * @return SaCheckTicketResult
      */
-    public SaCheckTicketResult checkTicket(String ticket) {
-        return checkTicket(ticket, null);
+    public SaCheckTicketResult checkTicket(String clientId, String ticket) {
+        return checkTicket(clientId, ticket, null);
     }
 
     /**
@@ -317,14 +320,14 @@ public class SaSsoClientProcessor {
      * @param currUri 当前路由的uri，用于计算单点注销回调地址 （如果是使用模式二，可以填写null）
      * @return SaCheckTicketResult
      */
-    public SaCheckTicketResult checkTicket(String ticket, String currUri) {
-        SaSsoClientConfig cfg = ssoClientTemplate.getClientConfig();
+    public SaCheckTicketResult checkTicket(String clientId, String ticket, String currUri) {
+        SaSsoClientConfig cfg = ssoClientTemplate.getClientConfig(clientId);
 
         // 两种模式：
         //		isHttp=true：模式三，使用 http 请求从认证中心校验ticket
         //		isHttp=false：模式二，直连 redis 中校验 ticket
         if (cfg.getIsHttp()) {
-            return _checkTicketByHttp(ticket, currUri);
+            return _checkTicketByHttp(clientId, ticket, currUri);
         } else {
             return _checkTicketByRedis(ticket);
         }
@@ -336,8 +339,8 @@ public class SaSsoClientProcessor {
      * @param currUri /
      * @return /
      */
-    public SaCheckTicketResult _checkTicketByHttp(String ticket, String currUri) {
-        SaSsoClientConfig cfg = ssoClientTemplate.getClientConfig();
+    public SaCheckTicketResult _checkTicketByHttp(String clientId, String ticket, String currUri) {
+        SaSsoClientConfig cfg = ssoClientTemplate.getClientConfig(clientId);
         ApiName apiName = ssoClientTemplate.getApiName();
         ParamName paramName = ssoClientTemplate.getParamName();
 
@@ -358,7 +361,7 @@ public class SaSsoClientProcessor {
 
         // 发起请求
         SaSsoMessage message = ssoClientTemplate.buildCheckTicketMessage(ticket, ssoLogoutCall);
-        SaResult result = ssoClientTemplate.pushMessageAsSaResult(message);
+        SaResult result = ssoClientTemplate.pushMessageAsSaResult(clientId, message);
 
         // 如果 sso-server 响应的状态码非200，代表业务失败，将回应的 msg 字段作为异常抛出
         if (result.getCode() == null || result.getCode() != SaResult.CODE_SUCCESS) {

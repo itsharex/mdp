@@ -50,8 +50,8 @@ public class SaSsoClientUtil {
      * @param paramMap 查询参数
      * @return 查询结果
      */
-    public static Object getData(Map<String, Object> paramMap) {
-        return SaSsoClientProcessor.getInstance().getSsoClientTemplate().getData(paramMap);
+    public static Object getData(String clientId, Map<String, Object> paramMap) {
+        return SaSsoClientProcessor.getInstance().getSsoClientTemplate().getData(clientId, paramMap);
     }
 
     /**
@@ -61,8 +61,8 @@ public class SaSsoClientUtil {
      * @param paramMap 查询参数
      * @return 查询结果
      */
-    public static Object getData(String path, Map<String, Object> paramMap) {
-        return SaSsoClientProcessor.getInstance().getSsoClientTemplate().getData(path, paramMap);
+    public static Object getData(String clientId, String path, Map<String, Object> paramMap) {
+        return SaSsoClientProcessor.getInstance().getSsoClientTemplate().getData(clientId, path, paramMap);
     }
 
 
@@ -75,8 +75,8 @@ public class SaSsoClientUtil {
      * @param back 回调路径
      * @return [SSO-Server端-认证地址 ]
      */
-    public static String buildServerAuthUrl(String clientLoginUrl, String back) {
-        return SaSsoClientProcessor.getInstance().getSsoClientTemplate().buildServerAuthUrl(clientLoginUrl, back);
+    public static String buildServerAuthUrl(String clientId, String clientLoginUrl, String back) {
+        return SaSsoClientProcessor.getInstance().getSsoClientTemplate().buildServerAuthUrl(clientId, clientLoginUrl, back);
     }
 
 
@@ -88,8 +88,8 @@ public class SaSsoClientUtil {
      * @param message /
      * @return /
      */
-    public static String pushMessage(SaSsoMessage message) {
-        return SaSsoClientProcessor.getInstance().getSsoClientTemplate().pushMessage(message);
+    public static String pushMessage(String clientId, SaSsoMessage message) {
+        return SaSsoClientProcessor.getInstance().getSsoClientTemplate().pushMessage(clientId, message);
     }
 
     /**
@@ -98,8 +98,8 @@ public class SaSsoClientUtil {
      * @param message /
      * @return /
      */
-    public static SaResult pushMessageAsSaResult(SaSsoMessage message) {
-        return SaSsoClientProcessor.getInstance().getSsoClientTemplate().pushMessageAsSaResult(message);
+    public static SaResult pushMessageAsSaResult(String clientId, SaSsoMessage message) {
+        return SaSsoClientProcessor.getInstance().getSsoClientTemplate().pushMessageAsSaResult(clientId, message);
     }
 
     /**
