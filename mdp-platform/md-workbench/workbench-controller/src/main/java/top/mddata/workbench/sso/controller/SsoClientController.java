@@ -86,9 +86,9 @@ public class SsoClientController {
     public R<String> doLoginByTicket(String clientId, String ticket) {
         SaCheckTicketResult ctr = SaSsoClientProcessor.getInstance().checkTicket(clientId, ticket);
         StpUtil.login(ctr.getLoginId(), new SaLoginParameter()
-                .setTimeout(ctr.getRemainTokenTimeout())
+                        .setTimeout(ctr.getRemainTokenTimeout())
 //                .setDeviceType(ctr.getDeviceType())
-                .setDeviceId(ctr.getDeviceId())
+                        .setDeviceId(ctr.getDeviceId())
         );
         return R.success(StpUtil.getTokenValue());
     }
@@ -128,4 +128,19 @@ public class SsoClientController {
     }
 
 
+    /**
+     * 接收单点登录的服务端接口调用，根据传递的 消息类型 决定处理逻辑
+     * 参考： {link https://sa-token.cc/doc.html#/sso/message-push}
+     * 消息类型：logoutCall（单点注销回调）
+     */
+    @Operation(summary = "接收单点登录的服务端接口调用", description = "接收单点登录的服务端接口调用，根据传递的 消息类型 决定处理逻辑")
+    @GetMapping("/anyUser/client/pushC")
+    public Object push(String clientId) {
+        try {
+            return SaSsoClientProcessor.getInstance().ssoPushC(clientId);
+        } catch (Exception e) {
+            log.error("pushS", e);
+            return SaResult.error(e.getMessage());
+        }
+    }
 }

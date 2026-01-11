@@ -77,6 +77,8 @@ public class AppVo implements Serializable {
      */
     @Schema(description = "状态")
     private Boolean state;
+    @Schema(description = "排序")
+    private Integer weight;
 
     /**
      * 应用简介

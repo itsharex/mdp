@@ -711,7 +711,8 @@ public class SaSsoServerTemplate extends SaSsoTemplate {
             if (SaFoxUtil.isNotEmpty(ignoreClient) && ignoreClient.equals(client.getClient())) {
                 continue;
             }
-            if (client.getIsSlo()) {
+            // 消息推送和单点注销推送同时开启时，才推送单点注销事件给客户端
+            if (client.getIsPush() && client.getIsSlo()) {
                 strategy.getAsyncRun().run(() -> {
                     pushToClientByLogoutCall(client, loginId, false, logoutParameter);
                 });
@@ -731,6 +732,7 @@ public class SaSsoServerTemplate extends SaSsoTemplate {
     public String pushToClientByLogoutCall(SaSsoClientModel client, Object loginId, boolean autoLogout, SaLogoutParameter logoutParameter) {
         SaSsoMessage message = new SaSsoMessage();
         message.setType(SaSsoConsts.MESSAGE_LOGOUT_CALL);
+        message.set(getParamName().getClient(), client.getClient());
         message.set(getParamName().getLoginId(), loginId);
         message.set(getParamName().getAutoLogout(), autoLogout);
         message.set(getParamName().getDeviceId(), logoutParameter.getDeviceId());
