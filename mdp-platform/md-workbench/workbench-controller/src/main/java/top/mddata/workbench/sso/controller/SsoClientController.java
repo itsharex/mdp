@@ -3,7 +3,6 @@ package top.mddata.workbench.sso.controller;
 import cn.dev33.satoken.sso.config.SaSsoClientConfig;
 import cn.dev33.satoken.sso.model.SaCheckTicketResult;
 import cn.dev33.satoken.sso.processor.SaSsoClientProcessor;
-import cn.dev33.satoken.sso.processor.SaSsoServerProcessor;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import cn.dev33.satoken.util.SaFoxUtil;
@@ -15,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.base.R;
 
@@ -54,7 +54,7 @@ public class SsoClientController {
      * @return SSO-Server端-认证地址
      */
     public String buildServerAuthUrl(String clientLoginUrl, String clientId) {
-        SaSsoClientConfig ssoConfig = SaSsoClientProcessor.getInstance().getSsoClientTemplate().getClientConfig();
+        SaSsoClientConfig ssoConfig = SaSsoClientProcessor.getInstance().getSsoClientTemplate().getClientConfig(clientId);
 
         // 服务端认证地址
         String serverUrl = ssoConfig.splicingAuthUrl();
@@ -81,12 +81,13 @@ public class SsoClientController {
      * @param ticket ticket
      * @return token
      */
-    @Operation(summary = "根据ticket获取token", description = "校验ticket有限性，并返回token")
+    @Operation(summary = "客户端根据ticket获取token", description = "校验ticket有限性，并返回token")
     @GetMapping("/anyUser/client/doLoginByTicket")
-    public R<String> doLoginByTicket(String ticket) {
-        SaCheckTicketResult ctr = SaSsoClientProcessor.getInstance().checkTicket(ticket);
+    public R<String> doLoginByTicket(String clientId, String ticket) {
+        SaCheckTicketResult ctr = SaSsoClientProcessor.getInstance().checkTicket(clientId, ticket);
         StpUtil.login(ctr.getLoginId(), new SaLoginParameter()
                 .setTimeout(ctr.getRemainTokenTimeout())
+//                .setDeviceType(ctr.getDeviceType())
                 .setDeviceId(ctr.getDeviceId())
         );
         return R.success(StpUtil.getTokenValue());
@@ -96,11 +97,11 @@ public class SsoClientController {
     /**
      * 全端退出
      */
-    @Operation(summary = "全端退出", description = "全端退出")
+    @Operation(summary = "客户端-全端退出", description = "客户端-全端退出")
     @RequestMapping("/anyUser/client/signout")
-    public Object ssoSignout() {
+    public Object ssoSignout(@RequestParam(required = false) String clientId) {
         try {
-            SaResult result = (SaResult) SaSsoServerProcessor.getInstance().ssoSignout();
+            SaResult result = (SaResult) SaSsoClientProcessor.getInstance().ssoLogout(clientId);
             if (result.getCode() == SaResult.CODE_SUCCESS) {
                 return R.success();
             } else {
@@ -115,7 +116,7 @@ public class SsoClientController {
     /**
      * 退出登录
      */
-    @Operation(summary = "退出登录", description = "退出登录")
+    @Operation(summary = "客户端-退出当前应用", description = "客户端-退出当前应用")
     @PostMapping("/anyUser/client/logout")
     public R<Boolean> logout() {
         try {

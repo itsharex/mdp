@@ -131,7 +131,7 @@ public class SsoServerController {
     /**
      * 全局注销登录，通知所有应用退出
      */
-    @Operation(summary = "全端退出", description = "全端退出")
+    @Operation(summary = "服务端-全端退出", description = "服务端-全端退出")
     @RequestMapping("/anyUser/sso/signout")
     public R<Boolean> ssoSignout() {
         try {
@@ -150,6 +150,7 @@ public class SsoServerController {
 
     /** 退出登录当前应用 */
     @PostMapping("/anyUser/sso/logout")
+    @Operation(summary = "服务端-退出当前应用", description = "服务端-退出当前应用")
     public R<Boolean> logout() {
         try {
             StpUtil.logout();

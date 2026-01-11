@@ -95,7 +95,7 @@ public class AuthServiceImpl implements AuthService {
         // 创建Account-Session
         StpUtil.login(userId, new SaLoginParameter()
                 .setDeviceType("PC")
-                .setDeviceId(StrUtil.isEmpty(login.getDeviceInfo()) ? SaFoxUtil.getRandomString(32) : login.getDeviceInfo()));
+                .setDeviceId(StrUtil.isEmpty(login.getDeviceId()) ? SaFoxUtil.getRandomString(32) : login.getDeviceId()));
 
         SaSession session = StpUtil.getSession();
         session.setLoginId(ssoUser.getId());
