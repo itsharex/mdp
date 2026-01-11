@@ -54,23 +54,23 @@ public class SsoClientController {
      * @return SSO-Server端-认证地址
      */
     public String buildServerAuthUrl(String clientLoginUrl, String clientId) {
-        SaSsoClientConfig ssoConfig = SaSsoClientProcessor.instance.ssoClientTemplate.getClientConfig();
+        SaSsoClientConfig ssoConfig = SaSsoClientProcessor.getInstance().getSsoClientTemplate().getClientConfig();
 
         // 服务端认证地址
         String serverUrl = ssoConfig.splicingAuthUrl();
 
         if (StrUtil.isEmpty(clientId)) {
             // 拼接客户端标识
-            String client = SaSsoClientProcessor.instance.ssoClientTemplate.getClient();
+            String client = SaSsoClientProcessor.getInstance().getSsoClientTemplate().getClient();
             if (SaFoxUtil.isNotEmpty(client)) {
-                serverUrl = SaFoxUtil.joinParam(serverUrl, SaSsoClientProcessor.instance.ssoClientTemplate.paramName.client, client);
+                serverUrl = SaFoxUtil.joinParam(serverUrl, SaSsoClientProcessor.getInstance().getSsoClientTemplate().getParamName().getClient(), client);
             }
         } else {
-            serverUrl = SaFoxUtil.joinParam(serverUrl, SaSsoClientProcessor.instance.ssoClientTemplate.paramName.client, clientId);
+            serverUrl = SaFoxUtil.joinParam(serverUrl, SaSsoClientProcessor.getInstance().getSsoClientTemplate().getParamName().getClient(), clientId);
         }
 
         // 返回
-        return SaFoxUtil.joinParam(serverUrl, SaSsoClientProcessor.instance.ssoClientTemplate.paramName.redirect, clientLoginUrl);
+        return SaFoxUtil.joinParam(serverUrl, SaSsoClientProcessor.getInstance().getSsoClientTemplate().getParamName().getRedirect(), clientLoginUrl);
     }
 
     /**
@@ -84,10 +84,10 @@ public class SsoClientController {
     @Operation(summary = "根据ticket获取token", description = "校验ticket有限性，并返回token")
     @GetMapping("/anyUser/client/doLoginByTicket")
     public R<String> doLoginByTicket(String ticket) {
-        SaCheckTicketResult ctr = SaSsoClientProcessor.instance.checkTicket(ticket);
-        StpUtil.login(ctr.loginId, new SaLoginParameter()
-                .setTimeout(ctr.remainTokenTimeout)
-                .setDeviceId(ctr.deviceId)
+        SaCheckTicketResult ctr = SaSsoClientProcessor.getInstance().checkTicket(ticket);
+        StpUtil.login(ctr.getLoginId(), new SaLoginParameter()
+                .setTimeout(ctr.getRemainTokenTimeout())
+                .setDeviceId(ctr.getDeviceId())
         );
         return R.success(StpUtil.getTokenValue());
     }
@@ -100,7 +100,7 @@ public class SsoClientController {
     @RequestMapping("/anyUser/client/signout")
     public Object ssoSignout() {
         try {
-            SaResult result = (SaResult) SaSsoServerProcessor.instance.ssoSignout();
+            SaResult result = (SaResult) SaSsoServerProcessor.getInstance().ssoSignout();
             if (result.getCode() == SaResult.CODE_SUCCESS) {
                 return R.success();
             } else {

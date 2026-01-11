@@ -100,6 +100,16 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!-- sso 服务端 -->
+        <dependency>
+            <groupId>top.mddata.base</groupId>
+            <artifactId>sa-token-sso-server-starter</artifactId>
+        </dependency>
+        <!-- sso 客户端：本项目比较特殊，一个后端对应了3个前端，所有这个后端工程既是服务端，又是客户端 -->
+        <dependency>
+            <groupId>top.mddata.base</groupId>
+            <artifactId>sa-token-sso-client-starter</artifactId>
+        </dependency>
         <!-- Sa-Token 整合 RedisTemplate -->
         <dependency>
             <groupId>cn.dev33</groupId>

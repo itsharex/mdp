@@ -121,7 +121,7 @@ public class SsoServerController {
     @GetMapping("/anyUser/sso/pushS")
     public Object push() {
         try {
-            return SaSsoServerProcessor.instance.ssoPushS();
+            return SaSsoServerProcessor.getInstance().ssoPushS();
         } catch (Exception e) {
             log.error("pushS", e);
             return SaResult.error(e.getMessage());
@@ -135,7 +135,7 @@ public class SsoServerController {
     @RequestMapping("/anyUser/sso/signout")
     public R<Boolean> ssoSignout() {
         try {
-            SaResult result = (SaResult) SaSsoServerProcessor.instance.ssoSignout();
+            SaResult result = (SaResult) SaSsoServerProcessor.getInstance().ssoSignout();
             if (result.getCode() == SaResult.CODE_SUCCESS) {
                 return R.success();
             } else {

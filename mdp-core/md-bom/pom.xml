@@ -129,6 +129,42 @@
                 <version>${revision}</version>
             </dependency>
 
+            <dependency>
+                <groupId>top.mddata.base</groupId>
+                <artifactId>sa-token-oauth2-client</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.mddata.base</groupId>
+                <artifactId>sa-token-oauth2-client-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.mddata.base</groupId>
+                <artifactId>sa-token-sso-client</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.mddata.base</groupId>
+                <artifactId>sa-token-sso-client-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.mddata.base</groupId>
+                <artifactId>sa-token-sso-core</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.mddata.base</groupId>
+                <artifactId>sa-token-sso-server</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.mddata.base</groupId>
+                <artifactId>sa-token-sso-server-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 </project>

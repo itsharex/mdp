@@ -20,11 +20,11 @@ public class SaTokenSsoConfigure {
     @Autowired
     private void configSso(SaSsoServerConfig saSsoServerConfig) {
         // 增强 SaSsoServerTemplate 对象
-        SaSsoServerProcessor.instance.ssoServerTemplate = customSaSsoServerTemplate;
+        SaSsoServerProcessor.getInstance().setSsoServerTemplate(customSaSsoServerTemplate);
 
-        SaSsoServerProcessor.instance.ssoServerTemplate.strategy.notLoginView = () -> {
+        SaSsoServerProcessor.getInstance().getSsoServerTemplate().getStrategy().setNotLoginView(() -> {
             throw new SaSsoException("暂无此功能");
-        };
+        });
 
     }
 
