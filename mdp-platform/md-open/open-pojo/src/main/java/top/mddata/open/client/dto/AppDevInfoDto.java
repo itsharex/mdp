@@ -1,6 +1,7 @@
 package top.mddata.open.client.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -39,11 +40,12 @@ public class AppDevInfoDto implements Serializable {
     private Long id;
 
     /**
-     * 首页地址
+     * 是否公开
+     * [true=公开应用 false-私有应用]
      */
-    @Size(max = 512, message = "首页地址长度不能超过{max}")
-    @Schema(description = "首页地址")
-    private String homeUrl;
+    @NotNull(message = "请填写是否公开")
+    @Schema(description = "是否公开")
+    private Boolean isPublic;
 
     /**
      * 是否显示
@@ -53,14 +55,13 @@ public class AppDevInfoDto implements Serializable {
     @Schema(description = "是否显示")
     private Boolean show;
 
-    /**
-     * 是否公开
-     * [true=公开应用 false-私有应用]
-     */
-    @NotNull(message = "请填写是否公开")
-    @Schema(description = "是否公开")
-    private Boolean isPublic;
 
+    /**
+     * 首页地址
+     */
+    @Size(max = 512, message = "首页地址长度不能超过{max}")
+    @Schema(description = "首页地址")
+    private String homeUrl;
     /**
      * 允许的IP
      */
@@ -68,6 +69,26 @@ public class AppDevInfoDto implements Serializable {
     @Schema(description = "允许的IP")
     private String allowIp;
 
+    /**
+     * 登录方式
+     * [10-单点登录 20-oauth2]
+     */
+    @NotEmpty(message = "请填写登录方式")
+    private String loginType;
+    /**
+     * 自动登录地址
+     * 单点登录
+     */
+    @Size(max = 512, message = "自动登录地址长度不能超过{max}")
+    @Schema(description = "自动登录地址")
+    private String ssoAutoLoginUrl;
+    /**
+     * 允许授权的URL
+     * 多个用逗号分割
+     */
+    @Size(max = 5120, message = "允许授权的URL长度不能超过{max}")
+    @Schema(description = "允许授权的URL")
+    private String ssoAllowUrl;
     /**
      * 是否接收消息推送
      */
@@ -90,13 +111,6 @@ public class AppDevInfoDto implements Serializable {
     @Schema(description = "接收消息推送的地址")
     private String ssoPushUrl;
 
-    /**
-     * 允许授权的URL
-     * 多个用逗号分割
-     */
-    @Size(max = 5120, message = "允许授权的URL长度不能超过{max}")
-    @Schema(description = "允许授权的URL")
-    private String ssoAllowUrl;
 
     /**
      * 允许的重定向uri

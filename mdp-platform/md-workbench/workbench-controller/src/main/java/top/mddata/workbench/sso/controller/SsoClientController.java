@@ -53,7 +53,7 @@ public class SsoClientController {
      * @param clientLoginUrl Client端登录地址
      * @return SSO-Server端-认证地址
      */
-    public String buildServerAuthUrl(String clientLoginUrl, String clientId) {
+    private String buildServerAuthUrl(String clientLoginUrl, String clientId) {
         SaSsoClientConfig ssoConfig = SaSsoClientProcessor.getInstance().getSsoClientTemplate().getClientConfig(clientId);
 
         // 服务端认证地址

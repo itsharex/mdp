@@ -93,6 +93,11 @@ public class AppBase extends SuperEntity<Long> implements Serializable {
      * 首页地址
      */
     private String homeUrl;
+    /**
+     * 自动登录地址
+     * 单点登录
+     */
+    private String ssoAutoLoginUrl;
 
     /**
      * 是否显示

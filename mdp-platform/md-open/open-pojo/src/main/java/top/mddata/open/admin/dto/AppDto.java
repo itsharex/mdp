@@ -119,6 +119,14 @@ public class AppDto implements Serializable {
     private String homeUrl;
 
     /**
+     * 自动登录地址
+     * 单点登录
+     */
+    @Size(max = 512, message = "自动登录地址长度不能超过{max}")
+    @Schema(description = "自动登录地址")
+    private String ssoAutoLoginUrl;
+
+    /**
      * 是否显示
      * 是否在我的应用显示该应用，若设置为false，就算有权限访问，该应用也不会出现在我的应用列表
      */

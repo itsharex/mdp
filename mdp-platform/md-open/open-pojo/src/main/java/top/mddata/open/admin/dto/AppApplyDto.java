@@ -63,7 +63,6 @@ public class AppApplyDto implements Serializable {
     @Size(max = 512, message = "首页地址长度不能超过{max}")
     @Schema(description = "首页地址")
     private String homeUrl;
-
     /**
      * 图标
      */
