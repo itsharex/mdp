@@ -26,6 +26,7 @@ import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.MyTreeUtil;
 import top.mddata.base.utils.SpringUtils;
 import top.mddata.common.cache.workbench.CaptchaCacheKeyBuilder;
+import top.mddata.common.constant.DefValConstants;
 import top.mddata.common.entity.Org;
 import top.mddata.common.entity.OrgNature;
 import top.mddata.common.entity.User;
@@ -139,6 +140,9 @@ public class AuthServiceImpl implements AuthService {
 
         // 发送登录成功事件
         LoginLogDto dto = LoginLogDto.success(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), "登录成功", JSON.toJSONString(tokenInfo));
+        // 登录时，默认是默认应用 工作台
+        dto.setAppKey(DefValConstants.WORKBENCH_APP_KEY);
+        dto.setAppName(DefValConstants.WORKBENCH_APP_NAME);
         SpringUtils.publishEvent(new LoginEvent(dto));
 
         return R.success(loginVO);

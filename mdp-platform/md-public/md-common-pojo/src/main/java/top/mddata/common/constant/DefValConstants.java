@@ -15,4 +15,9 @@ public interface DefValConstants {
 
     /** 防止字典空值导致的 缓存击穿问题 */
     String DICT_NULL_VAL_KEY = "-999999999";
+
+    /** 内置应用工作台的 key */
+    String WORKBENCH_APP_KEY = "web-workbench";
+    /** 内置应用工作台的 名称 */
+    String WORKBENCH_APP_NAME = "工作台";
 }
