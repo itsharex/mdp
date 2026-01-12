@@ -28,64 +28,64 @@ import top.mddata.open.admin.vo.NotifyInfoLogVo;
 import java.util.List;
 
 /**
- * 事件推送日志 控制层。
+ * 回调任务日志 控制层。
  *
  * @author henhen6
  * @since 2026-01-12 21:29:13
  */
 @RestController
 @Validated
-@Tag(name = "事件推送日志")
+@Tag(name = "回调任务日志")
 @RequestMapping("/admin/notifyInfoLog")
 @RequiredArgsConstructor
 public class NotifyInfoLogController extends SuperController<NotifyInfoLogService, NotifyInfoLog> {
     /**
-     * 添加事件推送日志。
+     * 添加回调任务日志。
      *
-     * @param dto 事件推送日志
+     * @param dto 回调任务日志
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @PostMapping("/save")
-    @Operation(summary = "新增", description = "保存事件推送日志")
+    @Operation(summary = "新增", description = "保存回调任务日志")
     @RequestLog(value = "新增", request = false)
     public R<Long> save(@Validated @RequestBody NotifyInfoLogDto dto) {
         return R.success(superService.saveDto(dto).getId());
     }
 
     /**
-     * 根据主键删除事件推送日志。
+     * 根据主键删除回调任务日志。
      *
      * @param ids 主键
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
     @PostMapping("/delete")
-    @Operation(summary = "删除", description = "根据主键删除事件推送日志")
+    @Operation(summary = "删除", description = "根据主键删除回调任务日志")
     @RequestLog("'删除:' + #ids")
     public R<Boolean> delete(@RequestBody List<Long> ids) {
         return R.success(superService.removeByIds(ids));
     }
 
     /**
-     * 根据主键更新事件推送日志。
+     * 根据主键更新回调任务日志。
      *
-     * @param dto 事件推送日志
+     * @param dto 回调任务日志
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @PostMapping("/update")
-    @Operation(summary = "修改", description = "根据主键更新事件推送日志")
+    @Operation(summary = "修改", description = "根据主键更新回调任务日志")
     @RequestLog(value = "修改", request = false)
     public R<Long> update(@Validated(BaseEntity.Update.class) @RequestBody NotifyInfoLogDto dto) {
         return R.success(superService.updateDtoById(dto).getId());
     }
 
     /**
-     * 根据事件推送日志主键获取详细信息。
+     * 根据回调任务日志主键获取详细信息。
      *
-     * @param id 事件推送日志主键
-     * @return 事件推送日志详情
+     * @param id 回调任务日志主键
+     * @return 回调任务日志详情
      */
     @GetMapping("/getById")
-    @Operation(summary = "单体查询", description = "根据主键获取事件推送日志")
+    @Operation(summary = "单体查询", description = "根据主键获取回调任务日志")
     @RequestLog("'单体查询:' + #id")
     public R<NotifyInfoLogVo> get(@RequestParam Long id) {
         NotifyInfoLog entity = superService.getById(id);
@@ -93,13 +93,13 @@ public class NotifyInfoLogController extends SuperController<NotifyInfoLogServic
     }
 
     /**
-     * 分页查询事件推送日志。
+     * 分页查询回调任务日志。
      *
      * @param params 分页对象
      * @return 分页对象
      */
     @PostMapping("/page")
-    @Operation(summary = "分页列表查询", description = "分页查询事件推送日志")
+    @Operation(summary = "分页列表查询", description = "分页查询回调任务日志")
     @RequestLog(value = "'分页列表查询:第' + #params?.current + '页, 显示' + #params?.size + '行'", response = false)
     public R<Page<NotifyInfoLogVo>> page(@RequestBody @Validated PageParams<NotifyInfoLogQuery> params) {
         Page<NotifyInfoLogVo> page = Page.of(params.getCurrent(), params.getSize());

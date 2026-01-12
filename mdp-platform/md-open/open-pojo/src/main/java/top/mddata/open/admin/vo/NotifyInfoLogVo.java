@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 事件推送日志 VO类（通常用作Controller出参）。
+ * 回调任务日志 VO类（通常用作Controller出参）。
  *
  * @author henhen6
  * @since 2026-01-12 21:29:13
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @Data
 @FieldNameConstants
-@Schema(description = "事件推送日志Vo")
+@Schema(description = "回调任务日志Vo")
 @Table(NotifyInfoLogBase.TABLE_NAME)
 public class NotifyInfoLogVo implements Serializable {
 

@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 事件推送日志实体类。
+ * 回调任务日志实体类。
  *
  * @author henhen6
  * @since 2026-01-12 21:29:13

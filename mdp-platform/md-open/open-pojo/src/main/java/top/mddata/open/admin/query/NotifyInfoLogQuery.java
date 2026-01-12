@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 事件推送日志 Query类（查询方法入参）。
+ * 回调任务日志 Query类（查询方法入参）。
  *
  * @author henhen6
  * @since 2026-01-12 21:29:13
@@ -21,7 +21,7 @@ import java.time.LocalDateTime;
 @Data
 @FieldNameConstants
 @EqualsAndHashCode(callSuper = true)
-@Schema(description = "事件推送日志Query")
+@Schema(description = "回调任务日志Query")
 public class NotifyInfoLogQuery extends ExtraParams implements Serializable {
 
     @Serial

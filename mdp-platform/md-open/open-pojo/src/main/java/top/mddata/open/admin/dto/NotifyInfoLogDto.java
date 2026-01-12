@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * 事件推送日志 DTO（写入方法入参）。
+ * 回调任务日志 DTO（写入方法入参）。
  *
  * @author henhen6
  * @since 2026-01-12 21:29:13
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @Data
 @FieldNameConstants
-@Schema(description = "事件推送日志Dto")
+@Schema(description = "回调任务日志Dto")
 public class NotifyInfoLogDto implements Serializable {
 
     @Serial
