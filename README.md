@@ -138,9 +138,14 @@
 - 我的应用
   ![](./docs/imgs/workbench/我的应用.png)
 - 个人中心
+  ![个人中心.png](docs/imgs/workbench/个人中心.png)  
 - 消息中心
+  ![消息中心.png](docs/imgs/workbench/消息中心.png)
+  ![消息查看.png](docs/imgs/workbench/消息查看.png)
 - 登录日志
+  ![登录日志.png](docs/imgs/workbench/登录日志.png)  
 - 安全设置
+  ![安全设置.png](docs/imgs/workbench/安全设置.png)  
 
 ### 控制台
 - 组织管理
@@ -165,6 +170,18 @@
   - ![](./docs/imgs/字典项新增.png)
 - 系统配置
   - ![](./docs/imgs/系统配置.png)
+- 消息管理
+    - ![](./docs/imgs/消息管理.png)
+    - ![](./docs/imgs/消息发布.png)
+- 消息模板
+    - ![](./docs/imgs/消息模板.png)
+    - ![](./docs/imgs/消息模板编辑.png)
+- 接口配置
+    - ![](./docs/imgs/接口配置.png)
+    - ![](./docs/imgs/接口配置-编辑.png)
+- 接口统计
+    - ![](./docs/imgs/接口统计.png)
+    - ![](./docs/imgs/接口统计-日志.png)
 - 应用管理
   - ![](./docs/imgs/应用管理.png)
   - ![](./docs/imgs/应用秘钥.png)
@@ -173,12 +190,14 @@
   ![](./docs/imgs/应用审核.png)
 - 开放接口
   ![](./docs/imgs/开放接口.png)
-- 开放文档
+- 文档管理
   ![](./docs/imgs/开放文档.png)
 - 权限组
   ![](./docs/imgs/权限组.png)
 - Oauth2权限
   ![](./docs/imgs/Oauth2权限.png)
+- 事件管理
+  ![](./docs/imgs/事件管理.png)
 
 
 ### 开发者平台
@@ -190,6 +209,7 @@
 - 应用管理
   - ![](./docs/imgs/open/应用管理-应用信息.png)
   - ![](./docs/imgs/open/应用管理-应用秘钥.png)
+  - ![](./docs/imgs/open/应用管理-事件订阅.png)
   - ![](./docs/imgs/open/应用管理-开发配置.png)
 - 开发文档
   - ![](./docs/imgs/open/开发文档.png)
