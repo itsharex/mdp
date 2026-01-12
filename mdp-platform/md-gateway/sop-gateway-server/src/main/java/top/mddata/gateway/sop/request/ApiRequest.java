@@ -109,6 +109,11 @@ public class ApiRequest implements Serializable {
     private String notifyUrl;
 
     /**
+     * api调用日志id
+     */
+    private Long apiCallLogId;
+
+    /**
      * 授权token,详见应用授权概述
      */
     @Max(64)

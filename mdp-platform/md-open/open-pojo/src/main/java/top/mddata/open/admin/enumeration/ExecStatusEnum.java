@@ -12,8 +12,8 @@ import top.mddata.base.interfaces.BaseEnum;
  */
 @AllArgsConstructor
 @Getter
-@Schema(description = "通知执行状态-枚举")
-public enum NotifyStatusEnum implements BaseEnum<String> {
+@Schema(description = "执行状态-枚举")
+public enum ExecStatusEnum implements BaseEnum<String> {
 
     WAIT("0", "待执行"),
     SUCCESS("1", "执行成功"),

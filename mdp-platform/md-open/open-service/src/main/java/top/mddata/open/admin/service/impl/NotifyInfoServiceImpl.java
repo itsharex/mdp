@@ -24,7 +24,7 @@ import top.mddata.open.admin.dto.NotifyRequest;
 import top.mddata.open.admin.entity.AppKeys;
 import top.mddata.open.admin.entity.NotifyInfo;
 import top.mddata.open.admin.entity.NotifyLog;
-import top.mddata.open.admin.enumeration.NotifyStatusEnum;
+import top.mddata.open.admin.enumeration.ExecStatusEnum;
 import top.mddata.open.admin.mapper.NotifyInfoMapper;
 import top.mddata.open.admin.properties.NotifyProperties;
 import top.mddata.open.admin.service.AppKeysService;
@@ -71,8 +71,8 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
 
     @Override
     public Boolean end(Long id) {
-        return updateChain().set(NotifyInfo::getExecStatus, NotifyStatusEnum.END.getCode())
-                .eq(NotifyInfo::getExecStatus, NotifyStatusEnum.FAIL.getCode())
+        return updateChain().set(NotifyInfo::getExecStatus, ExecStatusEnum.END.getCode())
+                .eq(NotifyInfo::getExecStatus, ExecStatusEnum.FAIL.getCode())
                 .eq(NotifyInfo::getId, id).update();
     }
 
@@ -80,7 +80,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
     public void retry(LocalDateTime now) {
         ArgumentAssert.notNull(now, "当前时间不能为空");
         LocalDateTime nextTime = now.withSecond(0).withNano(0);
-        List<NotifyInfo> tasks = list(QueryWrapper.create().le(NotifyInfo::getNextRequestTime, nextTime).eq(NotifyInfo::getExecStatus, NotifyStatusEnum.FAIL.getCode()));
+        List<NotifyInfo> tasks = list(QueryWrapper.create().le(NotifyInfo::getNextRequestTime, nextTime).eq(NotifyInfo::getExecStatus, ExecStatusEnum.FAIL.getCode()));
 
         if (CollUtil.isEmpty(tasks)) {
             log.info("[{}]表无重试记录", NotifyInfo.TABLE_NAME);
@@ -121,7 +121,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         NotifyBO notifyBO = JSON.parseObject(content, NotifyBO.class);
         try {
             log.info("[notify]开始重试, notifyId={}", notifyInfo.getId());
-            if (Objects.equals(notifyInfo.getExecStatus(), NotifyStatusEnum.RETRY_OVER.getCode())) {
+            if (Objects.equals(notifyInfo.getExecStatus(), ExecStatusEnum.RETRY_OVER.getCode())) {
                 log.warn("重试次数已用尽, notifyId={}", notifyInfo.getId());
                 return;
             }
@@ -175,7 +175,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         notifyInfo.setNotifyUrl(notifyBO.getNotifyUrl());
         notifyInfo.setRequestData(JSON.toJSONString(notifyBO));
         notifyInfo.setRequestCnt(0);
-        notifyInfo.setExecStatus(NotifyStatusEnum.WAIT.getCode());
+        notifyInfo.setExecStatus(ExecStatusEnum.WAIT.getCode());
         notifyInfo.setRemark(notifyBO.getRemark());
 
         return notifyInfo;
@@ -210,7 +210,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
 
             if (r.getIsSuccess()) {
                 // 更新状态
-                notifyInfo.setExecStatus(NotifyStatusEnum.SUCCESS.getCode());
+                notifyInfo.setExecStatus(ExecStatusEnum.SUCCESS.getCode());
                 notifyLog.setErrorMsg(StrPool.EMPTY);
             } else {
                 // 回调失败
@@ -219,7 +219,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
             }
         } catch (Exception e) {
             log.error("回调请求失败, notifyUrl={}, params={}, notifyBO={}", notifyUrl, params, notifyBO, e);
-            notifyInfo.setExecStatus(NotifyStatusEnum.FAIL.getCode());
+            notifyInfo.setExecStatus(ExecStatusEnum.FAIL.getCode());
             notifyLog.setErrorMsg(e.getMessage());
             notifyLog.setResponseData(StrPool.EMPTY);
             notifyLog.setResponseTime(LocalDateTime.now());
@@ -229,7 +229,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
 
             if (nextRequestTime == null) {
                 log.error("回调请求次数达到上线, notifyUrl={}, params={}", notifyUrl, params);
-                notifyInfo.setExecStatus(NotifyStatusEnum.RETRY_OVER.getCode());
+                notifyInfo.setExecStatus(ExecStatusEnum.RETRY_OVER.getCode());
             }
         }
 

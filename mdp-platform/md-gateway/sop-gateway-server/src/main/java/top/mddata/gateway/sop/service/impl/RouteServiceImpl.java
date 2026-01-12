@@ -1,5 +1,6 @@
 package top.mddata.gateway.sop.service.impl;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.gitee.sop.support.constant.SopConstants;
@@ -20,14 +21,15 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
+import top.mddata.gateway.sop.common.ApiDto;
+import top.mddata.gateway.sop.common.AppDto;
+import top.mddata.gateway.sop.common.ParamInfoDto;
 import top.mddata.gateway.sop.common.RouteContext;
+import top.mddata.gateway.sop.event.CallLogEvent;
 import top.mddata.gateway.sop.exception.ApiException;
 import top.mddata.gateway.sop.exception.ExceptionExecutor;
 import top.mddata.gateway.sop.interceptor.RouteInterceptor;
 import top.mddata.gateway.sop.message.ErrorEnum;
-import top.mddata.gateway.sop.common.ApiDto;
-import top.mddata.gateway.sop.common.AppDto;
-import top.mddata.gateway.sop.common.ParamInfoDto;
 import top.mddata.gateway.sop.request.ApiRequest;
 import top.mddata.gateway.sop.request.ApiRequestContext;
 import top.mddata.gateway.sop.request.UploadContext;
@@ -37,11 +39,14 @@ import top.mddata.gateway.sop.service.GenericServiceInvoker;
 import top.mddata.gateway.sop.service.ResultWrapper;
 import top.mddata.gateway.sop.service.RouteService;
 import top.mddata.gateway.sop.service.Serde;
-import top.mddata.gateway.sop.service.validate.ValidateReturn;
 import top.mddata.gateway.sop.service.validate.SopValidator;
+import top.mddata.gateway.sop.service.validate.ValidateReturn;
 import top.mddata.gateway.sop.util.ClassUtil;
+import top.mddata.open.admin.entity.ApiCallLog;
+import top.mddata.open.admin.enumeration.ExecStatusEnum;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -87,16 +92,19 @@ public class RouteServiceImpl implements RouteService {
     public Response route(ApiRequestContext apiRequestContext) {
         ApiRequest apiRequest = apiRequestContext.getApiRequest();
         log.info("收到客户端请求, ip={}, apiRequest={}", apiRequestContext.getIp(), apiRequest);
+        ApiCallLog apiCallLog = null;
         try {
             // 接口校验
             ValidateReturn validateReturn = validate(apiRequestContext);
             RouteContext routeContext = new RouteContext(
                     apiRequestContext,
                     validateReturn.getApiDto(),
-                    validateReturn.getAppDto()
+                    validateReturn.getAppDto(),
+                    null
             );
             // 执行拦截器前置动作
             this.doPreRoute(routeContext);
+            apiCallLog = routeContext.getApiCallLog();
             // 执行路由，返回微服务结果
             Object result = doRoute(routeContext);
             // 执行拦截器后置动作
@@ -106,7 +114,19 @@ public class RouteServiceImpl implements RouteService {
         } catch (Exception e) {
             log.error("接口请求报错, ip={}, apiRequest={}", apiRequestContext.getIp(), apiRequest, e);
             ApiResponse apiResponse = exceptionExecutor.executeException(apiRequestContext, e);
+
+            if (apiCallLog != null) {
+                apiCallLog.setExecStatus(ExecStatusEnum.FAIL.getCode());
+                apiCallLog.setResponseData(JSON.toJSONString(apiResponse));
+                apiCallLog.setResponseTime(LocalDateTime.now());
+                apiCallLog.setErrorMsg(e.getMessage());
+            }
+
             return resultWrapper.wrap(Optional.empty(), apiResponse);
+        } finally {
+            if (apiCallLog != null) {
+                SpringUtil.publishEvent(new CallLogEvent(apiCallLog));
+            }
         }
     }
 

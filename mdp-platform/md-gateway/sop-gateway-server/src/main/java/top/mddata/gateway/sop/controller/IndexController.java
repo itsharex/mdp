@@ -79,8 +79,8 @@ public class IndexController {
      * <p>
      *     格式：http://<网关host>:<网关port>/rest/<value>[?v=<版本号>]
      * </p>
-     * @param request
-     * @param response
+     * @param request 请求
+     * @param response 响应
      * @param v  版本号
      * @throws IOException
      */

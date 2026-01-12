@@ -33,6 +33,7 @@ public class OrgTest extends BaseTest {
     public void testSave() {
         OrgSaveDto org1 = new OrgSaveDto();
         org1.setName("test" + new Random().nextInt(5000));
+        org1.setParentId(123L);
         org1.setOrgType("10");
 
         // 创建请求对象
