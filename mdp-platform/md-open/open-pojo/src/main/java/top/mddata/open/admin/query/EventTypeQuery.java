@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
  * 事件类型 Query类（查询方法入参）。
  *
  * @author henhen6
- * @since 2026-01-02 10:11:40
+ * @since 2026-01-12 21:28:36
  */
 @Accessors(chain = true)
 @Data
@@ -44,6 +44,12 @@ public class EventTypeQuery extends ExtraParams implements Serializable {
      */
     @Schema(description = "事件名称")
     private String name;
+
+    /**
+     * 事件描述
+     */
+    @Schema(description = "事件描述")
+    private String remarks;
 
     /**
      * 状态

@@ -12,7 +12,7 @@ import top.mddata.open.admin.entity.base.EventTypeBase;
  * DO类：数据对象，可以在关联查询时，再次添加字段，重新生成代码时，忽略此文件。
  *
  * @author henhen6
- * @since 2026-01-02 10:11:40
+ * @since 2026-01-12 21:28:36
  */
 @Accessors(chain = true)
 @Data

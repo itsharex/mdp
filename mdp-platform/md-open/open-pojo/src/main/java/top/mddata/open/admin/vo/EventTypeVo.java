@@ -2,21 +2,22 @@ package top.mddata.open.admin.vo;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import top.mddata.open.admin.entity.base.EventTypeBase;
+
+import java.io.Serial;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
-import top.mddata.open.admin.entity.base.EventTypeBase;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.time.LocalDateTime;
 
 /**
  * 事件类型 VO类（通常用作Controller出参）。
  *
  * @author henhen6
- * @since 2026-01-02 10:11:40
+ * @since 2026-01-12 21:28:36
  */
 @Accessors(chain = true)
 @Data
@@ -27,6 +28,7 @@ public class EventTypeVo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
+
 
 
     /**
@@ -47,6 +49,12 @@ public class EventTypeVo implements Serializable {
      */
     @Schema(description = "事件名称")
     private String name;
+
+    /**
+     * 事件描述
+     */
+    @Schema(description = "事件描述")
+    private String remarks;
 
     /**
      * 状态

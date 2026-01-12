@@ -13,7 +13,7 @@ import java.io.Serializable;
  * 事件类型实体类。
  *
  * @author henhen6
- * @since 2026-01-02 10:11:40
+ * @since 2026-01-12 21:28:36
  */
 @FieldNameConstants
 @Data
@@ -35,6 +35,11 @@ public class EventTypeBase extends SuperEntity<Long> implements Serializable {
      * 事件名称
      */
     private String name;
+
+    /**
+     * 事件描述
+     */
+    private String remarks;
 
     /**
      * 状态

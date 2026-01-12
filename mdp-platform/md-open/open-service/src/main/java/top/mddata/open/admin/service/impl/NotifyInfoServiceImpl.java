@@ -117,7 +117,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
 
 
     private void retry(NotifyInfo notifyInfo) {
-        String content = notifyInfo.getRequestParam();
+        String content = notifyInfo.getRequestData();
         NotifyBO notifyBO = JSON.parseObject(content, NotifyBO.class);
         try {
             log.info("[notify]开始重试, notifyId={}", notifyInfo.getId());
@@ -150,7 +150,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
     @Override
     public Long notifyImmediately(Long notifyId) {
         NotifyInfo notifyInfo = getById(notifyId);
-        String content = notifyInfo.getRequestParam();
+        String content = notifyInfo.getRequestData();
         NotifyBO notifyBO = JSON.parseObject(content, NotifyBO.class);
         // 发送请求
         try {
@@ -173,7 +173,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         notifyInfo.setApiName(notifyBO.getApiName());
         notifyInfo.setApiVersion(notifyBO.getVersion());
         notifyInfo.setNotifyUrl(notifyBO.getNotifyUrl());
-        notifyInfo.setRequestParam(JSON.toJSONString(notifyBO));
+        notifyInfo.setRequestData(JSON.toJSONString(notifyBO));
         notifyInfo.setRequestCnt(0);
         notifyInfo.setExecStatus(NotifyStatusEnum.WAIT.getCode());
         notifyInfo.setRemark(notifyBO.getRemark());

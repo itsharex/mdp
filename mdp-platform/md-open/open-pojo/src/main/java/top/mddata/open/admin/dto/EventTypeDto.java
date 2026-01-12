@@ -16,7 +16,7 @@ import java.io.Serializable;
  * 事件类型 DTO（写入方法入参）。
  *
  * @author henhen6
- * @since 2026-01-02 10:11:40
+ * @since 2026-01-12 21:28:36
  */
 @Accessors(chain = true)
 @Data
@@ -51,10 +51,16 @@ public class EventTypeDto implements Serializable {
     private String name;
 
     /**
+     * 事件描述
+     */
+    @Size(max = 512, message = "事件描述长度不能超过{max}")
+    @Schema(description = "事件描述")
+    private String remarks;
+
+    /**
      * 状态
      */
     @Schema(description = "状态")
-    @NotNull(message = "请填写状态")
     private Boolean state;
 
 }
