@@ -18,22 +18,32 @@ public class NotifyRequest implements Serializable {
     private static final long serialVersionUID = -4018307141661725928L;
 
     /**
-     * appId
+     * 所属调用
      */
-    @NotBlank(message = "appId必填")
-    private String appId;
+    @NotNull(message = "所属调用必填")
+    private Long callLogId;
+    /**
+     * 所属应用
+     */
+    @NotBlank(message = "所属应用必填")
+    private Long appId;
+    /**
+     * appKey
+     */
+    @NotBlank(message = "appKey必填")
+    private String appKey;
 
     /**
-     * apiName
+     * 接口名称
      */
-    @NotBlank(message = "apiName必填")
+    @NotBlank(message = "接口名称必填")
     private String apiName;
 
     /**
-     * version
+     * 接口版本
      */
-    @NotBlank(message = "version必填")
-    private String version;
+    @NotBlank(message = "接口版本必填")
+    private String apiVersion;
 
     /**
      * 编码

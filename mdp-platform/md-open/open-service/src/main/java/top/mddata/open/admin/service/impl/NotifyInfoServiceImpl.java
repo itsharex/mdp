@@ -12,7 +12,6 @@ import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import top.mddata.base.base.R;
@@ -31,7 +30,6 @@ import top.mddata.open.admin.service.AppKeysService;
 import top.mddata.open.admin.service.NotifyInfoService;
 import top.mddata.open.admin.service.NotifyLogService;
 import top.mddata.open.admin.service.bo.MultiThreadTaskProcessor;
-import top.mddata.open.admin.service.bo.NotifyBO;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -118,7 +116,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
 
     private void retry(NotifyInfo notifyInfo) {
         String content = notifyInfo.getRequestData();
-        NotifyBO notifyBO = JSON.parseObject(content, NotifyBO.class);
+        NotifyRequest notifyBO = JSON.parseObject(content, NotifyRequest.class);
         try {
             log.info("[notify]开始重试, notifyId={}", notifyInfo.getId());
             if (Objects.equals(notifyInfo.getExecStatus(), ExecStatusEnum.RETRY_OVER.getCode())) {
@@ -136,11 +134,9 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
 
     @Override
     public R<Long> notify(NotifyRequest request) {
-        NotifyBO notifyBO = new NotifyBO();
-        BeanUtils.copyProperties(request, notifyBO);
         try {
-            NotifyInfo notifyInfo = buildRecord(notifyBO);
-            return R.success(doNotify(notifyBO, notifyInfo));
+            NotifyInfo notifyInfo = buildRecord(request);
+            return R.success(doNotify(request, notifyInfo));
         } catch (SignException e) {
             log.error("回调异常，服务端签名失败, request={}", request, e);
             return R.fail(e.getMessage());
@@ -151,7 +147,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
     public Long notifyImmediately(Long notifyId) {
         NotifyInfo notifyInfo = getById(notifyId);
         String content = notifyInfo.getRequestData();
-        NotifyBO notifyBO = JSON.parseObject(content, NotifyBO.class);
+        NotifyRequest notifyBO = JSON.parseObject(content, NotifyRequest.class);
         // 发送请求
         try {
             return doNotify(notifyBO, notifyInfo);
@@ -161,36 +157,32 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         }
     }
 
-    private NotifyInfo buildRecord(NotifyBO notifyBO) {
+    private NotifyInfo buildRecord(NotifyRequest request) {
         NotifyInfo notifyInfo = new NotifyInfo();
-        //TODO 待设置
-//        notifyInfo.setNotifyType();
-//        notifyInfo.setEventTypeId();
-//        notifyInfo.setEvent();
-//        notifyInfo.setCallLogId();
-        notifyInfo.setAppId(notifyBO.getAppId());
-        notifyInfo.setAppKey(notifyBO.getAppKey());
-        notifyInfo.setApiName(notifyBO.getApiName());
-        notifyInfo.setApiVersion(notifyBO.getVersion());
-        notifyInfo.setNotifyUrl(notifyBO.getNotifyUrl());
-        notifyInfo.setRequestData(JSON.toJSONString(notifyBO));
+        notifyInfo.setCallLogId(request.getCallLogId());
+        notifyInfo.setAppId(request.getAppId());
+        notifyInfo.setAppKey(request.getAppKey());
+        notifyInfo.setApiName(request.getApiName());
+        notifyInfo.setApiVersion(request.getApiVersion());
+        notifyInfo.setNotifyUrl(request.getNotifyUrl());
+        notifyInfo.setRequestData(JSON.toJSONString(request));
         notifyInfo.setRequestCnt(0);
         notifyInfo.setExecStatus(ExecStatusEnum.WAIT.getCode());
-        notifyInfo.setRemark(notifyBO.getRemark());
+        notifyInfo.setRemark(request.getRemark());
 
         return notifyInfo;
     }
 
-    private Long doNotify(NotifyBO notifyBO, NotifyInfo notifyInfo) throws SignException {
+    private Long doNotify(NotifyRequest request, NotifyInfo notifyInfo) throws SignException {
         notifyInfo.setRequestCnt(notifyInfo.getRequestCnt() + 1);
         notifyInfo.setLastRequestTime(LocalDateTime.now());
-        notifyInfo.setNotifyUrl(buildNotifyUrl(notifyBO, notifyInfo));
+        notifyInfo.setNotifyUrl(buildNotifyUrl(request, notifyInfo));
 
         NotifyLog notifyLog = new NotifyLog();
 
         String notifyUrl = notifyInfo.getNotifyUrl();
         // 构建请求参数
-        Map<String, String> params = buildParams(notifyBO);
+        Map<String, String> params = buildParams(request);
         if (StrUtil.isBlank(notifyUrl)) {
             throw new RuntimeException("回调接口不能为空");
         }
@@ -218,11 +210,11 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
                 throw new RuntimeException(resultContent);
             }
         } catch (Exception e) {
-            log.error("回调请求失败, notifyUrl={}, params={}, notifyBO={}", notifyUrl, params, notifyBO, e);
+            notifyLog.setResponseTime(LocalDateTime.now());
+            log.error("回调请求失败, notifyUrl={}, params={}, request={}", notifyUrl, params, request, e);
             notifyInfo.setExecStatus(ExecStatusEnum.FAIL.getCode());
             notifyLog.setErrorMsg(e.getMessage());
             notifyLog.setResponseData(StrPool.EMPTY);
-            notifyLog.setResponseTime(LocalDateTime.now());
 
             LocalDateTime nextRequestTime = buildNextSendTime(notifyInfo.getRequestCnt());
             notifyInfo.setNextRequestTime(nextRequestTime);
@@ -242,38 +234,38 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
     }
 
 
-    private Map<String, String> buildParams(NotifyBO notifyBO) throws SignException {
+    private Map<String, String> buildParams(NotifyRequest request) throws SignException {
         // 公共请求参数
         Map<String, String> params = new HashMap<>();
-        String appKey = notifyBO.getAppKey();
+        String appKey = request.getAppKey();
         params.put("app_key", appKey);
-        params.put("method", notifyBO.getApiName());
+        params.put("method", request.getApiName());
         params.put("format", "json");
-        params.put("charset", notifyBO.getCharset());
+        params.put("charset", request.getCharset());
         params.put("sign_type", "RSA2");
         params.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        params.put("version", notifyBO.getVersion());
+        params.put("version", request.getApiVersion());
         // 业务参数
-        Map<String, Object> bizContent = notifyBO.getBizParams();
+        Map<String, Object> bizContent = request.getBizParams();
         params.put("biz_content", JSON.toJSONString(bizContent));
         String content = SignUtil.getSignContent(params);
-        AppKeys appKeys = appKeysService.getByAppId(notifyBO.getAppId());
+        AppKeys appKeys = appKeysService.getByAppId(request.getAppId());
         if (appKeys != null) {
-            String sign = SignUtil.rsa256Sign(content, appKeys.getPrivateKeyPlatform(), notifyBO.getCharset());
+            String sign = SignUtil.rsa256Sign(content, appKeys.getPrivateKeyPlatform(), request.getCharset());
             params.put("sign", sign);
         }
 
         return params;
     }
 
-    private String buildNotifyUrl(NotifyBO notifyBO, NotifyInfo notifyInfo) {
+    private String buildNotifyUrl(NotifyRequest request, NotifyInfo notifyInfo) {
         String savedUrl = notifyInfo.getNotifyUrl();
         if (StrUtil.isNotBlank(savedUrl)) {
             return savedUrl;
         }
-        String notifyUrl = notifyBO.getNotifyUrl();
+        String notifyUrl = request.getNotifyUrl();
         if (StrUtil.isBlank(notifyUrl)) {
-            AppKeys appKeys = appKeysService.getByAppId(notifyBO.getAppId());
+            AppKeys appKeys = appKeysService.getByAppId(request.getAppId());
             notifyUrl = appKeys != null ? appKeys.getNotifyUrl() : null;
         }
         return notifyUrl;
