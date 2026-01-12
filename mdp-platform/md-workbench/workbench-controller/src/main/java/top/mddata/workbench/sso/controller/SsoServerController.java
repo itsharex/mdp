@@ -7,6 +7,7 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaFoxUtil;
 import cn.dev33.satoken.util.SaResult;
+import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson2.JSON;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.base.R;
-import top.mddata.base.utils.SpringUtils;
 import top.mddata.open.admin.vo.AppVo;
 import top.mddata.open.manage.facade.AppFacade;
 import top.mddata.workbench.dto.LoginLogDto;
@@ -105,9 +105,7 @@ public class SsoServerController {
             dto.setAppName(app.getName());
         }
         dto.setAppRedirect(redirect);
-        SpringUtils.publishEvent(new LoginEvent(dto));
-
-
+        SpringUtil.publishEvent(new LoginEvent(dto));
         return result;
     }
 

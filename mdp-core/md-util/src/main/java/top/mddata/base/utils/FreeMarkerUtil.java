@@ -1,6 +1,7 @@
 package top.mddata.base.utils;
 
 import cn.hutool.crypto.digest.DigestUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import freemarker.cache.MruCacheStorage;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.StringTemplateLoader;
@@ -55,8 +56,8 @@ public class FreeMarkerUtil {
             FREEMARKER_CFG.setSharedVariable("BeanPlusUtil", beanPlusUtil);
             TemplateHashModel collHelper = (TemplateHashModel) staticModels.get(CollHelper.class.getName());
             FREEMARKER_CFG.setSharedVariable("CollHelper", collHelper);
-            TemplateHashModel springUtils = (TemplateHashModel) staticModels.get(SpringUtils.class.getName());
-            FREEMARKER_CFG.setSharedVariable("SpringUtils", springUtils);
+            TemplateHashModel springUtil = (TemplateHashModel) staticModels.get(SpringUtil.class.getName());
+            FREEMARKER_CFG.setSharedVariable("SpringUtil", springUtil);
             TemplateHashModel strHelper = (TemplateHashModel) staticModels.get(StrHelper.class.getName());
             FREEMARKER_CFG.setSharedVariable("StrHelper", strHelper);
             TemplateHashModel treeUtil = (TemplateHashModel) staticModels.get(MyTreeUtil.class.getName());

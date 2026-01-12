@@ -3,6 +3,7 @@ package top.mddata.console.message.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson2.JSON;
 import com.mybatisflex.core.util.UpdateEntity;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.ContextUtil;
-import top.mddata.base.utils.SpringUtils;
 import top.mddata.common.constant.ConfigKey;
 import top.mddata.console.message.dto.MsgSendDto;
 import top.mddata.console.message.dto.MsgSendMailDto;
@@ -155,7 +155,7 @@ public class MsgTaskServiceImpl extends SuperServiceImpl<MsgTaskMapper, MsgTask>
             MsgSendEventDto dto = new MsgSendEventDto();
             // 一定要调用copy方法写入线程参数
             dto.setMsgTaskId(entity.getId()).copy();
-            SpringUtils.publishEvent(new MsgSendEvent(dto));
+            SpringUtil.publishEvent(new MsgSendEvent(dto));
         }
 
         return true;
@@ -234,7 +234,7 @@ public class MsgTaskServiceImpl extends SuperServiceImpl<MsgTaskMapper, MsgTask>
             MsgSendEventDto dto = new MsgSendEventDto();
             // 一定要调用copy方法写入线程参数
             dto.setMsgTaskId(entity.getId()).copy();
-            SpringUtils.publishEvent(new MsgSendEvent(dto));
+            SpringUtil.publishEvent(new MsgSendEvent(dto));
         }
 
     }

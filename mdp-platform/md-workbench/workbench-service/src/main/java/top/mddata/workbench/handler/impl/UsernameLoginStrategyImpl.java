@@ -3,12 +3,12 @@ package top.mddata.workbench.handler.impl;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import top.mddata.base.exception.BizException;
 import top.mddata.base.utils.DateUtils;
-import top.mddata.base.utils.SpringUtils;
 import top.mddata.base.utils.StrHelper;
 import top.mddata.base.utils.UaSecureUtil;
 import top.mddata.common.constant.ConfigKey;
@@ -66,7 +66,7 @@ public class UsernameLoginStrategyImpl implements LoginStrategy {
         // 密码过期
         if (passwordExpireNotAllowLogin && user.getPwExpireTime() != null && LocalDateTime.now().isAfter(user.getPwExpireTime())) {
             String msg = "用户密码已过期，请修改密码或者联系管理员重置!";
-            SpringUtils.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)));
+            SpringUtil.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)));
             throw new BizException(msg);
         }
 
@@ -89,7 +89,7 @@ public class UsernameLoginStrategyImpl implements LoginStrategy {
             if (passwordErrorLockExpireTime.isAfter(LocalDateTime.now())) {
                 // 登录失败事件
                 String msg = StrUtil.format("密码连续输错次数已超过最大限制：{}次,用户将被锁定至: {}", maxPasswordErrorNum, DateUtils.format(passwordErrorLockExpireTime));
-                SpringUtils.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)));
+                SpringUtil.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)));
                 throw new BizException(msg);
             }
         }
@@ -105,7 +105,7 @@ public class UsernameLoginStrategyImpl implements LoginStrategy {
             // 密码错误事件
             LoginLogDto loginLogDto = LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg);
             loginLogDto.setPasswordError(true);
-            SpringUtils.publishEvent(new LoginEvent(loginLogDto));
+            SpringUtil.publishEvent(new LoginEvent(loginLogDto));
             throw new BizException(msg);
         }
 
@@ -121,7 +121,7 @@ public class UsernameLoginStrategyImpl implements LoginStrategy {
         // 用户被禁用
         if (user.getState() == null || !user.getState()) {
             String msg = "您已被禁用，请联系管理员开通账号！";
-            SpringUtils.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)));
+            SpringUtil.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)));
             throw new BizException(msg);
         }
     }

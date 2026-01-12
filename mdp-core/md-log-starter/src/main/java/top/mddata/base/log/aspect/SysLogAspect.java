@@ -7,6 +7,7 @@ import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
 import cn.hutool.extra.servlet.JakartaServletUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson2.JSON;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletRequest;
@@ -39,7 +40,6 @@ import top.mddata.base.log.util.LogUtil;
 import top.mddata.base.log.util.ThreadLocalParam;
 import top.mddata.base.model.log.OptLogDTO;
 import top.mddata.base.utils.ContextUtil;
-import top.mddata.base.utils.SpringUtils;
 import top.mddata.base.utils.StrPool;
 
 import java.time.LocalDateTime;
@@ -274,7 +274,7 @@ public class SysLogAspect {
     private void publishEvent(OptLogDTO sysLog) {
         sysLog.setFinishTime(LocalDateTime.now());
         sysLog.setConsumingTime(sysLog.getStartTime().until(sysLog.getFinishTime(), ChronoUnit.MILLIS));
-        SpringUtils.publishEvent(new SysLogEvent(sysLog));
+        SpringUtil.publishEvent(new SysLogEvent(sysLog));
         THREAD_LOCAL.remove();
     }
 

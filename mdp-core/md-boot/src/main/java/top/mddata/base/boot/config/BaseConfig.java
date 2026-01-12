@@ -9,7 +9,6 @@ import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 import org.springframework.core.convert.converter.Converter;
@@ -19,7 +18,6 @@ import top.mddata.base.converter.String2LocalDateConverter;
 import top.mddata.base.converter.String2LocalDateTimeConverter;
 import top.mddata.base.converter.String2LocalTimeConverter;
 import top.mddata.base.jackson.MyJacksonModule;
-import top.mddata.base.utils.SpringUtils;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -127,19 +125,5 @@ public abstract class BaseConfig {
     }
 
     //---------------------------------------序列化配置end----------------------------------------------
-
-
-    /**
-     * Spring 工具类
-     *
-     * @param applicationContext 上下文
-     */
-    @Bean
-    public SpringUtils getSpringUtils(ApplicationContext applicationContext) {
-        SpringUtils instance = SpringUtils.getInstance();
-        SpringUtils.setApplicationContext(applicationContext);
-        return instance;
-    }
-
 
 }

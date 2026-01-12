@@ -2,6 +2,7 @@ package top.mddata.workbench.service.impl;
 
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RandomUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.wf.captcha.base.Captcha;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +11,6 @@ import top.mddata.base.cache.repository.CacheOps;
 import top.mddata.base.captcha.graphic.properties.GraphicCaptchaProperties;
 import top.mddata.base.captcha.graphic.service.GraphicCaptchaService;
 import top.mddata.base.model.cache.CacheKey;
-import top.mddata.base.utils.SpringUtils;
 import top.mddata.common.cache.workbench.CaptchaCacheKeyBuilder;
 import top.mddata.common.properties.MsgProperties;
 import top.mddata.console.message.dto.MsgSendDto;
@@ -106,7 +106,7 @@ public class VerificationCodeServiceImpl implements VerificationCodeService {
         }
 
         // 生成验证码图片
-        Captcha captcha = SpringUtils.getBean(GraphicCaptchaService.class).getCaptcha();
+        Captcha captcha = SpringUtil.getBean(GraphicCaptchaService.class).getCaptcha();
 
         // 缓存验证码
         String key = UUID.fastUUID().toString();

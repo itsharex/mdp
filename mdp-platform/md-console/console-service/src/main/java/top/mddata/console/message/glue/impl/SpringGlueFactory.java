@@ -1,12 +1,12 @@
 package top.mddata.console.message.glue.impl;
 
+import cn.hutool.extra.spring.SpringUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.AnnotationUtils;
-import top.mddata.base.utils.SpringUtils;
 import top.mddata.console.message.glue.GlueFactory;
 
 import java.lang.reflect.Field;
@@ -30,7 +30,7 @@ public class SpringGlueFactory extends GlueFactory {
             return;
         }
 
-        if (SpringUtils.getApplicationContext() == null) {
+        if (SpringUtil.getApplicationContext() == null) {
             return;
         }
 
@@ -47,21 +47,21 @@ public class SpringGlueFactory extends GlueFactory {
                 try {
                     Resource resource = AnnotationUtils.getAnnotation(field, Resource.class);
                     if (resource != null && resource.name() != null && resource.name().length() > 0) {
-                        fieldBean = SpringUtils.getBean(resource.name());
+                        fieldBean = SpringUtil.getBean(resource.name());
                     } else {
-                        fieldBean = SpringUtils.getBean(field.getName());
+                        fieldBean = SpringUtil.getBean(field.getName());
                     }
                 } catch (Exception e) {
                 }
                 if (fieldBean == null) {
-                    fieldBean = SpringUtils.getBean(field.getType());
+                    fieldBean = SpringUtil.getBean(field.getType());
                 }
             } else if (AnnotationUtils.getAnnotation(field, Autowired.class) != null) {
                 Qualifier qualifier = AnnotationUtils.getAnnotation(field, Qualifier.class);
                 if (qualifier != null && qualifier.value() != null && qualifier.value().length() > 0) {
-                    fieldBean = SpringUtils.getBean(qualifier.value());
+                    fieldBean = SpringUtil.getBean(qualifier.value());
                 } else {
-                    fieldBean = SpringUtils.getBean(field.getType());
+                    fieldBean = SpringUtil.getBean(field.getType());
                 }
             }
 

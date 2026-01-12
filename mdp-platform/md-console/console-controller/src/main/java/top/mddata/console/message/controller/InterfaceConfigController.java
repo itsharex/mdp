@@ -1,6 +1,7 @@
 package top.mddata.console.message.controller;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +20,6 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.base.utils.SpringUtils;
 import top.mddata.common.vo.Option;
 import top.mddata.console.message.dto.InterfaceConfigDto;
 import top.mddata.console.message.dto.InterfaceConfigSettingDto;
@@ -149,7 +149,7 @@ public class InterfaceConfigController extends SuperController<InterfaceConfigSe
     @Operation(summary = "获取接口实现类", description = "获取系统中存在的接口实现类")
     @RequestLog(value = "获取接口实现类", response = false)
     public R<List<Option>> listImplClass() {
-        Map<String, MsgTaskStrategy> beansOfType = SpringUtils.getBeansOfType(MsgTaskStrategy.class);
+        Map<String, MsgTaskStrategy> beansOfType = SpringUtil.getBeansOfType(MsgTaskStrategy.class);
         List<Option> list = new ArrayList<>();
         beansOfType.forEach((key, value) -> {
             list.add(Option.builder().value(key).label(value.getClass().getSimpleName()).build());

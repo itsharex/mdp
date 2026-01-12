@@ -1,13 +1,13 @@
 package top.mddata.workbench.handler.impl;
 
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import top.mddata.base.cache.redis.CacheResult;
 import top.mddata.base.cache.repository.CacheOps;
 import top.mddata.base.exception.BizException;
 import top.mddata.base.model.cache.CacheKey;
-import top.mddata.base.utils.SpringUtils;
 import top.mddata.base.utils.StrHelper;
 import top.mddata.common.cache.workbench.CaptchaCacheKeyBuilder;
 import top.mddata.common.constant.MsgTemplateKey;
@@ -50,12 +50,12 @@ public class PhoneLoginStrategyImpl extends UsernameLoginStrategyImpl {
             CacheResult<String> code = cacheOps.get(cacheKey);
             if (StrUtil.isEmpty(code.getValue())) {
                 String msg = "验证码已过期";
-                SpringUtils.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), msg)));
+                SpringUtil.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), msg)));
                 throw new BizException(msg);
             }
             if (!StrUtil.equalsIgnoreCase(code.getValue(), login.getCode())) {
                 String msg = "验证码不正确";
-                SpringUtils.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), msg)));
+                SpringUtil.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), msg)));
                 throw new BizException(msg);
             }
             cacheOps.del(cacheKey);

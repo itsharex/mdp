@@ -9,6 +9,7 @@ import cn.dev33.satoken.temp.SaTempUtil;
 import cn.dev33.satoken.util.SaFoxUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;
 import com.mybatisflex.core.util.UpdateEntity;
@@ -24,7 +25,6 @@ import top.mddata.base.cache.repository.CacheOps;
 import top.mddata.base.model.cache.CacheKey;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.MyTreeUtil;
-import top.mddata.base.utils.SpringUtils;
 import top.mddata.common.cache.workbench.CaptchaCacheKeyBuilder;
 import top.mddata.common.constant.DefValConstants;
 import top.mddata.common.entity.Org;
@@ -143,7 +143,7 @@ public class AuthServiceImpl implements AuthService {
         // 登录时，默认是默认应用 工作台
         dto.setAppKey(DefValConstants.WORKBENCH_APP_KEY);
         dto.setAppName(DefValConstants.WORKBENCH_APP_NAME);
-        SpringUtils.publishEvent(new LoginEvent(dto));
+        SpringUtil.publishEvent(new LoginEvent(dto));
 
         return R.success(loginVO);
     }

@@ -1,6 +1,7 @@
 package top.mddata.console.message.strategy;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson2.JSON;
 import com.mybatisflex.core.util.UpdateEntity;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.utils.ArgumentAssert;
-import top.mddata.base.utils.SpringUtils;
 import top.mddata.console.message.dto.InterfaceConfigJsonDto;
 import top.mddata.console.message.entity.InterfaceConfig;
 import top.mddata.console.message.entity.InterfaceLog;
@@ -103,7 +103,7 @@ public class MsgTaskContext {
             if (InterfaceExecModeEnum.IMPL_CLASS.eq(interfaceConfig.getExecMode())) {
                 // 实现类
                 String implClass = interfaceConfig.getImplClass();
-                msgTaskStrategy = SpringUtils.getBean(implClass, MsgTaskStrategy.class);
+                msgTaskStrategy = SpringUtil.getBean(implClass, MsgTaskStrategy.class);
                 ArgumentAssert.notNull(msgTaskStrategy, "实现类[{}]不存在", implClass);
                 result = msgTaskStrategy.exec(msgTaskParam);
             } else {
