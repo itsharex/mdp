@@ -2,7 +2,7 @@ package top.mddata.open.admin.service;
 
 import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.dto.NotifyRequest;
+import top.mddata.open.admin.dto.NotifyInfoDto;
 import top.mddata.open.admin.entity.NotifyInfo;
 
 import java.time.LocalDateTime;
@@ -26,7 +26,7 @@ public interface NotifyInfoService extends SuperService<NotifyInfo> {
      * @param request 回调内容
      * @return 返回回调id
      */
-    R<Long> notify(NotifyRequest request);
+    R<Long> notify(NotifyInfoDto request);
 
     /**
      * 立即执行回调

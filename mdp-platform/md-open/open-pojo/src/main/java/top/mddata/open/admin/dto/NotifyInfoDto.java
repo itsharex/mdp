@@ -1,17 +1,17 @@
 package top.mddata.open.admin.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
-import top.mddata.base.base.entity.BaseEntity;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Map;
 
 /**
  * 回调任务 DTO（写入方法入参）。
@@ -29,18 +29,11 @@ public class NotifyInfoDto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
-     */
-    @NotNull(message = "请填写ID", groups = BaseEntity.Update.class)
-    @Schema(description = "ID")
-    private Long id;
-
-    /**
      * 所属调用
      */
     @Schema(description = "所属调用")
+    @NotNull(message = "所属调用必填")
     private Long callLogId;
-
     /**
      * 所属应用
      */
@@ -73,6 +66,22 @@ public class NotifyInfoDto implements Serializable {
     private String apiVersion;
 
     /**
+     * 编码
+     */
+    @NotBlank(message = "charset必填")
+    private String charset;
+
+    /**
+     * token,没有返回null
+     */
+    private String appAuthToken;
+
+    /**
+     * 客户端ip
+     */
+    private String clientIp;
+
+    /**
      * 回调url
      */
     @Size(max = 255, message = "回调url长度不能超过{max}")
@@ -80,43 +89,10 @@ public class NotifyInfoDto implements Serializable {
     private String notifyUrl;
 
     /**
-     * 请求参数
+     * 业务参数
      */
-    @Size(max = 16383, message = "请求参数长度不能超过{max}")
-    @Schema(description = "请求参数")
-    private String requestData;
-
-    /**
-     * 最后请求时间
-     */
-    @Schema(description = "最后请求时间")
-    private LocalDateTime lastRequestTime;
-
-    /**
-     * 下次请求时间
-     */
-    @Schema(description = "下次请求时间")
-    private LocalDateTime nextRequestTime;
-
-    /**
-     * 最大请求次数
-     */
-    @Schema(description = "最大请求次数")
-    private Integer maxRequestCnt;
-
-    /**
-     * 已请求次数
-     */
-    @Schema(description = "已请求次数")
-    private Integer requestCnt;
-
-    /**
-     * 执行状态
-     * [0-待执行 1-执行成功 2-执行失败 3-重试结束 4-手动结束]
-     */
-    @Size(max = 1, message = "执行状态长度不能超过{max}")
-    @Schema(description = "执行状态")
-    private String execStatus;
+    @NotNull(message = "bizParams必填")
+    private Map<String, Object> bizParams;
 
     /**
      * 备注

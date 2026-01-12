@@ -19,7 +19,7 @@ import top.mddata.base.exception.BizException;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.StrPool;
-import top.mddata.open.admin.dto.NotifyRequest;
+import top.mddata.open.admin.dto.NotifyInfoDto;
 import top.mddata.open.admin.entity.AppKeys;
 import top.mddata.open.admin.entity.NotifyInfo;
 import top.mddata.open.admin.entity.NotifyLog;
@@ -116,7 +116,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
 
     private void retry(NotifyInfo notifyInfo) {
         String content = notifyInfo.getRequestData();
-        NotifyRequest notifyBO = JSON.parseObject(content, NotifyRequest.class);
+        NotifyInfoDto notifyBO = JSON.parseObject(content, NotifyInfoDto.class);
         try {
             log.info("[notify]开始重试, notifyId={}", notifyInfo.getId());
             if (Objects.equals(notifyInfo.getExecStatus(), ExecStatusEnum.RETRY_OVER.getCode())) {
@@ -133,7 +133,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
 
 
     @Override
-    public R<Long> notify(NotifyRequest request) {
+    public R<Long> notify(NotifyInfoDto request) {
         try {
             NotifyInfo notifyInfo = buildRecord(request);
             return R.success(doNotify(request, notifyInfo));
@@ -147,7 +147,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
     public Long notifyImmediately(Long notifyId) {
         NotifyInfo notifyInfo = getById(notifyId);
         String content = notifyInfo.getRequestData();
-        NotifyRequest notifyBO = JSON.parseObject(content, NotifyRequest.class);
+        NotifyInfoDto notifyBO = JSON.parseObject(content, NotifyInfoDto.class);
         // 发送请求
         try {
             return doNotify(notifyBO, notifyInfo);
@@ -157,7 +157,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         }
     }
 
-    private NotifyInfo buildRecord(NotifyRequest request) {
+    private NotifyInfo buildRecord(NotifyInfoDto request) {
         NotifyInfo notifyInfo = new NotifyInfo();
         notifyInfo.setCallLogId(request.getCallLogId());
         notifyInfo.setAppId(request.getAppId());
@@ -173,7 +173,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         return notifyInfo;
     }
 
-    private Long doNotify(NotifyRequest request, NotifyInfo notifyInfo) throws SignException {
+    private Long doNotify(NotifyInfoDto request, NotifyInfo notifyInfo) throws SignException {
         notifyInfo.setRequestCnt(notifyInfo.getRequestCnt() + 1);
         notifyInfo.setLastRequestTime(LocalDateTime.now());
         notifyInfo.setNotifyUrl(buildNotifyUrl(request, notifyInfo));
@@ -234,7 +234,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
     }
 
 
-    private Map<String, String> buildParams(NotifyRequest request) throws SignException {
+    private Map<String, String> buildParams(NotifyInfoDto request) throws SignException {
         // 公共请求参数
         Map<String, String> params = new HashMap<>();
         String appKey = request.getAppKey();
@@ -258,7 +258,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         return params;
     }
 
-    private String buildNotifyUrl(NotifyRequest request, NotifyInfo notifyInfo) {
+    private String buildNotifyUrl(NotifyInfoDto request, NotifyInfo notifyInfo) {
         String savedUrl = notifyInfo.getNotifyUrl();
         if (StrUtil.isNotBlank(savedUrl)) {
             return savedUrl;
