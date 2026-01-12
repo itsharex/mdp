@@ -5,7 +5,7 @@
     <parent>
         <groupId>top.mddata.base</groupId>
         <artifactId>md-parent</artifactId>
-        <version>0.0.6-SNAPSHOT</version>
+        <version>0.0.7-SNAPSHOT</version>
         <relativePath/>
     </parent>
 
@@ -20,8 +20,8 @@
     <description>版本管理</description>
 
     <properties>
-        <revision>0.0.6</revision>
-        <mdp-core.version>0.0.6-SNAPSHOT</mdp-core.version>
+        <revision>0.0.7</revision>
+        <mdp-core.version>0.0.7-SNAPSHOT</mdp-core.version>
     </properties>
     <dependencyManagement>
         <dependencies>

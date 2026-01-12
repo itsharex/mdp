@@ -18,7 +18,7 @@
     <url>https://github.com/henhen6/mdp</url>
 
     <properties>
-        <revision>0.0.6-SNAPSHOT</revision>
+        <revision>0.0.7-SNAPSHOT</revision>
         <project-prefix>md</project-prefix>
 
         <spring-cloud-dependencies.version>2025.0.0</spring-cloud-dependencies.version>
