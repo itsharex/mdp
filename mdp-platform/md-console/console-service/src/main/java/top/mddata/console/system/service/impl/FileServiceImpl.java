@@ -108,7 +108,14 @@ public class FileServiceImpl extends SuperServiceImpl<FileMapper, File> implemen
         }
 
         FileInfo fileInfo = uploadPretreatment.upload();
-        return toFileVo(fileInfo);
+        FileVo fileVo = toFileVo(fileInfo);
+
+        Long fileId = Long.valueOf(fileInfo.getId());
+        Map<Long, FileVo> map = findUrlByIds(List.of(fileId));
+        if (map.containsKey(fileId)) {
+            fileVo.setUrl(map.get(fileId).getUrl());
+        }
+        return fileVo;
     }
 
     private FileVo toFileVo(FileInfo info) {
