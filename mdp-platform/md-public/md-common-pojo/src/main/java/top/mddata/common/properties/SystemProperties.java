@@ -23,6 +23,19 @@ import java.util.Map;
 public class SystemProperties {
     public static final String PREFIX = Constants.PROJECT_PREFIX + ".system";
 
+    /**
+     * 应用名
+     */
+    private String applicationName;
+    /**
+     * 应用描述
+     */
+    private String applicationDescription;
+    /**
+     * 当前版本
+     */
+    private String version;
+
     private Mode mode;
     /**
      * 登录时 是否验证密码， 开发环境使用

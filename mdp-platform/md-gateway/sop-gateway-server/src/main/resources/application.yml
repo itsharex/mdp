@@ -17,6 +17,9 @@ mdp:
       boost-power: 3
       padding-factor: 50
   system:
+    applicationName: ${spring.application.name}
+    applicationDescription: '@project.description@'
+    version: '@project.version@'
     # 缓存Key前缀
     cachePrefix: mdp
 ####### gateway config #######

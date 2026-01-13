@@ -11,7 +11,7 @@
     </parent>
 
     <artifactId>boot-server</artifactId>
-    <description>全部功能-单体架构-启动层</description>
+    <description>单体启动层</description>
 
     <dependencies>
         <!-- 项目业务控制层 -->
