@@ -1,7 +1,9 @@
 package top.mddata.open.manage.facade;
 
 import top.mddata.base.base.R;
+import top.mddata.open.admin.dto.EventTriggerDto;
 import top.mddata.open.admin.dto.NotifyInfoDto;
+import top.mddata.open.admin.entity.EventTrigger;
 
 /**
  * 回调任务 接口
@@ -20,8 +22,8 @@ public interface NotifyAndEventPushFacade {
     /**
      * 事件推送任务
      *
-     * @param request 回调
+     * @param request 事件触发参数
      * @return 推送id
      */
-    R<Long> eventPush(NotifyInfoDto request);
+    R<EventTrigger> eventPush(EventTriggerDto request);
 }

@@ -56,12 +56,12 @@ public class AppKeysServiceImpl extends SuperServiceImpl<AppKeysMapper, AppKeys>
     @Transactional(readOnly = true)
     public List<AppKeysVo> findByEventCode(String eventCode) {
         Iterable<QueryColumn> queryColumns = QueryMethods.allColumns(AppKeys.class);
+        QueryColumn appId = QueryMethods.column(App::getId).as("app_id");
+        QueryColumn appName = QueryMethods.column(App::getName).as("app_name");
         QueryWrapper wrapper = QueryWrapper.create()
                 .select(queryColumns)
-                .select(App::getAppKey)
-                .select(App::getId).as("app_id")
-                .select(App::getAppSecret)
-                .select(App::getName)
+                .select(App::getAppKey, App::getAppSecret)
+                .select(appId, appName)
                 .from(AppKeys.class)
                 .innerJoin(App.class).on(App::getId, AppKeys::getAppId)
                 .innerJoin(EventSubscription.class).on(EventSubscription::getAppId, App::getId)

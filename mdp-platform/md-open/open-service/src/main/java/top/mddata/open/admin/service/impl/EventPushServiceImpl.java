@@ -5,7 +5,10 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONException;
+import com.gitee.sop.support.exception.OpenException;
 import com.gitee.sop.support.exception.SignException;
+import com.gitee.sop.support.message.ApiResponse;
 import com.gitee.sop.support.util.SignUtil;
 import com.google.common.collect.Lists;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -14,20 +17,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.StrPool;
+import top.mddata.common.enumeration.StoryMessageEnum;
 import top.mddata.open.admin.entity.AppKeys;
 import top.mddata.open.admin.entity.EventPush;
 import top.mddata.open.admin.entity.EventPushLog;
+import top.mddata.open.admin.enumeration.EventTypeEnum;
 import top.mddata.open.admin.enumeration.ExecStatusEnum;
 import top.mddata.open.admin.mapper.EventPushMapper;
 import top.mddata.open.admin.properties.NotifyProperties;
 import top.mddata.open.admin.service.AppKeysService;
 import top.mddata.open.admin.service.EventPushLogService;
 import top.mddata.open.admin.service.EventPushService;
-import top.mddata.open.admin.service.bo.MultiThreadTaskProcessor;
+import top.mddata.open.admin.service.processor.MultiThreadTaskProcessor;
 import top.mddata.open.admin.vo.AppKeysVo;
 
 import java.text.SimpleDateFormat;
@@ -52,6 +56,7 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
     private final AppKeysService appKeysService;
     private final NotifyProperties notifyProperties;
     private final EventPushLogService eventPushLogService;
+    private final MultiThreadTaskProcessor processor;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -110,8 +115,7 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
         execPushTask(tasks);
     }
 
-    private void execPushTask(List<EventPush> tasks) {
-        MultiThreadTaskProcessor processor = new MultiThreadTaskProcessor();
+    public void execPushTask(List<EventPush> tasks) {
         // 准备数据：创建N*M个任务列表
         List<List<MultiThreadTaskProcessor.Task>> allTasks = new ArrayList<>();
 
@@ -134,7 +138,8 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
         }
 
         // 执行多线程处理
-        processor.processTasks(allTasks, numberOfThreads);
+        processor.processTasksAsync(allTasks, numberOfThreads);
+        log.info("任务已提交");
     }
 
     private void push(EventPush eventPush) {
@@ -148,7 +153,7 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
             doNotify(eventPush);
         } catch (SignException e) {
             log.error("[事件触发] 重试签名错误，notifyId={}", eventPush.getId(), e);
-            throw new RuntimeException("重试失败，签名错误");
+            throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, "重试失败，签名错误");
         }
     }
 
@@ -163,52 +168,54 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
         // 构建请求参数
         Map<String, String> params = buildParams(eventPush);
         if (StrUtil.isBlank(notifyUrl)) {
-            throw new RuntimeException("回调接口不能为空");
+            throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, "回调接口不能为空");
         }
 
         String json = JSON.toJSONString(params);
         eventPushLog.setRequestData(json);
         log.info("发送回调请求，notifyUrl={}, content={}", notifyUrl, json);
         eventPushLog.setRequestTime(LocalDateTime.now());
+
         try (HttpResponse responseResult = HttpRequest.post(notifyUrl).timeout(notifyProperties.getTimeout()).body(json).execute()) {
             eventPushLog.setResponseTime(LocalDateTime.now());
-
             String resultContent = responseResult.body();
             eventPushLog.setResponseData(resultContent);
 
-            // 返回值一定是JSON格式 {code: 0, msg: ""}
-            R r = JSON.parseObject(resultContent, R.class);
-
-            if (r.getIsSuccess()) {
+            ApiResponse r = JSON.parseObject(resultContent, ApiResponse.class);
+            if (ApiResponse.SUCCESS_CODE.equals(r.getCode())) {
                 // 更新状态
                 eventPush.setExecStatus(ExecStatusEnum.SUCCESS.getCode());
                 eventPushLog.setErrorMsg(StrPool.EMPTY);
             } else {
                 // 回调失败
                 log.error("[事件触发] 返回数据格式异常 result={}, code= {},", resultContent, r.getCode());
-                throw new RuntimeException(resultContent);
+                throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, resultContent);
             }
-        } catch (Exception e) {
-            eventPushLog.setResponseTime(LocalDateTime.now());
-            log.error("[事件触发] 回调请求失败, notifyUrl={}, params={}, request={}", notifyUrl, params, eventPush, e);
-            eventPush.setExecStatus(ExecStatusEnum.FAIL.getCode());
-            eventPushLog.setErrorMsg(e.getMessage());
-            eventPushLog.setResponseData(StrPool.EMPTY);
 
+        } catch (Exception e) {
+            log.error("[事件触发] 回调请求失败, notifyUrl={}, params={}, request={}", notifyUrl, params, eventPush, e);
+            eventPushLog.setResponseTime(LocalDateTime.now());
+            eventPush.setExecStatus(ExecStatusEnum.FAIL.getCode());
+            if (e instanceof JSONException) {
+                eventPushLog.setErrorMsg("返回值格式错误，无法解析为 ApiResponse.class，请返回正确格式： {\"code\": \"0\", \"msg\": \"\" }");
+            } else if (e instanceof OpenException openEx) {
+                eventPushLog.setErrorMsg(openEx.getSubMsg());
+            } else {
+                eventPushLog.setErrorMsg(e.getMessage());
+            }
             LocalDateTime nextRequestTime = buildNextSendTime(eventPush.getRequestCnt());
             eventPush.setNextRequestTime(nextRequestTime);
-
             if (nextRequestTime == null) {
                 log.error("回调请求次数达到上线, notifyUrl={}, params={}", notifyUrl, params);
                 eventPush.setExecStatus(ExecStatusEnum.RETRY_OVER.getCode());
             }
+        } finally {
+            saveOrUpdate(eventPush);
+            eventPushLog.setExecStatus(eventPush.getExecStatus());
+            eventPushLog.setEventPushId(eventPush.getId());
+            eventPushLogService.save(eventPushLog);
         }
 
-        eventPushLog.setExecStatus(eventPush.getExecStatus());
-
-        saveOrUpdate(eventPush);
-        eventPushLog.setEventPushId(eventPush.getId());
-        eventPushLogService.save(eventPushLog);
         return eventPush.getId();
     }
 
@@ -216,15 +223,13 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
         // 公共请求参数
         Map<String, String> params = new HashMap<>();
         params.put("app_key", eventPush.getAppKey());
+        params.put("type", EventTypeEnum.EVENT_PUSH.name());
         params.put("format", "json");
+        params.put("charset", "utf8");
         params.put("sign_type", "RSA2");
         params.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        params.put("event_code", eventPush.getEventCode());
+        params.put("method", eventPush.getEventCode());
         params.put("biz_content", eventPush.getRequestData());
-//        params.put("charset", request.getCharset());
-//        params.put("version", request.getApiVersion());
-        // 业务参数
-//        Map<String, Object> bizContent = request.getBizParams();
         String content = SignUtil.getSignContent(params);
         AppKeys appKeys = appKeysService.getByAppId(eventPush.getAppId());
         if (appKeys != null) {

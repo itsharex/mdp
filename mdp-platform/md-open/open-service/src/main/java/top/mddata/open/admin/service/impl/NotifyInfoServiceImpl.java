@@ -5,7 +5,10 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONException;
+import com.gitee.sop.support.exception.OpenException;
 import com.gitee.sop.support.exception.SignException;
+import com.gitee.sop.support.message.ApiResponse;
 import com.gitee.sop.support.util.SignUtil;
 import com.google.common.collect.Lists;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -15,21 +18,21 @@ import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import top.mddata.base.base.R;
-import top.mddata.base.exception.BizException;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.StrPool;
+import top.mddata.common.enumeration.StoryMessageEnum;
 import top.mddata.open.admin.dto.NotifyInfoDto;
 import top.mddata.open.admin.entity.AppKeys;
 import top.mddata.open.admin.entity.NotifyInfo;
-import top.mddata.open.admin.entity.NotifyLog;
+import top.mddata.open.admin.entity.NotifyInfoLog;
 import top.mddata.open.admin.enumeration.ExecStatusEnum;
 import top.mddata.open.admin.mapper.NotifyInfoMapper;
 import top.mddata.open.admin.properties.NotifyProperties;
 import top.mddata.open.admin.service.AppKeysService;
+import top.mddata.open.admin.service.NotifyInfoLogService;
 import top.mddata.open.admin.service.NotifyInfoService;
-import top.mddata.open.admin.service.NotifyLogService;
-import top.mddata.open.admin.service.bo.MultiThreadTaskProcessor;
+import top.mddata.open.admin.service.processor.MultiThreadTaskProcessor;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -51,9 +54,10 @@ import java.util.Objects;
 @RequiredArgsConstructor
 @EnableConfigurationProperties(NotifyProperties.class)
 public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, NotifyInfo> implements NotifyInfoService {
-    private final NotifyLogService notifyLogService;
+    private final NotifyInfoLogService notifyInfoLogService;
     private final AppKeysService appKeysService;
     private final NotifyProperties notifyProperties;
+    private final MultiThreadTaskProcessor processor;
 
     @Override
     public Boolean push(Long id, String url) {
@@ -110,7 +114,8 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         }
 
         // 执行多线程处理
-        processor.processTasks(allTasks, numberOfThreads);
+        processor.processTasksAsync(allTasks, numberOfThreads);
+        log.info("任务已提交");
     }
 
 
@@ -127,7 +132,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
             doNotify(notifyBO, notifyInfo);
         } catch (SignException e) {
             log.error("[notify]重试签名错误，notifyId={}", notifyInfo.getId(), e);
-            throw new RuntimeException("重试失败，签名错误");
+            throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, "重试失败，签名错误");
         }
     }
 
@@ -153,7 +158,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
             return doNotify(notifyBO, notifyInfo);
         } catch (SignException e) {
             log.error("回调异常，服务端签名失败, notifyId={}", notifyId, e);
-            throw new BizException("回调失败，签名错误");
+            throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, "回调失败，签名错误");
         }
     }
 
@@ -179,13 +184,13 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         notifyInfo.setLastRequestTime(LocalDateTime.now());
         notifyInfo.setNotifyUrl(buildNotifyUrl(request, notifyInfo));
 
-        NotifyLog notifyLog = new NotifyLog();
+        NotifyInfoLog notifyLog = new NotifyInfoLog();
 
         String notifyUrl = notifyInfo.getNotifyUrl();
         // 构建请求参数
         Map<String, String> params = buildParams(request);
         if (StrUtil.isBlank(notifyUrl)) {
-            throw new RuntimeException("回调接口不能为空");
+            throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, "回调接口不能为空");
         }
 
         String json = JSON.toJSONString(params);
@@ -199,23 +204,27 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
             notifyLog.setResponseData(resultContent);
 
             // 返回值一定是JSON格式 {code: 0, msg: ""}
-            R r = JSON.parseObject(resultContent, R.class);
-
-            if (r.getIsSuccess()) {
+            ApiResponse r = JSON.parseObject(resultContent, ApiResponse.class);
+            if (ApiResponse.SUCCESS_CODE.equals(r.getCode())) {
                 // 更新状态
                 notifyInfo.setExecStatus(ExecStatusEnum.SUCCESS.getCode());
                 notifyLog.setErrorMsg(StrPool.EMPTY);
             } else {
                 // 回调失败
                 log.error("返回数据格式异常 result={}, code= {},", resultContent, r.getCode());
-                throw new RuntimeException(resultContent);
+                throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, resultContent);
             }
         } catch (Exception e) {
             notifyLog.setResponseTime(LocalDateTime.now());
             log.error("回调请求失败, notifyUrl={}, params={}, request={}", notifyUrl, params, request, e);
             notifyInfo.setExecStatus(ExecStatusEnum.FAIL.getCode());
-            notifyLog.setErrorMsg(e.getMessage());
-            notifyLog.setResponseData(StrPool.EMPTY);
+            if (e instanceof JSONException) {
+                notifyLog.setErrorMsg("返回值格式错误，无法解析为 ApiResponse.class，请返回正确格式： {\"code\": \"0\", \"msg\": \"\" }");
+            } else if (e instanceof OpenException openEx) {
+                notifyLog.setErrorMsg(openEx.getSubMsg());
+            } else {
+                notifyLog.setErrorMsg(e.getMessage());
+            }
 
             LocalDateTime nextRequestTime = buildNextSendTime(notifyInfo.getRequestCnt());
             notifyInfo.setNextRequestTime(nextRequestTime);
@@ -224,13 +233,13 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
                 log.error("回调请求次数达到上线, notifyUrl={}, params={}", notifyUrl, params);
                 notifyInfo.setExecStatus(ExecStatusEnum.RETRY_OVER.getCode());
             }
+        } finally {
+            saveOrUpdate(notifyInfo);
+            notifyLog.setExecStatus(notifyInfo.getExecStatus());
+            notifyLog.setNotifyInfoId(notifyInfo.getId());
+            notifyInfoLogService.save(notifyLog);
         }
 
-        notifyLog.setExecStatus(notifyInfo.getExecStatus());
-
-        saveOrUpdate(notifyInfo);
-        notifyLog.setNotifyInfoId(notifyInfo.getId());
-        notifyLogService.save(notifyLog);
         return notifyInfo.getId();
     }
 

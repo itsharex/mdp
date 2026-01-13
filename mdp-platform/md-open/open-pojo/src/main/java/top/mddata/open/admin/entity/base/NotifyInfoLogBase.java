@@ -30,7 +30,7 @@ public class NotifyInfoLogBase extends BaseEntity<Long> implements Serializable 
     /**
      * 所属推送
      */
-    private Long eventPushId;
+    private Long notifyInfoId;
 
     /**
      * 请求时间

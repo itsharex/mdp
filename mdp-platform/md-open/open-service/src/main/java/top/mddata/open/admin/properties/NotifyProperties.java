@@ -23,18 +23,18 @@ public class NotifyProperties {
     private Integer maxRetry = 5;
 
     /**
+     * 回调请求超时时间
+     * 单位：毫秒
+     */
+    private int timeout = 5000;
+    /**
      * 重试间隔
      * 对应第1，2，3...次尝试
      *      即5分钟后进行第一次尝试，如果失败，10分钟后进行第二次尝试
      *
      *      支持 m h d 三种单位，分别表示 分，时，天
      */
-    private String timeLevel = "5m,10m,30m,6h";
-    /**
-     * 回调请求超时时间
-     * 单位：毫秒
-     */
-    private int timeout = 5000;
+    private String timeLevel = "5m,30m,6h";
     /**
      * 重试线程数
      */

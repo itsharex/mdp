@@ -2,6 +2,7 @@ package top.mddata.console.organization.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
+import com.alibaba.fastjson2.JSON;
 import com.baidu.fsg.uid.UidGenerator;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.util.UpdateEntity;
@@ -15,6 +16,7 @@ import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.CollHelper;
 import top.mddata.base.utils.MyTreeUtil;
 import top.mddata.common.cache.console.organization.OrgCacheKeyBuilder;
+import top.mddata.common.constant.EventTypeCode;
 import top.mddata.common.entity.Org;
 import top.mddata.common.entity.OrgNature;
 import top.mddata.common.enumeration.organization.OrgNatureEnum;
@@ -24,8 +26,11 @@ import top.mddata.console.organization.dto.OrgDto;
 import top.mddata.console.organization.service.OrgNatureService;
 import top.mddata.console.organization.service.OrgService;
 import top.mddata.console.organization.service.UserOrgRelService;
+import top.mddata.open.admin.dto.EventTriggerDto;
+import top.mddata.open.manage.facade.NotifyAndEventPushFacade;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -50,6 +55,7 @@ public class OrgServiceImpl extends SuperServiceImpl<OrgMapper, Org> implements 
     private final UidGenerator uidGenerator;
     private final OrgNatureService orgNatureService;
     private final UserOrgRelService userOrgRelService;
+    private final NotifyAndEventPushFacade notifyAndEventPushFacade;
 
     @Override
     protected CacheKeyBuilder cacheKeyBuilder() {
@@ -187,6 +193,12 @@ public class OrgServiceImpl extends SuperServiceImpl<OrgMapper, Org> implements 
         orgNature.setNature(OrgNatureEnum.DEFAULT.getCode());
         orgNature.setOrgId(entity.getId());
         orgNatureService.save(orgNature);
+
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.ORG_ADD)
+                .setEventContent(String.valueOf(entity.getId()))
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
     }
 
     @Override
@@ -210,6 +222,18 @@ public class OrgServiceImpl extends SuperServiceImpl<OrgMapper, Org> implements 
     }
 
     @Override
+    protected void updateAfter(Object update, Org entity) {
+
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.ORG_EDIT)
+                .setEventContent(String.valueOf(entity.getId()))
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
+
+        log.info("org edit over");
+    }
+
+    @Override
     public boolean removeByIds(Collection<? extends Serializable> idList) {
         if (idList.isEmpty()) {
             return false;
@@ -223,6 +247,13 @@ public class OrgServiceImpl extends SuperServiceImpl<OrgMapper, Org> implements 
         userOrgRelService.removeByOrgIds(idList);
 //        删除 角色-组织
 //        baseEmployeeOrgRelManager.deleteByOrg(idList);
+
+
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.ORG_EDIT)
+                .setEventContent(JSON.toJSONString(idList))
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
         return flag;
     }
 }

@@ -29,6 +29,11 @@
             <version>${revision}</version>
         </dependency>
         <dependency>
+            <groupId>top.mddata.open</groupId>
+            <artifactId>open-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
             <groupId>top.mddata.common</groupId>
             <artifactId>md-common-dao</artifactId>
             <version>${revision}</version>

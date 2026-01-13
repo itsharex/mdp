@@ -2,6 +2,7 @@ package top.mddata.api.oepn.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baidu.fsg.uid.UidGenerator;
+import com.gitee.sop.support.context.OpenContext;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,11 @@ import top.mddata.common.enumeration.organization.OrgNatureEnum;
 import top.mddata.common.enumeration.organization.OrgTypeEnum;
 import top.mddata.common.mapper.OrgMapper;
 import top.mddata.common.mapper.OrgNatureMapper;
+import top.mddata.open.admin.dto.NotifyInfoDto;
+import top.mddata.open.manage.facade.NotifyAndEventPushFacade;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -40,6 +46,7 @@ import top.mddata.common.mapper.OrgNatureMapper;
 public class OrgOpenServiceImpl extends SuperServiceImpl<OrgMapper, Org> implements OrgOpenService {
     private final UidGenerator uidGenerator;
     private final OrgNatureMapper orgNatureMapper;
+    private final NotifyAndEventPushFacade notifyAndEventPushFacade;
 
     @Override
     protected CacheKeyBuilder cacheKeyBuilder() {
@@ -73,7 +80,30 @@ public class OrgOpenServiceImpl extends SuperServiceImpl<OrgMapper, Org> impleme
 
         delCache(entity);
 
+        callNotify(entity);
+
         return BeanUtil.toBean(entity, OrgResp.class);
+    }
+
+    private void callNotify(Org org) {
+        OpenContext openContext = OpenContext.current();
+        NotifyInfoDto notifyRequest = new NotifyInfoDto();
+        notifyRequest.setCallLogId(openContext.getCallLogId());
+        notifyRequest.setAppId(openContext.getAppId());
+        notifyRequest.setAppKey(openContext.getAppKey());
+        notifyRequest.setApiName(openContext.getApiName());
+        notifyRequest.setApiVersion(openContext.getVersion());
+        notifyRequest.setClientIp(openContext.getClientIp());
+        notifyRequest.setNotifyUrl(openContext.getNotifyUrl());
+        notifyRequest.setCharset(openContext.getCharset());
+        // 模拟传递需要回调的参数
+        Map<String, Object> bizParams = new HashMap<>();
+        bizParams.put("id", org.getId());
+
+        notifyRequest.setBizParams(bizParams);
+        notifyRequest.setRemark("新增组织回调");
+
+        notifyAndEventPushFacade.apiCallNotify(notifyRequest);
     }
 
     private void fill(Org item, Org parent) {
