@@ -43,7 +43,7 @@ public class EventTriggerServiceImpl extends SuperServiceImpl<EventTriggerMapper
         }
 
         save(entity);
-
+        log.info("[事件触发] 事件日志: {}---{} 保存成功", save.getEventCode(), save.getEventContent());
         eventPushService.saveByEventTrigger(eventType.getCode(), entity.getId(), entity.getEventContent());
         return entity;
     }

@@ -1,6 +1,8 @@
 package top.mddata.open.admin.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.mybatisflex.core.query.QueryColumn;
+import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +19,7 @@ import top.mddata.open.admin.dto.AppKeysDto;
 import top.mddata.open.admin.entity.App;
 import top.mddata.open.admin.entity.AppKeys;
 import top.mddata.open.admin.entity.EventSubscription;
+import top.mddata.open.admin.entity.EventType;
 import top.mddata.open.admin.mapper.AppKeysMapper;
 import top.mddata.open.admin.service.AppKeysService;
 import top.mddata.open.admin.service.AppService;
@@ -49,6 +52,26 @@ public class AppKeysServiceImpl extends SuperServiceImpl<AppKeysMapper, AppKeys>
         return result.getValue();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<AppKeysVo> findByEventCode(String eventCode) {
+        Iterable<QueryColumn> queryColumns = QueryMethods.allColumns(AppKeys.class);
+        QueryWrapper wrapper = QueryWrapper.create()
+                .select(queryColumns)
+                .select(App::getAppKey)
+                .select(App::getId).as("app_id")
+                .select(App::getAppSecret)
+                .select(App::getName)
+                .from(AppKeys.class)
+                .innerJoin(App.class).on(App::getId, AppKeys::getAppId)
+                .innerJoin(EventSubscription.class).on(EventSubscription::getAppId, App::getId)
+                .innerJoin(EventType.class).on(EventType::getId, EventSubscription::getEventTypeId)
+                .where(EventType::getCode).eq(eventCode)
+                .eq(AppKeys::getNotifyState, true)
+                .eq(App::getState, true);
+
+        return listAs(wrapper, AppKeysVo.class);
+    }
 
     @Override
     public AppKeysVo getKeys(Long appId, Boolean showPrivateKey) {

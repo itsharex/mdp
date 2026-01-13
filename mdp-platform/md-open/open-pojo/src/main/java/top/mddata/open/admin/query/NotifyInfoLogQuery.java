@@ -1,6 +1,7 @@
 package top.mddata.open.admin.query;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -37,6 +38,7 @@ public class NotifyInfoLogQuery extends ExtraParams implements Serializable {
      * 所属推送
      */
     @Schema(description = "所属推送")
+    @NotNull(message = "所属推送不能为空")
     private Long eventPushId;
 
     /**

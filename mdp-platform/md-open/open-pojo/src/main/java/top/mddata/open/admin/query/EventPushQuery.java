@@ -1,6 +1,7 @@
 package top.mddata.open.admin.query;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
@@ -37,6 +38,7 @@ public class EventPushQuery extends ExtraParams implements Serializable {
      * 事件触发ID
      */
     @Schema(description = "事件触发ID")
+    @NotNull(message = "事件触发ID不能为空")
     private Long eventTriggerId;
 
     /**

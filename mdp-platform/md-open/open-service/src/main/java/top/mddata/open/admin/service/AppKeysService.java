@@ -8,6 +8,8 @@ import top.mddata.open.admin.vo.AppKeysVo;
 import top.mddata.open.client.dto.AppEventSubscriptionDto;
 import top.mddata.open.client.dto.AppKeysUpdateDto;
 
+import java.util.List;
+
 /**
  * 应用秘钥 服务层。
  *
@@ -22,6 +24,13 @@ public interface AppKeysService extends SuperService<AppKeys> {
      * @return 秘钥
      */
     AppKeys getByAppId(Long appId);
+
+    /**
+     * 查询订阅了指定事件的应用列表
+     * @param eventCode 事件类型
+     * @return 应用
+     */
+    List<AppKeysVo> findByEventCode(String eventCode);
 
     /**
      * 获取秘钥信息

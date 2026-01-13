@@ -44,4 +44,6 @@ public class EventSubscriptionServiceImpl extends SuperServiceImpl<EventSubscrip
         List<EventSubscription> eventSubscriptionList = list(QueryWrapper.create().eq(EventSubscription::getAppId, appId));
         return eventSubscriptionList.stream().map(EventSubscription::getEventTypeId).toList();
     }
+
+
 }

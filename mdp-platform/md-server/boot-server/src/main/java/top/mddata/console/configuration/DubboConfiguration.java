@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Scheduled;
+import top.mddata.open.admin.service.EventPushService;
 import top.mddata.open.admin.service.NotifyInfoService;
 
 import java.time.LocalDateTime;
@@ -26,13 +27,23 @@ public class DubboConfiguration {
 
     @Autowired
     private NotifyInfoService notifyInfoService;
+    @Autowired
+    private EventPushService eventPushService;
 
     /**
-     * 每分钟执行一次
+     * 每10 分钟执行一次
      */
     @Scheduled(cron = "0 0/10 * * * ?")
-    public void run() {
+    public void runNotifyInfo() {
         notifyInfoService.retry(LocalDateTime.now());
+    }
+
+    /**
+     * 每8分钟执行一次
+     */
+    @Scheduled(cron = "0 0/8 * * * ?")
+    public void runEventPush() {
+        eventPushService.retry(LocalDateTime.now());
     }
 
 }

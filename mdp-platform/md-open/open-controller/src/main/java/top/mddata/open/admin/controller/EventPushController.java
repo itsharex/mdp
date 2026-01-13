@@ -15,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
-import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.open.admin.dto.EventPushDto;
+import top.mddata.common.dto.IdDto;
 import top.mddata.open.admin.entity.EventPush;
 import top.mddata.open.admin.query.EventPushQuery;
 import top.mddata.open.admin.service.EventPushService;
@@ -39,17 +38,31 @@ import java.util.List;
 @RequestMapping("/admin/eventPush")
 @RequiredArgsConstructor
 public class EventPushController extends SuperController<EventPushService, EventPush> {
+
     /**
-     * 添加事件推送任务。
+     * 重新推送
      *
-     * @param dto 事件推送任务
-     * @return {@code true} 添加成功，{@code false} 添加失败
+     * @param id ID
+     * @return 返回影响行数
      */
-    @PostMapping("/save")
-    @Operation(summary = "新增", description = "保存事件推送任务")
-    @RequestLog(value = "新增", request = false)
-    public R<Long> save(@Validated @RequestBody EventPushDto dto) {
-        return R.success(superService.saveDto(dto).getId());
+    @PostMapping("/push")
+    @Operation(summary = "重新推送", description = "重新推送")
+    @RequestLog("'重新推送:' + #id")
+    public R<Long> push(@RequestParam Long id) {
+        return R.success(superService.executeImmediately(id));
+    }
+
+    /**
+     * 结束重试
+     *
+     * @param param 表单数据
+     * @return 返回影响行数
+     */
+    @Operation(summary = "结束重试", description = "结束重试")
+    @PostMapping("/end")
+    @RequestLog("'结束重试:' + #param.id")
+    public R<Boolean> end(@Validated @RequestBody IdDto param) {
+        return R.success(superService.end(param.getId()));
     }
 
     /**
@@ -65,18 +78,6 @@ public class EventPushController extends SuperController<EventPushService, Event
         return R.success(superService.removeByIds(ids));
     }
 
-    /**
-     * 根据主键更新事件推送任务。
-     *
-     * @param dto 事件推送任务
-     * @return {@code true} 更新成功，{@code false} 更新失败
-     */
-    @PostMapping("/update")
-    @Operation(summary = "修改", description = "根据主键更新事件推送任务")
-    @RequestLog(value = "修改", request = false)
-    public R<Long> update(@Validated(BaseEntity.Update.class) @RequestBody EventPushDto dto) {
-        return R.success(superService.updateDtoById(dto).getId());
-    }
 
     /**
      * 根据事件推送任务主键获取详细信息。
