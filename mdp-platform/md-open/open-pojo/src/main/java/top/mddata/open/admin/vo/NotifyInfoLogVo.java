@@ -41,7 +41,7 @@ public class NotifyInfoLogVo implements Serializable {
      * 所属推送
      */
     @Schema(description = "所属推送")
-    private Long eventPushId;
+    private Long notifyInfoId;
 
     /**
      * 请求时间

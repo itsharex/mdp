@@ -39,7 +39,7 @@ public class NotifyInfoLogQuery extends ExtraParams implements Serializable {
      */
     @Schema(description = "所属推送")
     @NotNull(message = "所属推送不能为空")
-    private Long eventPushId;
+    private Long notifyInfoId;
 
     /**
      * 请求时间

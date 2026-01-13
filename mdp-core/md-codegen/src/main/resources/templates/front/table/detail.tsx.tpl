@@ -10,7 +10,7 @@ import { useSchema } from './form';
 
 export function useDetail() {
   const state = reactive<FormState>({
-    type: ActionEnum.ADD,
+    type: ActionEnum.VIEW,
     formData: {},
   });
 
