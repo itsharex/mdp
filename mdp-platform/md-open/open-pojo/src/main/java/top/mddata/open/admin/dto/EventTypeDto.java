@@ -62,5 +62,9 @@ public class EventTypeDto implements Serializable {
      */
     @Schema(description = "状态")
     private Boolean state;
-
+    /**
+     * 排序
+     */
+    @Schema(description = "排序")
+    private Integer weight;
 }

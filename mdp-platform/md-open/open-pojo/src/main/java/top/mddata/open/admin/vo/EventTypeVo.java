@@ -63,6 +63,11 @@ public class EventTypeVo implements Serializable {
     private Boolean state;
 
     /**
+     * 排序
+     */
+    @Schema(description = "排序")
+    private Integer weight;
+    /**
      * 创建人
      */
     @Schema(description = "创建人")

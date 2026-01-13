@@ -45,5 +45,9 @@ public class EventTypeBase extends SuperEntity<Long> implements Serializable {
      * 状态
      */
     private Boolean state;
+    /**
+     * 排序
+     */
+    private Integer weight;
 
 }

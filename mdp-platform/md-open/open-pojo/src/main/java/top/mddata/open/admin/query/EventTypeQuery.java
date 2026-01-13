@@ -46,6 +46,11 @@ public class EventTypeQuery extends ExtraParams implements Serializable {
     private String name;
 
     /**
+     * 排序
+     */
+    @Schema(description = "排序")
+    private Integer weight;
+    /**
      * 事件描述
      */
     @Schema(description = "事件描述")
