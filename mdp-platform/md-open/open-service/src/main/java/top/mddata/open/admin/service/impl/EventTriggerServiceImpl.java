@@ -1,12 +1,21 @@
 package top.mddata.open.admin.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
+import top.mddata.base.utils.ArgumentAssert;
+import top.mddata.open.admin.dto.EventTriggerDto;
 import top.mddata.open.admin.entity.EventTrigger;
+import top.mddata.open.admin.entity.EventType;
 import top.mddata.open.admin.mapper.EventTriggerMapper;
+import top.mddata.open.admin.service.EventPushService;
 import top.mddata.open.admin.service.EventTriggerService;
+import top.mddata.open.admin.service.EventTypeService;
+
+import java.time.LocalDateTime;
 
 /**
  * 事件触发 服务层实现。
@@ -18,5 +27,25 @@ import top.mddata.open.admin.service.EventTriggerService;
 @Slf4j
 @RequiredArgsConstructor
 public class EventTriggerServiceImpl extends SuperServiceImpl<EventTriggerMapper, EventTrigger> implements EventTriggerService {
+    private final EventTypeService eventTypeService;
+    private final EventPushService eventPushService;
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public EventTrigger save(EventTriggerDto save) {
+        EventTrigger entity = BeanUtil.toBean(save, EventTrigger.class);
+        entity.setId(null);
+        EventType eventType = eventTypeService.getByCode(entity.getEventCode());
+        ArgumentAssert.notNull(eventType, "事件编码不存在");
+        entity.setEventId(eventType.getId());
+        if (entity.getTriggerAt() == null) {
+            entity.setTriggerAt(LocalDateTime.now());
+        }
+
+        save(entity);
+
+        eventPushService.saveByEventTrigger(eventType.getCode(), entity.getId(), entity.getEventContent());
+        return entity;
+    }
 
 }

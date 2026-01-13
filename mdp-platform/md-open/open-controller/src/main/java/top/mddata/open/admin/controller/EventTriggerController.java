@@ -15,11 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
-import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.open.admin.dto.EventTriggerDto;
 import top.mddata.open.admin.entity.EventTrigger;
 import top.mddata.open.admin.query.EventTriggerQuery;
 import top.mddata.open.admin.service.EventTriggerService;
@@ -39,18 +37,6 @@ import java.util.List;
 @RequestMapping("/admin/eventTrigger")
 @RequiredArgsConstructor
 public class EventTriggerController extends SuperController<EventTriggerService, EventTrigger> {
-    /**
-     * 添加事件触发。
-     *
-     * @param dto 事件触发
-     * @return {@code true} 添加成功，{@code false} 添加失败
-     */
-    @PostMapping("/save")
-    @Operation(summary = "新增", description = "保存事件触发")
-    @RequestLog(value = "新增", request = false)
-    public R<Long> save(@Validated @RequestBody EventTriggerDto dto) {
-        return R.success(superService.saveDto(dto).getId());
-    }
 
     /**
      * 根据主键删除事件触发。
@@ -63,19 +49,6 @@ public class EventTriggerController extends SuperController<EventTriggerService,
     @RequestLog("'删除:' + #ids")
     public R<Boolean> delete(@RequestBody List<Long> ids) {
         return R.success(superService.removeByIds(ids));
-    }
-
-    /**
-     * 根据主键更新事件触发。
-     *
-     * @param dto 事件触发
-     * @return {@code true} 更新成功，{@code false} 更新失败
-     */
-    @PostMapping("/update")
-    @Operation(summary = "修改", description = "根据主键更新事件触发")
-    @RequestLog(value = "修改", request = false)
-    public R<Long> update(@Validated(BaseEntity.Update.class) @RequestBody EventTriggerDto dto) {
-        return R.success(superService.updateDtoById(dto).getId());
     }
 
     /**

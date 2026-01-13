@@ -167,6 +167,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         notifyInfo.setNotifyUrl(request.getNotifyUrl());
         notifyInfo.setRequestData(JSON.toJSONString(request));
         notifyInfo.setRequestCnt(0);
+        notifyInfo.setMaxRequestCnt(notifyProperties.getMaxRetry());
         notifyInfo.setExecStatus(ExecStatusEnum.WAIT.getCode());
         notifyInfo.setRemark(request.getRemark());
 

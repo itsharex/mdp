@@ -35,7 +35,7 @@ public class EventTriggerBase extends BaseEntity<Long> implements Serializable {
     /**
      * 事件ID
      */
-    private Integer eventId;
+    private Long eventId;
 
     /**
      * 触发时间

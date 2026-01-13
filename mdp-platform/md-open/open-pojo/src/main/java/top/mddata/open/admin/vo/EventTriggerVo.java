@@ -47,7 +47,7 @@ public class EventTriggerVo implements Serializable {
      * 事件ID
      */
     @Schema(description = "事件ID")
-    private Integer eventId;
+    private Long eventId;
 
     /**
      * 触发时间

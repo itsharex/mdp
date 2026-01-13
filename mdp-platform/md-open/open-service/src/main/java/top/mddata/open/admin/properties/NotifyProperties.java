@@ -17,6 +17,10 @@ import top.mddata.base.constant.Constants;
 @ConfigurationProperties(prefix = NotifyProperties.PREFIX)
 public class NotifyProperties {
     public static final String PREFIX = Constants.PROJECT_PREFIX + ".notify";
+    /**
+     * 最大重试次数
+     */
+    private Integer maxRetry = 5;
 
     /**
      * 重试间隔

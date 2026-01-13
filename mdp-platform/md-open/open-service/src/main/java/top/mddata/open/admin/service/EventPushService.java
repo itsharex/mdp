@@ -11,4 +11,5 @@ import top.mddata.open.admin.entity.EventPush;
  */
 public interface EventPushService extends SuperService<EventPush> {
 
+    void saveByEventTrigger(String eventCode, Long triggerId, String requestData);
 }

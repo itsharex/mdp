@@ -19,4 +19,12 @@ public interface EventTypeService extends SuperService<EventType> {
      * @return true:重复 false:不重复
      */
     Boolean check(String code, Long id);
+
+    /**
+     * 根据事件类型编码获取事件类型。
+     *
+     * @param eventCode 事件类型编码
+     * @return 事件类型
+     */
+    EventType getByCode(String eventCode);
 }
