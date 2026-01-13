@@ -120,7 +120,7 @@ export function useIndex() {
       submitOnChange: true,
       collapsed: true,
       commonConfig: {
-        labelWidth: 60,
+        labelWidth: 80,
       },
     },
     gridOptions: {
