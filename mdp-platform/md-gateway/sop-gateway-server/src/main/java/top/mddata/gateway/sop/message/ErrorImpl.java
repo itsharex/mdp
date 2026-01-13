@@ -1,5 +1,6 @@
 package top.mddata.gateway.sop.message;
 
+import com.gitee.sop.support.message.IError;
 import lombok.Data;
 
 /**

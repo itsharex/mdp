@@ -19,7 +19,7 @@ import top.mddata.gateway.sop.request.ApiRequestContext;
 import top.mddata.gateway.sop.request.UploadContext;
 import top.mddata.gateway.sop.response.FormatEnum;
 import top.mddata.gateway.sop.response.NoCommonResponse;
-import top.mddata.gateway.sop.response.Response;
+import com.gitee.sop.support.message.Response;
 import top.mddata.gateway.sop.service.ParamExecutor;
 import top.mddata.gateway.sop.service.Serde;
 import top.mddata.gateway.sop.util.RequestUtil;

@@ -2,7 +2,7 @@ package top.mddata.gateway.sop.service;
 
 
 import top.mddata.gateway.sop.request.ApiRequestContext;
-import top.mddata.gateway.sop.response.Response;
+import com.gitee.sop.support.message.Response;
 
 import java.io.IOException;
 

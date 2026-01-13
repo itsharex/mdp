@@ -2,7 +2,7 @@ package top.mddata.gateway.sop.exception;
 
 
 import top.mddata.gateway.sop.message.ErrorEnum;
-import top.mddata.gateway.sop.message.IError;
+import com.gitee.sop.support.message.IError;
 
 import java.io.Serial;
 import java.util.Locale;

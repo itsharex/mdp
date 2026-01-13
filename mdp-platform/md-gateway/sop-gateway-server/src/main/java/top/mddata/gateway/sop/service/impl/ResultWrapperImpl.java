@@ -6,9 +6,9 @@ import top.mddata.common.enumeration.BooleanEnum;
 import top.mddata.gateway.sop.common.ApiDto;
 import top.mddata.gateway.sop.common.RouteContext;
 import top.mddata.gateway.sop.config.GateApiConfig;
-import top.mddata.gateway.sop.response.ApiResponse;
+import com.gitee.sop.support.message.ApiResponse;
 import top.mddata.gateway.sop.response.NoCommonResponse;
-import top.mddata.gateway.sop.response.Response;
+import com.gitee.sop.support.message.Response;
 import top.mddata.gateway.sop.service.ResultWrapper;
 
 import java.util.Optional;

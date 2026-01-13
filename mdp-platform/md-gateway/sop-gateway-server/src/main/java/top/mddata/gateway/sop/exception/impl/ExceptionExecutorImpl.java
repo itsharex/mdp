@@ -7,7 +7,7 @@ import top.mddata.gateway.sop.exception.ApiException;
 import top.mddata.gateway.sop.exception.ExceptionExecutor;
 import top.mddata.gateway.sop.message.ErrorEnum;
 import top.mddata.gateway.sop.request.ApiRequestContext;
-import top.mddata.gateway.sop.response.ApiResponse;
+import com.gitee.sop.support.message.ApiResponse;
 
 import java.util.LinkedHashSet;
 import java.util.Set;

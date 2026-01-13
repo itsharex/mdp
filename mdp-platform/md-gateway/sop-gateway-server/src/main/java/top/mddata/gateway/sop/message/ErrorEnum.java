@@ -1,6 +1,7 @@
 package top.mddata.gateway.sop.message;
 
 import com.gitee.sop.support.message.I18nMessage;
+import com.gitee.sop.support.message.IError;
 import com.gitee.sop.support.message.OpenMessage;
 import com.gitee.sop.support.message.OpenMessageFactory;
 import lombok.Getter;

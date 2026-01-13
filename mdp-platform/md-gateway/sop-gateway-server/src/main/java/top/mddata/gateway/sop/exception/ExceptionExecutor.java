@@ -2,7 +2,7 @@ package top.mddata.gateway.sop.exception;
 
 
 import top.mddata.gateway.sop.request.ApiRequestContext;
-import top.mddata.gateway.sop.response.ApiResponse;
+import com.gitee.sop.support.message.ApiResponse;
 
 /**
  * @author 六如

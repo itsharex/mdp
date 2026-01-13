@@ -37,14 +37,16 @@ public class CallLogRouteInterceptor implements RouteInterceptor {
         callLog.setTraceId(apiRequestContext.getTraceId());
         BeanUtil.copyProperties(api, callLog);
         BeanUtil.copyProperties(app, callLog);
-        callLog.setAppId(app.getId());
-        callLog.setApiId(api.getId());
-        callLog.setRequestIp(apiRequestContext.getIp());
-        callLog.setParamInfo(JSON.toJSONString(apiRequestContext.getApiRequest()));
-//        callLog.setRequestHeader();
-        callLog.setRequestTime(LocalDateTime.now());
-        callLog.setExecStatus(ExecStatusEnum.WAIT.getCode());
-        callLog.setId(uidGenerator.getUid());
+        callLog.setAppKey(app.getAppKey())
+                .setAppName(app.getName())
+                .setAppId(app.getId())
+                .setApiId(api.getId())
+                .setRequestIp(apiRequestContext.getIp())
+                .setParamInfo(JSON.toJSONString(apiRequestContext.getApiRequest()))
+                .setRequestTime(LocalDateTime.now())
+                .setExecStatus(ExecStatusEnum.WAIT.getCode())
+                .setId(uidGenerator.getUid());
+
         routeContext.setApiCallLog(callLog);
 
         // 设置id

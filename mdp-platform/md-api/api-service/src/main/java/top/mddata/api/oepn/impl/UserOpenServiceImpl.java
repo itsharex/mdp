@@ -16,7 +16,7 @@ import top.mddata.api.oepn.UserOpenService;
 import top.mddata.api.oepn.dto.UserBatchSaveDto;
 import top.mddata.api.oepn.dto.UserSaveDto;
 import top.mddata.api.oepn.dto.UserUpdateDto;
-import top.mddata.api.oepn.message.StoryMessageEnum;
+import top.mddata.common.enumeration.StoryMessageEnum;
 import top.mddata.api.oepn.query.UserQuery;
 import top.mddata.api.oepn.resp.UserBatchSaveResp;
 import top.mddata.api.oepn.resp.UserResp;

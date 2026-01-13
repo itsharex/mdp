@@ -33,8 +33,8 @@ import top.mddata.gateway.sop.message.ErrorEnum;
 import top.mddata.gateway.sop.request.ApiRequest;
 import top.mddata.gateway.sop.request.ApiRequestContext;
 import top.mddata.gateway.sop.request.UploadContext;
-import top.mddata.gateway.sop.response.ApiResponse;
-import top.mddata.gateway.sop.response.Response;
+import com.gitee.sop.support.message.ApiResponse;
+import com.gitee.sop.support.message.Response;
 import top.mddata.gateway.sop.service.GenericServiceInvoker;
 import top.mddata.gateway.sop.service.ResultWrapper;
 import top.mddata.gateway.sop.service.RouteService;
@@ -238,6 +238,8 @@ public class RouteServiceImpl implements RouteService {
     protected OpenContext buildOpenContext(ApiRequestContext apiRequestContext, AppDto isv) {
         ApiRequest apiRequest = apiRequestContext.getApiRequest();
         DefaultOpenContext defaultOpenRequest = new DefaultOpenContext();
+        defaultOpenRequest.setAppId(isv.getId());
+        defaultOpenRequest.setCallLogId(apiRequest.getApiCallLogId());
         defaultOpenRequest.setAppKey(apiRequest.getAppKey());
         defaultOpenRequest.setApiName(apiRequest.getMethod());
         defaultOpenRequest.setVersion(apiRequest.getVersion());

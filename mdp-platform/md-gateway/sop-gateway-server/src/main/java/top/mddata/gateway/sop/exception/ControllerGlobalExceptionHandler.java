@@ -11,7 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import top.mddata.gateway.sop.message.ErrorEnum;
-import top.mddata.gateway.sop.response.ApiResponse;
+import com.gitee.sop.support.message.ApiResponse;
 
 import java.util.ArrayList;
 import java.util.HashMap;

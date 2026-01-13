@@ -1,5 +1,7 @@
 package top.mddata.gateway.sop.response;
 
+import com.gitee.sop.support.message.ApiResponse;
+
 /**
  * 没有公共返回结果
  *

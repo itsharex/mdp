@@ -1,11 +1,11 @@
-package top.mddata.api.oepn.message;
+package top.mddata.common.enumeration;
 
 import com.gitee.sop.support.message.I18nMessage;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 /**
- * @author 六如
+ * @author henhen
  */
 @AllArgsConstructor
 @Getter

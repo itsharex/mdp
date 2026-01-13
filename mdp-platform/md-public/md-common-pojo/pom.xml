@@ -43,6 +43,12 @@
             <optional>true</optional>
             <scope>compile</scope>
         </dependency>
+        <!-- SOP 核心服务 -->
+        <dependency>
+            <groupId>top.mddata.base</groupId>
+            <artifactId>sop-service-support</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
 </project>
