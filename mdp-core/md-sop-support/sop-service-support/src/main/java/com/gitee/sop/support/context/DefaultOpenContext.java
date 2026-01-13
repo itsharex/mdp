@@ -18,7 +18,13 @@ public class DefaultOpenContext extends OpenContext implements Serializable {
      * appKey
      */
     private String appKey;
-
+    /**
+     * 调用日志ID
+     *
+     */
+    private Long callLogId;
+    /** 应用ID */
+    private Long appId;
 
     /**
      * apiName

@@ -1,8 +1,6 @@
-package top.mddata.gateway.sop.response;
+package com.gitee.sop.support.message;
 
 import lombok.Data;
-import top.mddata.gateway.sop.message.ErrorEnum;
-import top.mddata.gateway.sop.message.IError;
 
 import java.util.Locale;
 
@@ -56,6 +54,7 @@ import java.util.Locale;
 public class ApiResponse implements Response {
 
     public static final String SUCCESS_CODE = "0";
+    public static final String ERROR_CODE = "-1";
     public static final String SUCCESS_MSG = "success";
 
     /**
@@ -96,13 +95,20 @@ public class ApiResponse implements Response {
         return apiResponse;
     }
 
+    public static ApiResponse error(String msg) {
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setCode(ERROR_CODE);
+        apiResponse.setMsg(msg);
+        return apiResponse;
+    }
 
-    public static ApiResponse error(ErrorEnum errorEnum, Locale locale, String subMsg) {
+
+    public static ApiResponse error(I18nMessage errorEnum, Locale locale, String subMsg) {
         IError error = errorEnum.getError(locale);
         return error(error, subMsg);
     }
 
-    public static ApiResponse error(ErrorEnum errorEnum, Locale locale, String subCode, String subMsg, String solution) {
+    public static ApiResponse error(I18nMessage errorEnum, Locale locale, String subCode, String subMsg, String solution) {
         IError error = errorEnum.getError(locale);
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setCode(error.getCode());
@@ -113,7 +119,7 @@ public class ApiResponse implements Response {
         return apiResponse;
     }
 
-    public static ApiResponse error(ErrorEnum errorEnum, Locale locale) {
+    public static ApiResponse error(I18nMessage errorEnum, Locale locale) {
         IError error = errorEnum.getError(locale);
         return error(error);
     }

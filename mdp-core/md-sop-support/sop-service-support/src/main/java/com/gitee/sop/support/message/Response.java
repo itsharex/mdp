@@ -1,4 +1,4 @@
-package top.mddata.gateway.sop.response;
+package com.gitee.sop.support.message;
 
 import com.alibaba.fastjson2.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonIgnore;

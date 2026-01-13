@@ -1,4 +1,4 @@
-package top.mddata.gateway.sop.message;
+package com.gitee.sop.support.message;
 
 /**
  * 定义错误返回

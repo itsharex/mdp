@@ -24,6 +24,17 @@ public abstract class OpenContext {
     public abstract String getAppKey();
 
     /**
+     * 调用日志ID
+     *
+     */
+    public abstract Long getCallLogId();
+
+    /**
+     * 应用ID
+     */
+    public abstract Long getAppId();
+
+    /**
      * 获取apiName
      */
     public abstract String getApiName();
