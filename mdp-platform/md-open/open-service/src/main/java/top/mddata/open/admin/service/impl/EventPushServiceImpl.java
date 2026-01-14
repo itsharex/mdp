@@ -81,7 +81,7 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
 
         super.saveBatch(eventPushList);
 
-        execPushTask(eventPushList);
+        execPushTask(eventPushList, false);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
     public Long executeImmediately(Long id) {
         EventPush eventPush = getById(id);
 
-        execPushTask(List.of(eventPush));
+        execPushTask(List.of(eventPush), true);
         return eventPush.getId();
     }
 
@@ -112,10 +112,10 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
             log.info("[{}]表无重试记录", EventPush.TABLE_NAME);
             return;
         }
-        execPushTask(tasks);
+        execPushTask(tasks, false);
     }
 
-    public void execPushTask(List<EventPush> tasks) {
+    public void execPushTask(List<EventPush> tasks, boolean immediately) {
         // 准备数据：创建N*M个任务列表
         List<List<MultiThreadTaskProcessor.Task>> allTasks = new ArrayList<>();
 
@@ -132,7 +132,7 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
         for (List<EventPush> subTasks : partition) {
             List<MultiThreadTaskProcessor.Task> list = new ArrayList<>();
             for (EventPush subTask : subTasks) {
-                list.add(() -> push(subTask));
+                list.add(() -> push(subTask, immediately));
             }
             allTasks.add(list);
         }
@@ -142,10 +142,10 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
         log.info("任务已提交");
     }
 
-    private void push(EventPush eventPush) {
+    private void push(EventPush eventPush, boolean immediately) {
         try {
             log.info("[事件触发] 开始重试, notifyId={}", eventPush.getId());
-            if (Objects.equals(eventPush.getExecStatus(), ExecStatusEnum.RETRY_OVER.getCode())) {
+            if (!immediately && Objects.equals(eventPush.getExecStatus(), ExecStatusEnum.RETRY_OVER.getCode())) {
                 log.warn("[事件触发] 重试次数已用尽, notifyId={}", eventPush.getId());
                 return;
             }
