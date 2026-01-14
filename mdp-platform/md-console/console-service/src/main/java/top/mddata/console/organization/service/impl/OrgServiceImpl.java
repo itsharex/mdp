@@ -2,7 +2,6 @@ package top.mddata.console.organization.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
-import com.alibaba.fastjson2.JSON;
 import com.baidu.fsg.uid.UidGenerator;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.util.UpdateEntity;
@@ -17,6 +16,8 @@ import top.mddata.base.utils.CollHelper;
 import top.mddata.base.utils.MyTreeUtil;
 import top.mddata.common.cache.console.organization.OrgCacheKeyBuilder;
 import top.mddata.common.constant.EventTypeCode;
+import top.mddata.common.dto.IdDto;
+import top.mddata.common.dto.IdsDto;
 import top.mddata.common.entity.Org;
 import top.mddata.common.entity.OrgNature;
 import top.mddata.common.enumeration.organization.OrgNatureEnum;
@@ -194,9 +195,10 @@ public class OrgServiceImpl extends SuperServiceImpl<OrgMapper, Org> implements 
         orgNature.setOrgId(entity.getId());
         orgNatureService.save(orgNature);
 
+
         EventTriggerDto request = new EventTriggerDto();
         request.setEventCode(EventTypeCode.Console.ORG_ADD)
-                .setEventContent(String.valueOf(entity.getId()))
+                .setEventContent(IdDto.builder().id(entity.getId()).build().toString())
                 .setTriggerAt(LocalDateTime.now());
         notifyAndEventPushFacade.eventPush(request);
     }
@@ -226,7 +228,7 @@ public class OrgServiceImpl extends SuperServiceImpl<OrgMapper, Org> implements 
 
         EventTriggerDto request = new EventTriggerDto();
         request.setEventCode(EventTypeCode.Console.ORG_EDIT)
-                .setEventContent(String.valueOf(entity.getId()))
+                .setEventContent(IdDto.builder().id(entity.getId()).build().toString())
                 .setTriggerAt(LocalDateTime.now());
         notifyAndEventPushFacade.eventPush(request);
 
@@ -251,7 +253,7 @@ public class OrgServiceImpl extends SuperServiceImpl<OrgMapper, Org> implements 
 
         EventTriggerDto request = new EventTriggerDto();
         request.setEventCode(EventTypeCode.Console.ORG_EDIT)
-                .setEventContent(JSON.toJSONString(idList))
+                .setEventContent(IdsDto.builder().ids(idList).build().toString())
                 .setTriggerAt(LocalDateTime.now());
         notifyAndEventPushFacade.eventPush(request);
         return flag;

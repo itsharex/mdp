@@ -34,7 +34,7 @@ public class NotifyProperties {
      *
      *      支持 m h d 三种单位，分别表示 分，时，天
      */
-    private String timeLevel = "5m,30m,6h";
+    private String timeLevel = "2m,5m,30m,6h,12h";
     /**
      * 重试线程数
      */

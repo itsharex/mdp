@@ -95,7 +95,7 @@ public class NotifyInfoController extends SuperController<NotifyInfoService, Not
      */
     @PostMapping("/push")
     @Operation(summary = "重新推送", description = "重新推送")
-    @RequestLog("'重新推送:' + #id")
+    @RequestLog("'重新推送:' + #param.id")
     public R<Boolean> push(@Validated @RequestBody IdDto param) {
         return R.success(superService.push(param.getId(), null));
     }

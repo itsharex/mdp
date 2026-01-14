@@ -6,6 +6,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import net.datafaker.providers.base.Bool;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,14 +43,14 @@ public class EventPushController extends SuperController<EventPushService, Event
     /**
      * 重新推送
      *
-     * @param id ID
+     * @param param 表单数据
      * @return 返回影响行数
      */
     @PostMapping("/push")
     @Operation(summary = "重新推送", description = "重新推送")
-    @RequestLog("'重新推送:' + #id")
-    public R<Long> push(@RequestParam Long id) {
-        return R.success(superService.executeImmediately(id));
+    @RequestLog("'重新推送:' + #param.id")
+    public R<Long> push(@Validated @RequestBody IdDto param) {
+        return R.success(superService.executeImmediately(param.getId()));
     }
 
     /**
