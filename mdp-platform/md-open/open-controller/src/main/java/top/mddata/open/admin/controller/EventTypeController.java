@@ -136,6 +136,7 @@ public class EventTypeController extends SuperController<EventTypeService, Event
     public R<List<EventTypeVo>> list(@RequestBody @Validated EventTypeQuery params) {
         EventType entity = BeanUtil.toBean(params, EventType.class);
         QueryWrapper wrapper = QueryWrapper.create(entity, WrapperUtil.buildOperators(entity.getClass()));
+        wrapper.orderBy(EventType::getWeight, true);
         List<EventTypeVo> listVo = superService.listAs(wrapper, EventTypeVo.class);
         return R.success(listVo);
     }

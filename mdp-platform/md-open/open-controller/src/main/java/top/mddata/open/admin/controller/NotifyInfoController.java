@@ -90,15 +90,14 @@ public class NotifyInfoController extends SuperController<NotifyInfoService, Not
     /**
      * 重新推送
      *
-     * @param id ID
-     * @param url 重试地址
+     * @param param 表单数据
      * @return 返回影响行数
      */
     @PostMapping("/push")
     @Operation(summary = "重新推送", description = "重新推送")
     @RequestLog("'重新推送:' + #id")
-    public R<Boolean> push(@RequestParam Long id, @RequestParam(required = false) String url) {
-        return R.success(superService.push(id, url));
+    public R<Boolean> push(@Validated @RequestBody IdDto param) {
+        return R.success(superService.push(param.getId(), null));
     }
 
     /**
