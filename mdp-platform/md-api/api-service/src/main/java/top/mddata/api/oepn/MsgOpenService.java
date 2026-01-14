@@ -6,7 +6,7 @@ import top.mddata.api.oepn.dto.SendNoticeDto;
 import top.mddata.api.oepn.dto.SendSmsDto;
 
 /**
- * 消息 数据接口
+ * 消息数据接口
  * @author henhen
  * @since 2026/1/7 11:14
  */
