@@ -1,10 +1,12 @@
 package com.gitee.sop.support.doc;
 
+import com.gitee.sop.support.annotation.OpenGroup;
 import com.gitee.sop.support.doc.constants.OpenAnnotationConstants;
 import com.gitee.sop.support.doc.helper.ParamsBuildHelper;
 import com.ly.doc.builder.ProjectDocConfigBuilder;
 import com.ly.doc.constants.DocGlobalConstants;
 import com.ly.doc.constants.DocTags;
+import com.ly.doc.constants.JavaTypeConstants;
 import com.ly.doc.constants.ParamTypeConstants;
 import com.ly.doc.model.ApiConfig;
 import com.ly.doc.model.ApiParam;
@@ -26,11 +28,14 @@ import com.thoughtworks.qdox.model.expression.AnnotationValue;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
 
 
 /**
@@ -226,4 +231,43 @@ public class SopDocBuildTemplate extends RpcDocBuildTemplate {
         return javaClass.isInterface();
     }
 
+    @Override
+    public List<RpcJavaMethod> processClassHierarchy(JavaClass cls, Function<JavaClass, List<RpcJavaMethod>> methodProcessor) {
+        List<RpcJavaMethod> docJavaMethods = new ArrayList<>();
+        Set<JavaClass> classesToProcess = new LinkedHashSet<>();
+        classesToProcess.add(cls);
+
+        while (!classesToProcess.isEmpty()) {
+            JavaClass currentClass = classesToProcess.iterator().next();
+            classesToProcess.remove(currentClass);
+
+            // Process methods
+            docJavaMethods.addAll(methodProcessor.apply(currentClass));
+
+            // Add parent class if not Object
+            JavaClass parentClass = currentClass.getSuperJavaClass();
+            if (Objects.nonNull(parentClass)
+                && !JavaTypeConstants.OBJECT_SIMPLE_NAME.equals(parentClass.getSimpleName())) {
+                classesToProcess.add(parentClass);
+            }
+
+            // 忽略父类接口 如：SuperService、IService
+            List<JavaClass> classesToProcessInterfaces = new ArrayList<>();
+            List<JavaClass> interfaces = currentClass.getInterfaces();
+            for (JavaClass anInterface : interfaces) {
+                for (JavaAnnotation annotation : anInterface.getAnnotations()) {
+                    JavaClass type = annotation.getType();
+                    if (OpenGroup.class.getSimpleName().equals(type.getSimpleName())) {
+                        classesToProcessInterfaces.add(anInterface);
+                    }
+                }
+
+            }
+
+            // Add interfaces
+            classesToProcess.addAll(classesToProcessInterfaces);
+        }
+
+        return docJavaMethods;
+    }
 }
