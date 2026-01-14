@@ -252,7 +252,7 @@ public class OrgServiceImpl extends SuperServiceImpl<OrgMapper, Org> implements 
 
 
         EventTriggerDto request = new EventTriggerDto();
-        request.setEventCode(EventTypeCode.Console.ORG_EDIT)
+        request.setEventCode(EventTypeCode.Console.ORG_DELETE)
                 .setEventContent(IdsDto.builder().ids(idList).build().toString())
                 .setTriggerAt(LocalDateTime.now());
         notifyAndEventPushFacade.eventPush(request);

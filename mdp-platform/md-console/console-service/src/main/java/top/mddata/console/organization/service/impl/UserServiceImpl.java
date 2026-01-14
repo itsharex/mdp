@@ -28,7 +28,10 @@ import top.mddata.common.cache.workbench.SsoUserEmailCacheKeyBuilder;
 import top.mddata.common.cache.workbench.SsoUserPhoneCacheKeyBuilder;
 import top.mddata.common.cache.workbench.SsoUserUserNameCacheKeyBuilder;
 import top.mddata.common.constant.ConfigKey;
+import top.mddata.common.constant.EventTypeCode;
 import top.mddata.common.constant.FileObjectType;
+import top.mddata.common.dto.IdDto;
+import top.mddata.common.dto.IdsDto;
 import top.mddata.common.entity.User;
 import top.mddata.common.entity.UserOrgRel;
 import top.mddata.common.entity.UserRoleRel;
@@ -46,9 +49,13 @@ import top.mddata.console.organization.vo.UserVo;
 import top.mddata.console.system.dto.RelateFilesToBizDto;
 import top.mddata.console.system.service.ConfigService;
 import top.mddata.console.system.service.FileService;
+import top.mddata.open.admin.dto.EventTriggerDto;
+import top.mddata.open.manage.facade.NotifyAndEventPushFacade;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -67,6 +74,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
     private final ConfigService configService;  // 同一个服务，直接调用 service。跨服务需要调用 facade
     private final SystemProperties systemProperties;
     private final UidGenerator uidGenerator;
+    private final NotifyAndEventPushFacade notifyAndEventPushFacade;
 
     @Override
     protected CacheKeyBuilder cacheKeyBuilder() {
@@ -116,6 +124,13 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
                 .objectId(entity.getAvatar())
                 .objectType(FileObjectType.Console.USER_AVATAR)
                 .build().setKeepFileIds(dto.getAvatar()));
+
+
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_ADD)
+                .setEventContent(IdDto.builder().id(entity.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
 
         List<CacheKey> cacheKeys = new ArrayList<>();
         if (StrUtil.isNotEmpty(dto.getUsername())) {
@@ -175,6 +190,12 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
                 .objectType(FileObjectType.Console.USER_AVATAR)
                 .build().setKeepFileIds(dto.getAvatar()));
 
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_EDIT)
+                .setEventContent(IdDto.builder().id(entity.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
+
         List<CacheKey> cacheKeys = new ArrayList<>();
         if (StrUtil.isNotEmpty(dto.getUsername())) {
             cacheKeys.add(SsoUserUserNameCacheKeyBuilder.builder(dto.getUsername()));
@@ -224,9 +245,9 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean resetPassword(UserResetPasswordDto data) {
-        User sysUser = UpdateEntity.of(User.class, data.getId());
-        sysUser.setPwErrorLastTime(null);
-        sysUser.setPwErrorNum(0);
+        User user = UpdateEntity.of(User.class, data.getId());
+        user.setPwErrorLastTime(null);
+        user.setPwErrorNum(0);
         String password;
         String salt = RandomUtil.randomString(20);
         if (data.getDefPassword() != null && data.getDefPassword()) {
@@ -234,13 +255,13 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
         } else {
             password = SecureUtil.sha256(data.getPassword() + salt);
         }
-        sysUser.setSalt(salt);
-        sysUser.setPassword(password);
+        user.setSalt(salt);
+        user.setPassword(password);
 
         String expireTime = configService.getString(ConfigKey.Workbench.PASSWORD_EXPIRE_TIME, "3M");
-        sysUser.setPwExpireTime(DateUtils.conversionDateTime(LocalDateTime.now(), expireTime));
+        user.setPwExpireTime(DateUtils.conversionDateTime(LocalDateTime.now(), expireTime));
 
-        boolean flag = updateById(sysUser);
+        boolean flag = updateById(user);
         delCache(data.getId());
         return flag;
     }
@@ -278,5 +299,16 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
         QueryWrapper wrapper = QueryWrapper.create().select().from(User.class).innerJoin(UserOrgRel.class).on(UserOrgRel::getUserId, User::getId)
                 .where(UserOrgRel::getOrgId).in(deptIds).and(User::getState).eq(true);
         return list(wrapper);
+    }
+
+    @Override
+    public boolean removeByIds(Collection<? extends Serializable> idList) {
+        boolean flag = super.removeByIds(idList);
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_DELETE)
+                .setEventContent(IdsDto.builder().ids(idList).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
+        return flag;
     }
 }

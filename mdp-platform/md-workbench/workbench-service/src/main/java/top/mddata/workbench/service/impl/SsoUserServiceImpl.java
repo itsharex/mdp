@@ -31,8 +31,10 @@ import top.mddata.common.cache.workbench.SsoUserEmailCacheKeyBuilder;
 import top.mddata.common.cache.workbench.SsoUserPhoneCacheKeyBuilder;
 import top.mddata.common.cache.workbench.SsoUserUserNameCacheKeyBuilder;
 import top.mddata.common.constant.ConfigKey;
+import top.mddata.common.constant.EventTypeCode;
 import top.mddata.common.constant.FileObjectType;
 import top.mddata.common.constant.MsgTemplateKey;
+import top.mddata.common.dto.IdDto;
 import top.mddata.common.entity.Org;
 import top.mddata.common.entity.OrgNature;
 import top.mddata.common.entity.User;
@@ -45,6 +47,8 @@ import top.mddata.common.mapper.UserMapper;
 import top.mddata.console.system.dto.RelateFilesToBizDto;
 import top.mddata.console.system.facade.ConfigFacade;
 import top.mddata.console.system.facade.FileFacade;
+import top.mddata.open.admin.dto.EventTriggerDto;
+import top.mddata.open.manage.facade.NotifyAndEventPushFacade;
 import top.mddata.workbench.dto.ProfileEmailDto;
 import top.mddata.workbench.dto.ProfilePasswordDto;
 import top.mddata.workbench.dto.ProfilePhoneDto;
@@ -76,6 +80,7 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
     private final CacheOps cacheOps;
     private final ConfigFacade configFacade;
     private final VerificationCodeService verificationCodeService;
+    private final NotifyAndEventPushFacade notifyAndEventPushFacade;
 
     @Override
     protected CacheKeyBuilder cacheKeyBuilder() {
@@ -98,6 +103,12 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
                 .objectId(entity.getAvatar())
                 .objectType(FileObjectType.Console.USER_AVATAR)
                 .build().setKeepFileIds(dto.getAvatar()));
+
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_EDIT)
+                .setEventContent(IdDto.builder().id(dto.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
         return entity.getId();
     }
 
@@ -170,6 +181,12 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
         ssoUser.setUsername(ssoUser.getEmail());
 
         save(ssoUser);
+
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_ADD)
+                .setEventContent(IdDto.builder().id(ssoUser.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
     }
 
     @Override
@@ -179,6 +196,12 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
         initSsoUser(ssoUser);
         ssoUser.setUsername(ssoUser.getPhone());
         save(ssoUser);
+
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_ADD)
+                .setEventContent(IdDto.builder().id(ssoUser.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
     }
 
     @Override
@@ -354,8 +377,11 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
                 SsoUserPhoneCacheKeyBuilder.builder(dto.getPhone()));
         cacheOps.del(cacheKeyList);
 
-        // TODO 广播修改用户信息 & 修改session 中的user
-
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_EDIT)
+                .setEventContent(IdDto.builder().id(user.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
         return userId;
     }
 
@@ -382,7 +408,13 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
                 SsoUserEmailCacheKeyBuilder.builder(dto.getOldEmail()),
                 SsoUserEmailCacheKeyBuilder.builder(dto.getEmail()));
         cacheOps.del(cacheKeyList);
-        // TODO 广播修改用户信息 & 修改session 中的user
+
+        // 广播
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_EDIT)
+                .setEventContent(IdDto.builder().id(user.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
 
         return userId;
     }
@@ -407,7 +439,12 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
         user.setPwExpireTime(DateUtils.conversionDateTime(LocalDateTime.now(), expireTime));
 
         updateById(user);
-        // TODO 广播修改用户信息 & 修改session 中的user
+        // 广播
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_EDIT)
+                .setEventContent(IdDto.builder().id(user.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
         return userId;
     }
 
