@@ -8,18 +8,23 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
+import top.mddata.base.utils.MyTreeUtil;
 import top.mddata.common.enumeration.BooleanEnum;
 import top.mddata.open.admin.entity.DocGroup;
+import top.mddata.open.admin.entity.HelpDoc;
 import top.mddata.open.admin.service.DocGroupService;
 import top.mddata.open.admin.service.DocInfoService;
+import top.mddata.open.admin.service.HelpDocService;
 import top.mddata.open.admin.vo.DocGroupVo;
 import top.mddata.open.admin.vo.DocInfoViewVo;
 import top.mddata.open.admin.vo.DocInfoVo;
+import top.mddata.open.admin.vo.HelpDocVo;
 
 import java.util.List;
 
@@ -38,6 +43,7 @@ import java.util.List;
 public class OpenDocController {
     private final DocGroupService docGroupService;
     private final DocInfoService docInfoService;
+    private final HelpDocService helpDocService;
 
     /**
      * 获取文档分组列表
@@ -60,6 +66,19 @@ public class OpenDocController {
     @GetMapping(value = "/docInfo/tree")
     public R<List<DocInfoVo>> findDocTree(@RequestParam Long docGroupId) {
         return R.success(docInfoService.tree(docGroupId, BooleanEnum.TRUE.getInteger()));
+    }
+
+    /**
+     * 按树结构查询
+     *
+     * @return 查询结果
+     */
+    @Operation(summary = "按树结构查询")
+    @GetMapping("/help/tree")
+    public R<List<HelpDocVo>> tree() {
+        List<HelpDoc> list = helpDocService.list(QueryWrapper.create().eq(HelpDoc::getState, true).orderBy(HelpDoc::getWeight, true));
+        List<HelpDocVo> voList = BeanUtil.copyToList(list, HelpDocVo.class);
+        return R.success(MyTreeUtil.buildTreeEntity(voList, HelpDocVo::new));
     }
 
     /**
