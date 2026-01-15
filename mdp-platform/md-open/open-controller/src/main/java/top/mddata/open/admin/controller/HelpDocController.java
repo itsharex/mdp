@@ -1,7 +1,6 @@
 package top.mddata.open.admin.controller;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,7 +16,6 @@ import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
 import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
-import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.base.utils.MyTreeUtil;
 import top.mddata.open.admin.dto.HelpDocDto;
@@ -93,38 +91,12 @@ public class HelpDocController extends SuperController<HelpDocService, HelpDoc> 
         return R.success(BeanUtil.toBean(entity, HelpDocVo.class));
     }
 
-    /**
-     * 分页查询帮助文档。
-     *
-     * @param params 分页对象
-     * @return 分页对象
-     */
-    @PostMapping("/page")
-    @Operation(summary = "分页列表查询", description = "分页查询帮助文档")
-    @RequestLog(value = "'分页列表查询:第' + #params?.current + '页, 显示' + #params?.size + '行'", response = false)
-    public R<Page<HelpDocVo>> page(@RequestBody @Validated PageParams<HelpDocQuery> params) {
-        Page<HelpDocVo> page = Page.of(params.getCurrent(), params.getSize());
-        HelpDoc entity = BeanUtil.toBean(params.getModel(), HelpDoc.class);
-        QueryWrapper wrapper = QueryWrapper.create(entity, WrapperUtil.buildOperators(entity.getClass()));
-        WrapperUtil.buildWrapperByExtra(wrapper, params.getModel(), entity.getClass());
-        WrapperUtil.buildWrapperByOrder(wrapper, params, entity.getClass());
-        superService.pageAs(page, wrapper, HelpDocVo.class);
-        return R.success(page);
-    }
-
-    /**
-     * 批量查询
-     * @param params 查询参数
-     * @return 集合
-     */
-    @PostMapping("/list")
-    @Operation(summary = "批量查询", description = "批量查询")
-    @RequestLog(value = "批量查询", response = false)
-    public R<List<HelpDocVo>> list(@RequestBody @Validated HelpDocQuery params) {
-        HelpDoc entity = BeanUtil.toBean(params, HelpDoc.class);
-        QueryWrapper wrapper = QueryWrapper.create(entity, WrapperUtil.buildOperators(entity.getClass()));
-        List<HelpDocVo> listVo = superService.listAs(wrapper, HelpDocVo.class);
-        return R.success(listVo);
+    @Operation(summary = "调整节点", description = "调整节点")
+    @PostMapping("/move")
+    @RequestLog("调整节点")
+    public R<Boolean> move(@RequestParam Long sourceId, @RequestParam(required = false) Long targetId) {
+        superService.move(sourceId, targetId);
+        return R.success();
     }
 
     /**

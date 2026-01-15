@@ -61,7 +61,10 @@ public class HelpDocVo extends TreeEntity<Long, HelpDocVo> implements Serializab
      */
     @Schema(description = "内容")
     private String content;
-
+    /**
+     * 树路径
+     */
+    private String treePath;
     /**
      * 内容类型
      * 1-Markdown,2-富文本

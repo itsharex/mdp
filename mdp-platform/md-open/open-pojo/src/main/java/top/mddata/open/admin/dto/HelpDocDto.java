@@ -75,7 +75,6 @@ public class HelpDocDto implements Serializable {
     /**
      * 父级id
      */
-    @NotNull(message = "请填写父级id")
     @Schema(description = "父级id")
     private Long parentId;
 

@@ -19,5 +19,5 @@ import top.mddata.open.admin.entity.base.HelpDocBase;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @Table(HelpDocBase.TABLE_NAME)
-public class HelpDoc extends HelpDocBase {
+public class HelpDoc extends HelpDocBase<HelpDoc> {
 }
