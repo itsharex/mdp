@@ -12,6 +12,7 @@ import java.io.Serializable;
 /**
  * 帮助文档实体类。
  *
+ * @param <E> 树节点类型
  * @author henhen6
  * @since 2026-01-02 10:11:40
  */
