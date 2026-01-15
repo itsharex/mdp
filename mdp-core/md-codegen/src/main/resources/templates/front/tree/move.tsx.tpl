@@ -1,6 +1,7 @@
 #for(importClass : table.buildTreeMoveTsxImports())
 #(importClass)
 #end
+import { $t } from '#/locales';
 
 export interface Emits {
   (e: 'success'): void;
