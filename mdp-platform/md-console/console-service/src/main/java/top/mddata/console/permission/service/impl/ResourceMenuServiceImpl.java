@@ -174,9 +174,8 @@ public class ResourceMenuServiceImpl extends SuperServiceImpl<ResourceMenuMapper
 
             if (CollUtil.isNotEmpty(node.getChildren())) {
                 String component = node.getComponent();
-                if (StrUtil.isEmpty(component)) {
-                    node.setComponent(LAYOUT);
-                }
+                // 解决菜单下面有隐藏菜单的场景
+                node.setComponent(LAYOUT);
 
                 // 若[某菜单]下所有子集都是隐藏菜单，就将[某菜单]数据克隆到他的子集的第一个菜单，并且点击[某菜单]时，重定向到子集第一个菜单
                 if (hideChildrenInMenu) {
@@ -195,7 +194,6 @@ public class ResourceMenuServiceImpl extends SuperServiceImpl<ResourceMenuMapper
 
                     List<ResourceMenuVo> childrenList = node.getChildren();
                     childrenList.add(0, cloneItem);
-
                 }
             }
 
