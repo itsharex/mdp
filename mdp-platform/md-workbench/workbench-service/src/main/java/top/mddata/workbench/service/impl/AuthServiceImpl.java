@@ -269,14 +269,17 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String registerByEmail(RegisterByEmailDto register) {
         if (systemProperties.getVerifyCaptcha()) {
-            CacheKey cacheKey = new CaptchaCacheKeyBuilder().key(register.getEmail(), register.getKey());
+            CacheKey cacheKey = new CaptchaCacheKeyBuilder().key(register.getKey(), MsgTemplateKey.Email.EMAIL_REGISTER);
             CacheResult<String> code = cacheOps.get(cacheKey);
             ArgumentAssert.equals(code.getValue(), register.getCode(), "验证码不正确");
         }
         User defUser = BeanUtil.toBean(register, User.class);
         defUser.setUserType(register.getNature());
         ssoUserService.registerByEmail(defUser);
-
+        if (systemProperties.getVerifyCaptcha()) {
+            CacheKey cacheKey = new CaptchaCacheKeyBuilder().key(register.getKey(), MsgTemplateKey.Email.EMAIL_REGISTER);
+            cacheOps.del(cacheKey);
+        }
         return defUser.getEmail();
     }
 
@@ -284,13 +287,18 @@ public class AuthServiceImpl implements AuthService {
     @Transactional(rollbackFor = Exception.class)
     public String registerByPhone(RegisterByPhoneDto register) {
         if (systemProperties.getVerifyCaptcha()) {
-            CacheKey cacheKey = new CaptchaCacheKeyBuilder().key(register.getPhone(), register.getKey());
+            CacheKey cacheKey = new CaptchaCacheKeyBuilder().key(register.getKey(), MsgTemplateKey.Sms.PHONE_REGISTER);
             CacheResult<String> code = cacheOps.get(cacheKey);
             ArgumentAssert.equals(code.getValue(), register.getCode(), "验证码不正确");
         }
         User defUser = BeanUtil.toBean(register, User.class);
         defUser.setUserType(register.getNature());
         ssoUserService.registerByPhone(defUser);
+
+        if (systemProperties.getVerifyCaptcha()) {
+            CacheKey cacheKey = new CaptchaCacheKeyBuilder().key(register.getKey(), MsgTemplateKey.Sms.PHONE_REGISTER);
+            cacheOps.del(cacheKey);
+        }
 
         return defUser.getPhone();
     }
