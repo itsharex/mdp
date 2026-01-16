@@ -27,7 +27,12 @@ import static top.mddata.base.utils.ValidatorUtil.REGEX_EMAIL;
 @EqualsAndHashCode(callSuper = false)
 @Schema(title = "RegisterByEmailVO", description = "邮箱注册参数")
 public class RegisterByEmailDto extends RegisterVO {
-
+    @Schema(description = "验证码KEY")
+    @NotEmpty(message = "请填写验证码")
+    private String key;
+    @Schema(description = "验证码")
+    @NotEmpty(message = "请填写验证码")
+    private String code;
     /**
      * 邮箱
      */

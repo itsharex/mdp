@@ -5,6 +5,8 @@ mdp:
     namespace: '@config.nacos.namespace@'
     username: '@config.nacos.username@'
     password: '@config.nacos.password@'
+  system:
+    forgetPasswordUrl: 'http://workbench.mddata.top/#/auth/forget-password-update?token='
 
 spring:
   data:

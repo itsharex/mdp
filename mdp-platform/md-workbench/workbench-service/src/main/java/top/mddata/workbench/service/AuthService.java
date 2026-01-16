@@ -2,9 +2,11 @@ package top.mddata.workbench.service;
 
 
 import top.mddata.base.base.R;
+import top.mddata.workbench.dto.ForgetPasswordByEmailDto;
 import top.mddata.workbench.dto.LoginDto;
 import top.mddata.workbench.dto.RegisterByEmailDto;
 import top.mddata.workbench.dto.RegisterByPhoneDto;
+import top.mddata.workbench.dto.RegisterByUsernameDto;
 import top.mddata.workbench.vo.LoginVo;
 
 /**
@@ -35,4 +37,32 @@ public interface AuthService {
      */
     String registerByPhone(RegisterByPhoneDto register);
 
+    /**
+     * 根据用户名注册账号
+     * @param register 参数
+     * @return 用户名
+     */
+    String registerByUsername(RegisterByUsernameDto register);
+
+    /**
+     * 忘记密码
+     * @param email 邮箱
+     * @return true 发送成功
+     */
+    Boolean forgetPassword(String email);
+
+    /**
+     * 验证找回密码的 邮箱token是否过期
+     * @param token token
+     * @return true 未过期，false 已过期
+     */
+    Boolean checkToken(String token);
+
+
+    /**
+     * 根据token修改邮箱
+     * @param dto 参数
+     * @return 是否成功
+     */
+    Boolean updateEmailByToken(ForgetPasswordByEmailDto dto);
 }

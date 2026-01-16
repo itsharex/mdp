@@ -21,6 +21,8 @@ public interface MsgTemplateKey {
     }
 
     interface Email {
+        // 邮箱 忘记密码
+        String FORGET_PASSWORD_BY_EMAIL = "FORGET_PASSWORD_BY_EMAIL";
         // 安全设置 修改个人邮箱
         String EMAIL_EDIT = "EMAIL_EDIT";
         // 邮箱注册

@@ -3,6 +3,7 @@ package top.mddata.workbench.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -41,9 +42,11 @@ import top.mddata.common.entity.User;
 import top.mddata.common.enumeration.BooleanEnum;
 import top.mddata.common.enumeration.organization.OrgNatureEnum;
 import top.mddata.common.enumeration.organization.OrgTypeEnum;
+import top.mddata.common.enumeration.organization.UserSourceEnum;
 import top.mddata.common.mapper.OrgMapper;
 import top.mddata.common.mapper.OrgNatureMapper;
 import top.mddata.common.mapper.UserMapper;
+import top.mddata.common.properties.SystemProperties;
 import top.mddata.console.system.dto.RelateFilesToBizDto;
 import top.mddata.console.system.facade.ConfigFacade;
 import top.mddata.console.system.facade.FileFacade;
@@ -75,6 +78,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> implements SsoUserService {
     private final OrgMapper orgMapper;
+    private final SystemProperties systemProperties;
     private final OrgNatureMapper orgNatureMapper;
     private final FileFacade fileFacade;
     private final CacheOps cacheOps;
@@ -165,6 +169,14 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
         return getMapper().selectCountByQuery(queryWrapper) > 0;
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public boolean checkUsername(String username, Long id) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq(User::getUsername, username).ne(User::getId, id);
+        return getMapper().selectCountByQuery(queryWrapper) > 0;
+    }
+
     @Override
     @Transactional(readOnly = true)
     public boolean checkEmail(String email, Long id) {
@@ -177,9 +189,9 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
     @Transactional(rollbackFor = Exception.class)
     public void registerByEmail(User ssoUser) {
         ArgumentAssert.isFalse(checkEmail(ssoUser.getEmail(), null), "邮箱：{}已经存在", ssoUser.getEmail());
+        ssoUser.setPassword(systemProperties.getDefPwd());
+        ssoUser.setUsername(UUID.randomUUID().toString(true));
         initSsoUser(ssoUser);
-        ssoUser.setUsername(ssoUser.getEmail());
-
         save(ssoUser);
 
         EventTriggerDto request = new EventTriggerDto();
@@ -193,8 +205,23 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
     @Transactional(rollbackFor = Exception.class)
     public void registerByPhone(User ssoUser) {
         ArgumentAssert.isFalse(checkPhone(ssoUser.getPhone(), null), "手机号：{}已经存在", ssoUser.getPhone());
+        ssoUser.setPassword(systemProperties.getDefPwd());
+        ssoUser.setUsername(UUID.randomUUID().toString(true));
         initSsoUser(ssoUser);
-        ssoUser.setUsername(ssoUser.getPhone());
+        save(ssoUser);
+
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_ADD)
+                .setEventContent(IdDto.builder().id(ssoUser.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void registerByUsername(User ssoUser) {
+        ArgumentAssert.isFalse(checkUsername(ssoUser.getUsername(), null), "用户名：{}已经存在", ssoUser.getUsername());
+        initSsoUser(ssoUser);
         save(ssoUser);
 
         EventTriggerDto request = new EventTriggerDto();
@@ -370,7 +397,6 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
         user.setPhone(dto.getPhone());
         updateById(user);
 
-
         List<CacheKey> cacheKeyList = Arrays.asList(
                 cacheKey,
                 SsoUserPhoneCacheKeyBuilder.builder(dto.getOldPhone()),
@@ -448,10 +474,37 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
         return userId;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean resetPwByEmail(String email, String password) {
+        User oldUser = getByEmail(email);
+        ArgumentAssert.notNull(oldUser, "用户不存在");
+
+        User user = UpdateEntity.of(User.class, oldUser.getId());
+        user.setSalt(RandomUtil.randomString(20));
+        user.setPassword(SecureUtil.sha256(password + user.getSalt()));
+        user.setPwErrorNum(0);
+        user.setPwErrorLastTime(null);
+        String expireTime = configFacade.getString(ConfigKey.Workbench.PASSWORD_EXPIRE_TIME, "3M");
+        user.setPwExpireTime(DateUtils.conversionDateTime(LocalDateTime.now(), expireTime));
+
+        updateById(user);
+        // 广播
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_EDIT)
+                .setEventContent(IdDto.builder().id(user.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
+        return true;
+    }
+
     private void initSsoUser(User defUser) {
         defUser.setSalt(RandomUtil.randomString(20));
         defUser.setPassword(SecureUtil.sha256(defUser.getPassword() + defUser.getSalt()));
         defUser.setPwErrorNum(0);
         defUser.setState(BooleanEnum.TRUE.getBool());
+        defUser.setUserSource(UserSourceEnum.PLATFORM.getCode());
+        String expireTime = configFacade.getString(ConfigKey.Workbench.PASSWORD_EXPIRE_TIME, "3M");
+        defUser.setPwExpireTime(DateUtils.conversionDateTime(LocalDateTime.now(), expireTime));
     }
 }

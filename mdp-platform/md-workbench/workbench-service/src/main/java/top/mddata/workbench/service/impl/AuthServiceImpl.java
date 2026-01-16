@@ -8,6 +8,7 @@ import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import cn.dev33.satoken.temp.SaTempUtil;
 import cn.dev33.satoken.util.SaFoxUtil;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson2.JSON;
@@ -19,6 +20,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.base.R;
 import top.mddata.base.cache.redis.CacheResult;
 import top.mddata.base.cache.repository.CacheOps;
@@ -26,16 +28,23 @@ import top.mddata.base.model.cache.CacheKey;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.MyTreeUtil;
 import top.mddata.common.cache.workbench.CaptchaCacheKeyBuilder;
+import top.mddata.common.cache.workbench.ForgetPasswordCacheKeyBuilder;
 import top.mddata.common.constant.DefValConstants;
+import top.mddata.common.constant.MsgTemplateKey;
 import top.mddata.common.entity.Org;
 import top.mddata.common.entity.OrgNature;
 import top.mddata.common.entity.User;
 import top.mddata.common.enumeration.organization.OrgNatureEnum;
 import top.mddata.common.properties.SystemProperties;
+import top.mddata.console.message.dto.MsgSendDto;
+import top.mddata.console.message.dto.MsgSendMailDto;
+import top.mddata.console.message.facade.MsgFacade;
+import top.mddata.workbench.dto.ForgetPasswordByEmailDto;
 import top.mddata.workbench.dto.LoginDto;
 import top.mddata.workbench.dto.LoginLogDto;
 import top.mddata.workbench.dto.RegisterByEmailDto;
 import top.mddata.workbench.dto.RegisterByPhoneDto;
+import top.mddata.workbench.dto.RegisterByUsernameDto;
 import top.mddata.workbench.event.LoginEvent;
 import top.mddata.workbench.handler.LoginStrategy;
 import top.mddata.workbench.service.AuthService;
@@ -68,6 +77,7 @@ public class AuthServiceImpl implements AuthService {
     private final SaTokenConfig saTokenConfig;
     private final CacheOps cacheOps;
     private final SsoUserService ssoUserService;
+    private final MsgFacade msgFacade;
     private final Map<String, LoginStrategy> loginStrategy;
 
     @Override
@@ -264,13 +274,14 @@ public class AuthServiceImpl implements AuthService {
             ArgumentAssert.equals(code.getValue(), register.getCode(), "验证码不正确");
         }
         User defUser = BeanUtil.toBean(register, User.class);
-
+        defUser.setUserType(register.getNature());
         ssoUserService.registerByEmail(defUser);
 
         return defUser.getEmail();
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public String registerByPhone(RegisterByPhoneDto register) {
         if (systemProperties.getVerifyCaptcha()) {
             CacheKey cacheKey = new CaptchaCacheKeyBuilder().key(register.getPhone(), register.getKey());
@@ -278,12 +289,62 @@ public class AuthServiceImpl implements AuthService {
             ArgumentAssert.equals(code.getValue(), register.getCode(), "验证码不正确");
         }
         User defUser = BeanUtil.toBean(register, User.class);
-
+        defUser.setUserType(register.getNature());
         ssoUserService.registerByPhone(defUser);
 
         return defUser.getPhone();
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public String registerByUsername(RegisterByUsernameDto register) {
+        ArgumentAssert.equals(register.getPassword(), register.getConfirmPassword(), "密码不一致");
+        User defUser = BeanUtil.toBean(register, User.class);
+        defUser.setUserType(register.getNature());
+        ssoUserService.registerByUsername(defUser);
+        return defUser.getUsername();
+    }
+
+    @Override
+    public Boolean forgetPassword(String email) {
+        User user = ssoUserService.getByEmail(email);
+        if (user == null) {
+            return false;
+        }
+
+        String token = UUID.randomUUID().toString();
+        CacheKey cacheKey = ForgetPasswordCacheKeyBuilder.build(token);
+        cacheOps.set(cacheKey, email);
+
+//        String url = "http://localhost:7700/#/auth/forget-password-update?token=" + token;
+        String url = systemProperties.getForgetPasswordUrl() + token;
+
+        MsgSendDto msgSendDto = MsgSendMailDto.buildApiSender()
+                .addRecipient(email)
+                .setTemplateKey(MsgTemplateKey.Email.FORGET_PASSWORD_BY_EMAIL)
+                .addParam("resetPasswordUrl", url)
+                .addParam("expireTime", String.valueOf(cacheKey.getExpire().toHours()));
+        msgFacade.sendByTemplateKey(msgSendDto);
+        return false;
+    }
+
+    @Override
+    public Boolean checkToken(String token) {
+        CacheKey cacheKey = ForgetPasswordCacheKeyBuilder.build(token);
+        CacheResult<String> result = cacheOps.get(cacheKey);
+        return !result.isNull() && !result.isNullVal();
+    }
+
+    @Override
+    public Boolean updateEmailByToken(ForgetPasswordByEmailDto dto) {
+        ArgumentAssert.equals(dto.getPassword(), dto.getConfirmPassword(), "密码不一致");
+        CacheKey cacheKey = ForgetPasswordCacheKeyBuilder.build(dto.getToken());
+        CacheResult<String> result = cacheOps.get(cacheKey);
+        String email = result.getValue();
+        ArgumentAssert.notEmpty(email, "token无效或已过期");
+
+        return ssoUserService.resetPwByEmail(email, dto.getPassword());
+    }
 
     @Builder
     @AllArgsConstructor

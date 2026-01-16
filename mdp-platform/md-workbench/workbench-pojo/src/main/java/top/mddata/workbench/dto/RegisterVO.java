@@ -1,8 +1,7 @@
 package top.mddata.workbench.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -24,17 +23,8 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Schema(title = "RegisterVO", description = "注册")
 public class RegisterVO {
-    @Schema(description = "验证码KEY")
-    @NotEmpty(message = "请填写验证码")
-    private String key;
-    @Schema(description = "验证码")
-    @NotEmpty(message = "请填写验证码")
-    private String code;
-
-
-    @Schema(description = "密码")
-    @NotEmpty(message = "请填写密码")
-    @Size(min = 6, max = 64, message = "密码长度不能小于{min}且超过{max}个字符")
-    private String password;
+    @Schema(description = "用户身份")
+    @NotNull(message = "请填写验证码")
+    private Integer nature;
 
 }

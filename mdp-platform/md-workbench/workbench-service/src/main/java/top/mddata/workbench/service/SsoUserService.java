@@ -63,6 +63,15 @@ public interface SsoUserService extends SuperService<User> {
     boolean checkPhone(String phone, Long id);
 
     /**
+     *
+     * 检测用户名是否存在
+     * @param username 用户名
+     * @param id 用户id
+     * @return 存在=true
+     */
+    boolean checkUsername(String username, Long id);
+
+    /**
      * 检测邮箱是否存在
      * @param email 邮箱
      * @param id 用户id
@@ -81,6 +90,12 @@ public interface SsoUserService extends SuperService<User> {
      * @param ssoUser 用户
      */
     void registerByPhone(User ssoUser);
+
+    /**
+     * 注册账号
+     * @param defUser 用户信息
+     */
+    void registerByUsername(User defUser);
 
     /**
      * 根据用户id，查询指定公司{companyId}下的所有部门
@@ -182,4 +197,12 @@ public interface SsoUserService extends SuperService<User> {
      * @return 用户id
      */
     Long updatePassword(ProfilePasswordDto dto);
+
+    /**
+     * 根据邮箱重置密码
+     * @param email 邮箱
+     * @param password 密码
+     * @return 是否成功
+     */
+    Boolean resetPwByEmail(String email, String password);
 }

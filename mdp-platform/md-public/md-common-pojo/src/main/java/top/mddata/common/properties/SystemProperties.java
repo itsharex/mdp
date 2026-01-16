@@ -35,6 +35,10 @@ public class SystemProperties {
      * 当前版本
      */
     private String version;
+    /**
+     * 忘记密码 时，根据邮件内容重置密码的前端地址
+     */
+    private String forgetPasswordUrl;
 
     private Mode mode;
     /**

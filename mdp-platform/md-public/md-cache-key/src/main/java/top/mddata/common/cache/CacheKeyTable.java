@@ -11,6 +11,11 @@ public interface CacheKeyTable {
      * 完整key: captcha:{key} -> str
      */
     String CAPTCHA = "captcha";
+    /**
+     * 忘记密码 前缀
+     * 完整key: forget_pwd:{key} -> str
+     */
+    String FORGET_PWD = "forget_pwd";
 
 
     interface Console {

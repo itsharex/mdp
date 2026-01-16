@@ -28,6 +28,12 @@ import static top.mddata.base.utils.ValidatorUtil.REGEX_MOBILE;
 @EqualsAndHashCode(callSuper = false)
 @Schema(title = "RegisterByMobileVO", description = "手机注册参数")
 public class RegisterByPhoneDto extends RegisterVO {
+    @Schema(description = "验证码KEY")
+    @NotEmpty(message = "请填写验证码")
+    private String key;
+    @Schema(description = "验证码")
+    @NotEmpty(message = "请填写验证码")
+    private String code;
 
     @Schema(description = "登录手机号")
     @Size(max = 11, message = "登录手机号长度不能超过{max}")
