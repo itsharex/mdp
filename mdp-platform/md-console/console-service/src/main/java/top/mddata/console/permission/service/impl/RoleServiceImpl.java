@@ -59,6 +59,15 @@ public class RoleServiceImpl extends SuperServiceImpl<RoleMapper, Role> implemen
 
     @Override
     @Transactional(readOnly = true)
+    public Role getByCode(String code) {
+        if (StrUtil.isEmptyIfStr(code)) {
+            return null;
+        }
+        return mapper.selectOneByQuery(QueryWrapper.create().eq(Role::getCode, code).eq(Role::getState, true));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Boolean checkCategoryAndOrgNature(String roleCategory, Integer orgNature, Long id) {
         return mapper.selectCountByQuery(QueryWrapper.create().eq(Role::getRoleCategory, roleCategory, true).eq(Role::getOrgNature, orgNature, true).ne(Role::getId, id)) > 0;
     }
@@ -92,5 +101,17 @@ public class RoleServiceImpl extends SuperServiceImpl<RoleMapper, Role> implemen
         userRoleRelService.removeByRoleIds(idList);
 
         return super.removeByIds(idList);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void joinTheRole(String code, Long userId) {
+        Role role = getByCode(code);
+        ArgumentAssert.notNull(role, "角色[{}]不存在", code);
+
+        UserRoleRel userRoleRel = new UserRoleRel();
+        userRoleRel.setRoleId(role.getId());
+        userRoleRel.setUserId(userId);
+        userRoleRelService.save(userRoleRel);
     }
 }

@@ -2,6 +2,7 @@ package top.mddata.console.organization.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
@@ -30,11 +31,13 @@ import top.mddata.common.cache.workbench.SsoUserUserNameCacheKeyBuilder;
 import top.mddata.common.constant.ConfigKey;
 import top.mddata.common.constant.EventTypeCode;
 import top.mddata.common.constant.FileObjectType;
+import top.mddata.common.constant.RoleCode;
 import top.mddata.common.dto.IdDto;
 import top.mddata.common.dto.IdsDto;
 import top.mddata.common.entity.User;
 import top.mddata.common.entity.UserOrgRel;
 import top.mddata.common.entity.UserRoleRel;
+import top.mddata.common.enumeration.BooleanEnum;
 import top.mddata.common.enumeration.organization.UserSourceEnum;
 import top.mddata.common.enumeration.organization.UserTypeEnum;
 import top.mddata.common.mapper.UserMapper;
@@ -46,6 +49,7 @@ import top.mddata.console.organization.query.UserQuery;
 import top.mddata.console.organization.service.UserOrgRelService;
 import top.mddata.console.organization.service.UserService;
 import top.mddata.console.organization.vo.UserVo;
+import top.mddata.console.permission.service.RoleService;
 import top.mddata.console.system.dto.RelateFilesToBizDto;
 import top.mddata.console.system.service.ConfigService;
 import top.mddata.console.system.service.FileService;
@@ -75,6 +79,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
     private final SystemProperties systemProperties;
     private final UidGenerator uidGenerator;
     private final NotifyAndEventPushFacade notifyAndEventPushFacade;
+    private final RoleService roleService;
 
     @Override
     protected CacheKeyBuilder cacheKeyBuilder() {
@@ -302,6 +307,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean removeByIds(Collection<? extends Serializable> idList) {
         boolean flag = super.removeByIds(idList);
         EventTriggerDto request = new EventTriggerDto();
@@ -310,5 +316,92 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
                 .setTriggerAt(LocalDateTime.now());
         notifyAndEventPushFacade.eventPush(request);
         return flag;
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void registerByEmail(User user) {
+        ArgumentAssert.isFalse(checkEmail(user.getEmail(), null), "邮箱：{}已经存在", user.getEmail());
+        user.setPassword(systemProperties.getDefPwd());
+        user.setUsername(UUID.randomUUID().toString(true));
+        initSsoUser(user);
+        save(user);
+        saveDefOrg(user);
+        saveDefRole(user);
+
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_ADD)
+                .setEventContent(IdDto.builder().id(user.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
+    }
+
+    private void saveDefRole(User user) {
+        String code;
+        if (UserTypeEnum.DEVELOPER.eq(user.getUserType())) {
+            code = RoleCode.DEVELOPER_USER;
+        } else {
+            code = RoleCode.DEFAULT_USER;
+        }
+        roleService.joinTheRole(code, user.getId());
+
+    }
+
+    private void saveDefOrg(User user) {
+        // 开发者 加入内置的组织
+        if (UserTypeEnum.DEVELOPER.eq(user.getUserType())) {
+            Long orgId = configService.getLong(ConfigKey.Console.BUILT_IN_DEVELOPER, null);
+            ArgumentAssert.notNull(orgId, "请先联系管理员配置公司：内置开发者");
+
+            UserOrgRel userOrgRel = new UserOrgRel();
+            userOrgRel.setUserId(user.getId());
+            userOrgRel.setOrgId(orgId);
+            userOrgRelService.save(userOrgRel);
+        }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void registerByPhone(User user) {
+        ArgumentAssert.isFalse(checkPhone(user.getPhone(), null), "手机号：{}已经存在", user.getPhone());
+        user.setPassword(systemProperties.getDefPwd());
+        user.setUsername(UUID.randomUUID().toString(true));
+        initSsoUser(user);
+        save(user);
+        saveDefOrg(user);
+        saveDefRole(user);
+
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_ADD)
+                .setEventContent(IdDto.builder().id(user.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void registerByUsername(User user) {
+        ArgumentAssert.isFalse(checkUsername(user.getUsername(), null), "用户名：{}已经存在", user.getUsername());
+        initSsoUser(user);
+        save(user);
+        saveDefOrg(user);
+        saveDefRole(user);
+
+        EventTriggerDto request = new EventTriggerDto();
+        request.setEventCode(EventTypeCode.Console.USER_ADD)
+                .setEventContent(IdDto.builder().id(user.getId()).build().toString())
+                .setTriggerAt(LocalDateTime.now());
+        notifyAndEventPushFacade.eventPush(request);
+    }
+
+    private void initSsoUser(User defUser) {
+        defUser.setSalt(RandomUtil.randomString(20));
+        defUser.setPassword(SecureUtil.sha256(defUser.getPassword() + defUser.getSalt()));
+        defUser.setPwErrorNum(0);
+        defUser.setState(BooleanEnum.TRUE.getBool());
+        defUser.setUserSource(UserSourceEnum.PLATFORM.getCode());
+        String expireTime = configService.getString(ConfigKey.Workbench.PASSWORD_EXPIRE_TIME, "3M");
+        defUser.setPwExpireTime(DateUtils.conversionDateTime(LocalDateTime.now(), expireTime));
     }
 }

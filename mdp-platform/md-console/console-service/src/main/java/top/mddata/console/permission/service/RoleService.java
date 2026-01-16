@@ -29,6 +29,13 @@ public interface RoleService extends SuperService<Role> {
     Boolean checkCode(String roleCategory, String code, Long id);
 
     /**
+     * 根据编码查找角色
+     * @param code 编码
+     * @return 角色
+     */
+    Role getByCode(String code);
+
+    /**
      * 检测角色类别和组织性质是否已经存在
      * @param roleCategory 角色类别
      * @param orgNature 组织性质
@@ -37,5 +44,11 @@ public interface RoleService extends SuperService<Role> {
      */
     Boolean checkCategoryAndOrgNature(String roleCategory, Integer orgNature, Long id);
 
+    /**
+     * 将用户加入角色
+     * @param code 角色编码
+     * @param userId 用户id
+     */
+    void joinTheRole(String code, Long userId);
 
 }

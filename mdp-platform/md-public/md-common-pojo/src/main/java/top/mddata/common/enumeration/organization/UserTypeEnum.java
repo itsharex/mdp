@@ -26,6 +26,7 @@ public enum UserTypeEnum implements BaseEnum<Integer> {
      * 管理员
      */
     ADMIN(2, "管理员"),
+    DEVELOPER(90, "开发者"),
     /**
      * 运维管理员
      */

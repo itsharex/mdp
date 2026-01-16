@@ -80,24 +80,6 @@ public interface SsoUserService extends SuperService<User> {
     boolean checkEmail(String email, Long id);
 
     /**
-     * 根据邮箱注册账号
-     * @param ssoUser 用户
-     */
-    void registerByEmail(User ssoUser);
-
-    /**
-     * 根据手机注册账号
-     * @param ssoUser 用户
-     */
-    void registerByPhone(User ssoUser);
-
-    /**
-     * 注册账号
-     * @param defUser 用户信息
-     */
-    void registerByUsername(User defUser);
-
-    /**
      * 根据用户id，查询指定公司{companyId}下的所有部门
      * @param userId 用户id
      * @param companyId 单位id

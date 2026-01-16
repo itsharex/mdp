@@ -185,51 +185,6 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
         return getMapper().selectCountByQuery(queryWrapper) > 0;
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void registerByEmail(User ssoUser) {
-        ArgumentAssert.isFalse(checkEmail(ssoUser.getEmail(), null), "邮箱：{}已经存在", ssoUser.getEmail());
-        ssoUser.setPassword(systemProperties.getDefPwd());
-        ssoUser.setUsername(UUID.randomUUID().toString(true));
-        initSsoUser(ssoUser);
-        save(ssoUser);
-
-        EventTriggerDto request = new EventTriggerDto();
-        request.setEventCode(EventTypeCode.Console.USER_ADD)
-                .setEventContent(IdDto.builder().id(ssoUser.getId()).build().toString())
-                .setTriggerAt(LocalDateTime.now());
-        notifyAndEventPushFacade.eventPush(request);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void registerByPhone(User ssoUser) {
-        ArgumentAssert.isFalse(checkPhone(ssoUser.getPhone(), null), "手机号：{}已经存在", ssoUser.getPhone());
-        ssoUser.setPassword(systemProperties.getDefPwd());
-        ssoUser.setUsername(UUID.randomUUID().toString(true));
-        initSsoUser(ssoUser);
-        save(ssoUser);
-
-        EventTriggerDto request = new EventTriggerDto();
-        request.setEventCode(EventTypeCode.Console.USER_ADD)
-                .setEventContent(IdDto.builder().id(ssoUser.getId()).build().toString())
-                .setTriggerAt(LocalDateTime.now());
-        notifyAndEventPushFacade.eventPush(request);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void registerByUsername(User ssoUser) {
-        ArgumentAssert.isFalse(checkUsername(ssoUser.getUsername(), null), "用户名：{}已经存在", ssoUser.getUsername());
-        initSsoUser(ssoUser);
-        save(ssoUser);
-
-        EventTriggerDto request = new EventTriggerDto();
-        request.setEventCode(EventTypeCode.Console.USER_ADD)
-                .setEventContent(IdDto.builder().id(ssoUser.getId()).build().toString())
-                .setTriggerAt(LocalDateTime.now());
-        notifyAndEventPushFacade.eventPush(request);
-    }
 
     @Override
     @Transactional(readOnly = true)
@@ -498,13 +453,4 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
         return true;
     }
 
-    private void initSsoUser(User defUser) {
-        defUser.setSalt(RandomUtil.randomString(20));
-        defUser.setPassword(SecureUtil.sha256(defUser.getPassword() + defUser.getSalt()));
-        defUser.setPwErrorNum(0);
-        defUser.setState(BooleanEnum.TRUE.getBool());
-        defUser.setUserSource(UserSourceEnum.PLATFORM.getCode());
-        String expireTime = configFacade.getString(ConfigKey.Workbench.PASSWORD_EXPIRE_TIME, "3M");
-        defUser.setPwExpireTime(DateUtils.conversionDateTime(LocalDateTime.now(), expireTime));
-    }
 }

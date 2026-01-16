@@ -39,6 +39,7 @@ import top.mddata.common.properties.SystemProperties;
 import top.mddata.console.message.dto.MsgSendDto;
 import top.mddata.console.message.dto.MsgSendMailDto;
 import top.mddata.console.message.facade.MsgFacade;
+import top.mddata.console.organization.facade.UserFacade;
 import top.mddata.workbench.dto.ForgetPasswordByEmailDto;
 import top.mddata.workbench.dto.LoginDto;
 import top.mddata.workbench.dto.LoginLogDto;
@@ -77,6 +78,7 @@ public class AuthServiceImpl implements AuthService {
     private final SaTokenConfig saTokenConfig;
     private final CacheOps cacheOps;
     private final SsoUserService ssoUserService;
+    private final UserFacade userFacade;
     private final MsgFacade msgFacade;
     private final Map<String, LoginStrategy> loginStrategy;
 
@@ -275,7 +277,7 @@ public class AuthServiceImpl implements AuthService {
         }
         User defUser = BeanUtil.toBean(register, User.class);
         defUser.setUserType(register.getNature());
-        ssoUserService.registerByEmail(defUser);
+        userFacade.registerByEmail(defUser);
         if (systemProperties.getVerifyCaptcha()) {
             CacheKey cacheKey = new CaptchaCacheKeyBuilder().key(register.getKey(), MsgTemplateKey.Email.EMAIL_REGISTER);
             cacheOps.del(cacheKey);
@@ -293,7 +295,7 @@ public class AuthServiceImpl implements AuthService {
         }
         User defUser = BeanUtil.toBean(register, User.class);
         defUser.setUserType(register.getNature());
-        ssoUserService.registerByPhone(defUser);
+        userFacade.registerByPhone(defUser);
 
         if (systemProperties.getVerifyCaptcha()) {
             CacheKey cacheKey = new CaptchaCacheKeyBuilder().key(register.getKey(), MsgTemplateKey.Sms.PHONE_REGISTER);
@@ -309,7 +311,7 @@ public class AuthServiceImpl implements AuthService {
         ArgumentAssert.equals(register.getPassword(), register.getConfirmPassword(), "密码不一致");
         User defUser = BeanUtil.toBean(register, User.class);
         defUser.setUserType(register.getNature());
-        ssoUserService.registerByUsername(defUser);
+        userFacade.registerByUsername(defUser);
         return defUser.getUsername();
     }
 
@@ -333,7 +335,7 @@ public class AuthServiceImpl implements AuthService {
                 .addParam("resetPasswordUrl", url)
                 .addParam("expireTime", String.valueOf(cacheKey.getExpire().toHours()));
         msgFacade.sendByTemplateKey(msgSendDto);
-        return false;
+        return true;
     }
 
     @Override
