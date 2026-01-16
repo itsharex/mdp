@@ -353,7 +353,9 @@ public class AuthServiceImpl implements AuthService {
         String email = result.getValue();
         ArgumentAssert.notEmpty(email, "token无效或已过期");
 
-        return ssoUserService.resetPwByEmail(email, dto.getPassword());
+        Boolean b = ssoUserService.resetPwByEmail(email, dto.getPassword());
+        cacheOps.del(cacheKey);
+        return b;
     }
 
     @Builder
