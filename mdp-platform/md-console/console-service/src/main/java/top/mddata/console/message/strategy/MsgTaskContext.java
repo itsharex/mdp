@@ -132,6 +132,7 @@ public class MsgTaskContext {
 
             msgTaskUpdate.setTitle(result.getTitle());
             msgTaskUpdate.setContent(result.getContent());
+            msgTaskUpdate.setSendTime(LocalDateTime.now());
             msgTaskService.updateById(msgTaskUpdate);
         } catch (Exception e) {
             msgTaskUpdate.setStatus(MsgTaskStatusEnum.FAIL.getCode());

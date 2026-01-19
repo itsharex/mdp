@@ -1,5 +1,6 @@
 package top.mddata.console.message.query;
 
+import com.mybatisflex.annotation.Column;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -10,6 +11,7 @@ import top.mddata.base.base.ExtraParams;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * 消息任务 Query类（查询方法入参）。
@@ -58,7 +60,8 @@ public class MsgTaskQuery extends ExtraParams implements Serializable {
      * [1-后台发送 2-API发送 3-JOB发送]
      */
     @Schema(description = "发送渠道")
-    private Integer channel;
+    @Column(ignore = true)
+    private List<Integer> channelList;
 
     /**
      * 消息分类

@@ -146,7 +146,7 @@ public class MsgTaskVo implements Serializable {
     private Long senderId;
 
     @Schema(description = "接收人")
-    private List<Long> recipientList;
+    private List<String> recipientList;
 
     /**
      * 创建人ID

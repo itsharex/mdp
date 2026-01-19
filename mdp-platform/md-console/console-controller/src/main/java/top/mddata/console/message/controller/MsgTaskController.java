@@ -96,7 +96,7 @@ public class MsgTaskController extends SuperController<MsgTaskService, MsgTask> 
         MsgTask entity = superService.getById(id);
         MsgTaskVo vo = BeanUtil.toBean(entity, MsgTaskVo.class);
         List<MsgTaskRecipient> msgTaskRecipientList = msgTaskRecipientService.listByMsgTaskId(vo.getId());
-        vo.setRecipientList(msgTaskRecipientList.stream().map(MsgTaskRecipient::getRecipient).map(Convert::toLong).toList());
+        vo.setRecipientList(msgTaskRecipientList.stream().map(MsgTaskRecipient::getRecipient).toList());
         return R.success(vo);
     }
 
@@ -113,6 +113,7 @@ public class MsgTaskController extends SuperController<MsgTaskService, MsgTask> 
         Page<MsgTaskVo> page = Page.of(params.getCurrent(), params.getSize());
         MsgTask entity = BeanUtil.toBean(params.getModel(), MsgTask.class);
         QueryWrapper wrapper = QueryWrapper.create(entity, WrapperUtil.buildOperators(entity.getClass()));
+        wrapper.in(MsgTask::getChannel, params.getModel().getChannelList());
         WrapperUtil.buildWrapperByExtra(wrapper, params.getModel(), entity.getClass());
         WrapperUtil.buildWrapperByOrder(wrapper, params, entity.getClass());
         superService.pageAs(page, wrapper, MsgTaskVo.class);
