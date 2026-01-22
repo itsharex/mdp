@@ -37,7 +37,9 @@ import top.mddata.open.admin.vo.AppVo;
 import top.mddata.open.client.dto.AppDevInfoDto;
 import top.mddata.open.client.dto.AppInfoUpdateDto;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -217,4 +219,14 @@ public class AppServiceImpl extends SuperServiceImpl<AppMapper, App> implements 
         return entity.getId();
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeByIds(Collection<? extends Serializable> idList) {
+        List<App> apps = mapper.selectListByIds(idList);
+        boolean flag = super.removeByIds(idList);
+
+        List<CacheKey> cacheKeys = apps.stream().map(App::getAppKey).map(AppByAppKeyCkBuilder::builder).toList();
+        cacheOps.del(cacheKeys);
+        return flag;
+    }
 }

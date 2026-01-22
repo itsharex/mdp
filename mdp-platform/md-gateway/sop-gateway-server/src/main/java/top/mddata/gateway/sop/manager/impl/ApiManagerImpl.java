@@ -30,16 +30,16 @@ public class ApiManagerImpl implements ApiManager {
 
     @Override
     @Transactional(readOnly = true)
-    public ApiDto getByMethodAndVersion(String method, String version) {
+    public ApiDto getByMethodAndVersion(String apiName, String version) {
         /*
         1. 通过 method + version 去缓存中获取id
         2. 通过 id 去缓存中获取api
         3. 新增api时，需要将 ApiByMethodVersionCkBuilder 缓存清理
          */
 //        todo 测试一下，先缓存一个空值， 然后新开发一个同名的方法，测试是否能正常调用
-        CacheKey idKey = ApiByMethodVersionCkBuilder.builder(method, version);
+        CacheKey idKey = ApiByMethodVersionCkBuilder.builder(apiName, version);
         CacheResult<Long> apiIdCache = cacheOps.get(idKey, (k) -> {
-            Api api = apiMapper.selectOneByQuery(QueryWrapper.create().eq(Api::getApiName, method).eq(Api::getApiVersion, version));
+            Api api = apiMapper.selectOneByQuery(QueryWrapper.create().eq(Api::getApiName, apiName).eq(Api::getApiVersion, version));
             return api != null ? api.getId() : null;
         });
 

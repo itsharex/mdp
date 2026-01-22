@@ -53,12 +53,14 @@ public class ScopeGroupServiceImpl extends SuperServiceImpl<ScopeGroupMapper, Sc
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean removeById(Serializable id) {
+        delAppApiCache(Collections.singletonList(id));
         return removeByIds(Collections.singletonList(id));
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean removeById(ScopeGroup entity) {
+        delAppApiCache(Collections.singletonList(entity.getId()));
         return removeByIds(Collections.singletonList(entity.getId()));
     }
 
