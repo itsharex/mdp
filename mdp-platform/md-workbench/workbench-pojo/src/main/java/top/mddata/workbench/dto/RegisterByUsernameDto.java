@@ -9,9 +9,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
-import top.mddata.base.annotation.constraints.NotEmptyPattern;
-
-import static top.mddata.base.utils.ValidatorUtil.REGEX_MOBILE;
 
 
 /**
