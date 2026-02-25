@@ -50,7 +50,8 @@ public class HelpDocServiceImpl extends SuperServiceImpl<HelpDocMapper, HelpDoc>
     @Override
     protected HelpDoc updateBefore(Object update) {
         HelpDocDto data = (HelpDocDto) update;
-        HelpDoc entity = super.updateBefore(data);
+        HelpDoc entity = UpdateEntity.of(HelpDoc.class);
+        BeanUtil.copyProperties(update, entity);
 
         HelpDoc parent = null;
         if (data.getParentId() != null) {
@@ -59,7 +60,7 @@ public class HelpDocServiceImpl extends SuperServiceImpl<HelpDocMapper, HelpDoc>
         }
 
         fill(entity, parent);
-        return super.updateBefore(update);
+        return entity;
     }
 
     @Override
