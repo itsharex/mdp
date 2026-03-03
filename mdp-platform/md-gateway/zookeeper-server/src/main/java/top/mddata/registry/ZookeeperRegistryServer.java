@@ -19,7 +19,7 @@ public class ZookeeperRegistryServer {
      */
     public static void main(String[] args) {
         int zkPort = 2181;
-        LOG.warn("启动内置zookeeper注册中心(仅在开发环境下使用),port={}", zkPort);
+        LOG.warn("启动内置zookeeper注册中心(仅在开发环境下使用,生产请根据文档使用nacos),port={}", zkPort);
         new EmbeddedZooKeeper(zkPort, false).start();
     }
 }
