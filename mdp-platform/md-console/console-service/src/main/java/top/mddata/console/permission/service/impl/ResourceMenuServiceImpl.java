@@ -178,7 +178,7 @@ public class ResourceMenuServiceImpl extends SuperServiceImpl<ResourceMenuMapper
                 node.setComponent(LAYOUT);
 
                 // 若[某菜单]下所有子集都是隐藏菜单，就将[某菜单]数据克隆到他的子集的第一个菜单，并且点击[某菜单]时，重定向到子集第一个菜单
-                if (hideChildrenInMenu) {
+                if (hideChildrenInMenu && MenuTypeEnum.MENU.eq(node.getMenuType())) {
                     String path = node.getPath();
                     CharSequence name = node.getName();
 
