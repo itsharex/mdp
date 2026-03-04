@@ -14,9 +14,9 @@ public interface RoleCode {
 
 
     /**
-     * 普通开发者 角色
+     * 新注册的普通开发者角色
      */
-    String DEVELOPER_USER = "DEVELOPER_USER";
+    String DEFAULT_DEVELOPER = "DEFAULT_DEVELOPER";
     /**
      * 新注册的普通用户
      */

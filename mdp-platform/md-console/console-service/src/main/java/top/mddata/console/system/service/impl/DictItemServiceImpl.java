@@ -117,6 +117,28 @@ public class DictItemServiceImpl extends SuperServiceImpl<DictItemMapper, DictIt
         return voList.stream().collect(groupingBy(DictItemVo::getDictKey, LinkedHashMap::new, toList()));
     }
 
+
+    @Override
+    @Transactional(readOnly = true)
+    public Map<String, DictItem> getDictItemByUniqKey(String uniqKey) {
+        if (StrUtil.isEmpty(uniqKey)) {
+            return Collections.emptyMap();
+        }
+        Iterable<QueryColumn> queryColumns = QueryMethods.defaultColumns(DictItem.class);
+        // 关联查询
+        QueryWrapper queryWrapper = QueryWrapper.create()
+                .select(QueryMethods.column(Dict::getUniqKey).as(DictItem::getDictKey))
+                .select(queryColumns)
+                .from(DictItem.class).as("item")
+                .leftJoin(Dict.class).on(Dict::getId, DictItem::getDictId)
+                .eq(Dict::getUniqKey, uniqKey)
+                .orderBy(DictItem::getWeight, true);
+
+        List<DictItem> list = super.list(queryWrapper);
+
+        return CollHelper.buildMap(list, DictItem::getUniqKey, item -> item);
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean removeByDictIds(Collection<? extends Serializable> idList) {

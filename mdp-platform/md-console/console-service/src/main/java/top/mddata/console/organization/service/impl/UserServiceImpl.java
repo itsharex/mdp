@@ -29,6 +29,7 @@ import top.mddata.common.cache.workbench.SsoUserEmailCacheKeyBuilder;
 import top.mddata.common.cache.workbench.SsoUserPhoneCacheKeyBuilder;
 import top.mddata.common.cache.workbench.SsoUserUserNameCacheKeyBuilder;
 import top.mddata.common.constant.ConfigKey;
+import top.mddata.common.constant.EchoDictType;
 import top.mddata.common.constant.EventTypeCode;
 import top.mddata.common.constant.FileObjectType;
 import top.mddata.common.constant.RoleCode;
@@ -51,7 +52,9 @@ import top.mddata.console.organization.service.UserService;
 import top.mddata.console.organization.vo.UserVo;
 import top.mddata.console.permission.service.RoleService;
 import top.mddata.console.system.dto.RelateFilesToBizDto;
+import top.mddata.console.system.entity.DictItem;
 import top.mddata.console.system.service.ConfigService;
+import top.mddata.console.system.service.DictItemService;
 import top.mddata.console.system.service.FileService;
 import top.mddata.open.admin.dto.EventTriggerDto;
 import top.mddata.open.manage.facade.NotifyAndEventPushFacade;
@@ -62,6 +65,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 用户 服务层实现。
@@ -76,6 +80,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
     private final UserOrgRelService userOrgRelService;
     private final FileService fileService; // 同一个服务，直接调用 service。跨服务需要调用 facade
     private final ConfigService configService;  // 同一个服务，直接调用 service。跨服务需要调用 facade
+    private final DictItemService dictItemService;
     private final SystemProperties systemProperties;
     private final UidGenerator uidGenerator;
     private final NotifyAndEventPushFacade notifyAndEventPushFacade;
@@ -326,6 +331,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
         user.setPassword(systemProperties.getDefPwd());
         user.setUsername(UUID.randomUUID().toString(true));
         initSsoUser(user);
+        user.setName(user.getEmail());
         save(user);
         saveDefOrg(user);
         saveDefRole(user);
@@ -338,12 +344,15 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
     }
 
     private void saveDefRole(User user) {
-        String code;
-        if (UserTypeEnum.DEVELOPER.eq(user.getUserType())) {
-            code = RoleCode.DEVELOPER_USER;
-        } else {
-            code = RoleCode.DEFAULT_USER;
+        String code = RoleCode.DEFAULT_USER;
+
+        Map<String, DictItem> dictMap = dictItemService.getDictItemByUniqKey(EchoDictType.Workbench.REG_BIND_ROLE);
+
+        if (dictMap.containsKey(String.valueOf(user.getUserType()))) {
+            DictItem dictItem = dictMap.get(String.valueOf(user.getUserType()));
+            code = dictItem != null ? dictItem.getName() : null;
         }
+
         roleService.joinTheRole(code, user.getId());
 
     }
@@ -368,6 +377,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
         user.setPassword(systemProperties.getDefPwd());
         user.setUsername(UUID.randomUUID().toString(true));
         initSsoUser(user);
+        user.setName(user.getPhone());
         save(user);
         saveDefOrg(user);
         saveDefRole(user);
@@ -384,6 +394,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
     public void registerByUsername(User user) {
         ArgumentAssert.isFalse(checkUsername(user.getUsername(), null), "用户名：{}已经存在", user.getUsername());
         initSsoUser(user);
+        user.setName(user.getUsername());
         save(user);
         saveDefOrg(user);
         saveDefRole(user);

@@ -45,6 +45,13 @@ public interface EchoDictType {
         String DATA_TYPE = "DataTypeEnum";
     }
 
+    interface Workbench {
+
+        /**
+         * 注册时不同的组织性质默认绑定什么角色
+         */
+        String REG_BIND_ROLE = "REG_BIND_ROLE";
+    }
 
     /**
      * 后台服务
@@ -74,5 +81,6 @@ public interface EchoDictType {
          * [1-默认 90-开发者 99-运维]
          */
         String ORG_NATURE = "OrgNatureEnum";
+
     }
 }
