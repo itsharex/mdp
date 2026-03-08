@@ -46,6 +46,9 @@ public interface AppService extends SuperService<App> {
     /**
      * 查询用户能访问的应用
      *
+     * 1. 公开应用
+     * 2. 已授权的应用
+     *
      * @param userId 用户id
      * @return 应用列表
      */

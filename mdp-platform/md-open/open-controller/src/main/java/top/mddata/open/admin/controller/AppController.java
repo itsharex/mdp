@@ -167,7 +167,6 @@ public class AppController extends SuperController<AppService, App> {
     /**
      * 查询用户能访问的应用
      *
-     * @return
      */
     @PostMapping("listMyApp")
     @Operation(summary = "查询用户能访问的应用", description = "查询用户能访问的应用")

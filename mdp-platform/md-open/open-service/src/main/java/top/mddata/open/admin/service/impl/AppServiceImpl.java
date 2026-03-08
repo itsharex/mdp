@@ -6,6 +6,8 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baidu.fsg.uid.UidGenerator;
 import com.mybatisflex.core.paginate.Page;
+import com.mybatisflex.core.query.QueryColumn;
+import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.core.util.UpdateEntity;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +24,10 @@ import top.mddata.base.utils.StrPool;
 import top.mddata.common.cache.open.AppByAppKeyCkBuilder;
 import top.mddata.common.cache.open.AppCkBuilder;
 import top.mddata.common.constant.FileObjectType;
+import top.mddata.common.entity.UserRoleRel;
 import top.mddata.common.enumeration.permission.RoleCategoryEnum;
+import top.mddata.console.permission.entity.Role;
+import top.mddata.console.permission.entity.RoleAppRel;
 import top.mddata.console.system.dto.RelateFilesToBizDto;
 import top.mddata.console.system.facade.FileFacade;
 import top.mddata.open.admin.dto.AppDto;
@@ -40,10 +45,13 @@ import top.mddata.open.client.dto.AppInfoUpdateDto;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * 应用 服务层实现。
@@ -131,8 +139,57 @@ public class AppServiceImpl extends SuperServiceImpl<AppMapper, App> implements 
     @Override
     @Transactional(readOnly = true)
     public List<AppVo> listMyApp(Long userId) {
-//        TODO henhen6
-        return listAs(QueryWrapper.create(), AppVo.class);
+        Iterable<QueryColumn> queryColumns = QueryMethods.defaultColumns(App.class);
+        // 将过滤条件移到 on 中，可以减少 join 数据量，提高查询效率
+        QueryWrapper queryWrapper = QueryWrapper.create().select(queryColumns).from(App.class)
+                .innerJoin(RoleAppRel.class).on(RoleAppRel::getAppId, App::getId)
+                .innerJoin(Role.class).on(RoleAppRel::getRoleId, Role::getId).eq(Role::getState, true)
+                .innerJoin(UserRoleRel.class).on(Role::getId, UserRoleRel::getRoleId).eq(UserRoleRel::getUserId, userId)
+                .where(App::getShow).eq(true)
+                .eq(App::getState, true)
+                .orderBy(App::getWeight, true);
+        List<AppVo> list = listAs(queryWrapper, AppVo.class);
+
+        QueryWrapper wrapper = QueryWrapper.create()
+                .eq(App::getShow, true)
+                .eq(App::getState, true)
+                .eq(App::getIsPublic, true) // 公开应用
+                .orderBy(App::getWeight, true);
+        List<AppVo> publicList = listAs(wrapper, AppVo.class);
+
+
+        // 根据 id 合并2个list,并根据weight升序排序
+        return Stream.concat(list.stream(), publicList.stream())
+                // 过滤id为null的元素，避免空指针
+                .filter(app -> app.getId() != null)
+                // 转Map去重：key=id，重复时保留第一个（list中的元素）
+                .collect(Collectors.toMap(
+                        AppVo::getId,   // 以id作为唯一key
+                        app -> app,     // 以AppVo本身为value
+                        (existing, newApp) -> existing // 重复时保留已存在的（list优先）
+                ))
+                // 取出Map的values并转为流
+                .values().stream()
+                // 按weight升序排序（处理weight为null的情况）
+                .sorted(Comparator.comparing(AppVo::getWeight,
+                        // 自定义null值处理：null排最前，非null按升序
+                        Comparator.nullsFirst(Integer::compareTo)
+                ))
+                // 转为最终List
+                .collect(Collectors.toList());
+    }
+
+    public static void main(String[] args) {
+        Iterable<QueryColumn> queryColumns = QueryMethods.defaultColumns(App.class);
+        // 将过滤条件移到 on 中，可以减少 join 数据量，提高查询效率
+        QueryWrapper queryWrapper = QueryWrapper.create().select(queryColumns).from(App.class)
+                .innerJoin(RoleAppRel.class).on(RoleAppRel::getAppId, App::getId)
+                .innerJoin(Role.class).on(RoleAppRel::getRoleId, Role::getId).eq(Role::getState, true)
+                .innerJoin(UserRoleRel.class).on(Role::getId, UserRoleRel::getRoleId).eq(UserRoleRel::getUserId, 680083598598475778L)
+                .where(App::getShow).eq(true)
+                .eq(App::getState, true)
+                .orderBy(App::getWeight, true);
+
     }
 
     @Override
