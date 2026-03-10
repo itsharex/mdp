@@ -172,24 +172,11 @@ public class AppServiceImpl extends SuperServiceImpl<AppMapper, App> implements 
                 .values().stream()
                 // 按weight升序排序（处理weight为null的情况）
                 .sorted(Comparator.comparing(AppVo::getWeight,
-                        // 自定义null值处理：null排最前，非null按升序
+                        // 自定义null值处理：null排最前，非null按默认升序
                         Comparator.nullsFirst(Integer::compareTo)
-                ))
+                ).reversed())  // 实现降序
                 // 转为最终List
                 .collect(Collectors.toList());
-    }
-
-    public static void main(String[] args) {
-        Iterable<QueryColumn> queryColumns = QueryMethods.defaultColumns(App.class);
-        // 将过滤条件移到 on 中，可以减少 join 数据量，提高查询效率
-        QueryWrapper queryWrapper = QueryWrapper.create().select(queryColumns).from(App.class)
-                .innerJoin(RoleAppRel.class).on(RoleAppRel::getAppId, App::getId)
-                .innerJoin(Role.class).on(RoleAppRel::getRoleId, Role::getId).eq(Role::getState, true)
-                .innerJoin(UserRoleRel.class).on(Role::getId, UserRoleRel::getRoleId).eq(UserRoleRel::getUserId, 680083598598475778L)
-                .where(App::getShow).eq(true)
-                .eq(App::getState, true)
-                .orderBy(App::getWeight, true);
-
     }
 
     @Override
