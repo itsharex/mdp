@@ -139,4 +139,24 @@ public class UserVo implements Serializable, EchoVO {
      */
     @Schema(description = "修改日期")
     private LocalDateTime updatedAt;
+
+    /**
+     * 输错密码时间
+     */
+    private LocalDateTime pwErrorLastTime;
+
+    /**
+     * 密码错误次数
+     */
+    private Integer pwErrorNum;
+
+    /**
+     * 密码过期时间
+     */
+    private LocalDateTime pwExpireTime;
+
+    /**
+     * 最后登录时间
+     */
+    private LocalDateTime lastLoginTime;
 }
