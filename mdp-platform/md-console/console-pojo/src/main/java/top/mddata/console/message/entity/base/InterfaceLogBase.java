@@ -31,6 +31,10 @@ public class InterfaceLogBase extends SuperEntity<Long> implements Serializable 
      * 接口ID
      */
     private Long interfaceStatId;
+    /**
+     * 消息任务ID
+     */
+    private Long msgTaskId;
 
     /**
      * 执行开始时间

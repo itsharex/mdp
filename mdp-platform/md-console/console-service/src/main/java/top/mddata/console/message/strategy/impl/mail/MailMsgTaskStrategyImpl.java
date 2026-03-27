@@ -76,7 +76,7 @@ public class MailMsgTaskStrategyImpl extends AbstractMsgTaskStrategy {
         BeanUtil.fillBeanWithMap(propertyParam, property, true);
         if (property.getDebug() != null && property.getDebug()) {
             log.info("已忽略邮件发送: {}", JSON.toJSONString(emails));
-            return MsgResult.builder().result(true).build();
+            return MsgResult.builder().result(true).remarks("已忽略发送").build();
         }
 
         MailMessage message = MailMessage.Builder()

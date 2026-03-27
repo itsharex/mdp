@@ -42,7 +42,7 @@ public class AliSmsMsgTaskStrategyImpl extends AbstractMsgTaskStrategy {
 
         if (propertyParam.get("debug") != null && Convert.toBool(propertyParam.get("debug"))) {
             log.info("已忽略短信发送: {}", JSON.toJSONString(phoneNumbers));
-            return MsgResult.builder().result(true).build();
+            return MsgResult.builder().result(true).remarks("已忽略发送").build();
         }
 
         MsgTemplate msgTemplate = msgParam.getMsgTemplate();

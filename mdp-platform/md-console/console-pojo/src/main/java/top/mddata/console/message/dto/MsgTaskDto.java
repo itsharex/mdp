@@ -84,7 +84,12 @@ public class MsgTaskDto implements Serializable {
     @Size(max = 255, message = "发布人长度不能超过{max}")
     @Schema(description = "发布人")
     private String author;
-
+    /**
+     * 备注
+     */
+    @Size(max = 255, message = "备注长度不能超过{max}")
+    @Schema(description = "备注")
+    private String remarks;
     /**
      * 接收范围
      * [0-所有人 1-指定用户 2-指定角色 3-指定部门]

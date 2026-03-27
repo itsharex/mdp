@@ -85,6 +85,11 @@ public class MsgTaskBase extends SuperEntity<Long> implements Serializable {
      */
     private String content;
 
+    /**
+     * 备注
+     */
+    private String remarks;
+
 
     /**
      * 是否定时发送

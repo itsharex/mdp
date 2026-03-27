@@ -40,7 +40,11 @@ public class InterfaceLogQuery extends ExtraParams implements Serializable {
     @Schema(description = "接口ID")
     @NotNull(message = "接口ID不能为空")
     private Long interfaceStatId;
-
+    /**
+     * 消息任务ID
+     */
+    @Schema(description = "消息任务ID")
+    private Long msgTaskId;
     /**
      * 执行开始时间
      */

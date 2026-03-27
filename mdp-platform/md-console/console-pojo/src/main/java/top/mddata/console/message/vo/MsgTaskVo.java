@@ -172,4 +172,9 @@ public class MsgTaskVo implements Serializable {
     @Schema(description = "最后修改时间")
     private LocalDateTime updatedAt;
 
+    /**
+     * 备注
+     */
+    @Schema(description = "备注")
+    private String remarks;
 }

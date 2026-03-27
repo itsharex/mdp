@@ -86,6 +86,7 @@ public class MsgTaskContext {
         InterfaceLog interfaceLog = new InterfaceLog();
         interfaceLog
                 .setInterfaceStatId(interfaceStat.getId())
+                .setMsgTaskId(msgTask.getId())
                 .setStatus(MsgInterfaceLogStatusEnum.INIT.getCode())
                 .setExecStartTime(LocalDateTime.now())
                 .setParam(msgTask.getParam());
@@ -129,7 +130,7 @@ public class MsgTaskContext {
             }
 
             interfaceLog.setResult(JSON.toJSONString(result));
-
+            msgTaskUpdate.setRemarks(result.getRemarks());
             msgTaskUpdate.setTitle(result.getTitle());
             msgTaskUpdate.setContent(result.getContent());
             msgTaskUpdate.setSendTime(LocalDateTime.now());

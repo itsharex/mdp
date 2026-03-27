@@ -41,6 +41,11 @@ public class InterfaceLogVo implements Serializable {
      */
     @Schema(description = "接口ID")
     private Long interfaceStatId;
+    /**
+     * 消息任务ID
+     */
+    @Schema(description = "消息任务ID")
+    private Long msgTaskId;
 
     /**
      * 执行开始时间

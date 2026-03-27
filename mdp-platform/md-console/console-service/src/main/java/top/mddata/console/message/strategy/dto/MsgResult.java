@@ -26,4 +26,8 @@ public class MsgResult {
     private String content;
     /** 返回结果 */
     private Object result;
+    /**
+     * 备注
+     */
+    private String remarks;
 }
