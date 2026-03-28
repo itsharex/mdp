@@ -38,7 +38,6 @@ public class InterfaceLogQuery extends ExtraParams implements Serializable {
      * 接口ID
      */
     @Schema(description = "接口ID")
-    @NotNull(message = "接口ID不能为空")
     private Long interfaceStatId;
     /**
      * 消息任务ID

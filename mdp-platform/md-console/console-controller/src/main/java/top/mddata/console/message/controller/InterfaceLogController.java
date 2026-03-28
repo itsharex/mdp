@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
+import top.mddata.base.exception.BizException;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
@@ -78,6 +79,11 @@ public class InterfaceLogController extends SuperController<InterfaceLogService,
     public R<Page<InterfaceLogVo>> page(@RequestBody @Validated PageParams<InterfaceLogQuery> params) {
         Page<InterfaceLogVo> page = Page.of(params.getCurrent(), params.getSize());
         InterfaceLog entity = BeanUtil.toBean(params.getModel(), InterfaceLog.class);
+
+        if (entity.getMsgTaskId() == null && entity.getInterfaceStatId() == null) {
+            throw new BizException("消息任务和接口ID不能同时为空");
+        }
+
         QueryWrapper wrapper = QueryWrapper.create(entity, WrapperUtil.buildOperators(entity.getClass()));
         WrapperUtil.buildWrapperByExtra(wrapper, params.getModel(), entity.getClass());
         WrapperUtil.buildWrapperByOrder(wrapper, params, entity.getClass());
