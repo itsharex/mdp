@@ -86,6 +86,8 @@ public abstract class MyMybatisFlexConfiguration extends DbConfiguration impleme
         globalConfig.registerInsertListener(new DefaultInsertListener(), BaseEntity.class);
         globalConfig.registerUpdateListener(new DefaultUpdateListener(), BaseEntity.class);
 
+//        globalConfig.registerSetListener(new FieldPermissionsOnSetListener(), BaseEntity.class);
+//        DialectFactory.registerDialect(DbType.MYSQL, new AuthDialectImpl());
     }
 
     /** 逻辑删除处理器 */
