@@ -20,6 +20,7 @@ import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
+import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.ContextUtil;
 import top.mddata.workbench.entity.Notice;
 import top.mddata.workbench.entity.NoticeRecipient;
@@ -95,11 +96,15 @@ public class NoticeController extends SuperController<NoticeService, Notice> {
         Page<NoticeVo> page = Page.of(params.getCurrent(), params.getSize());
         NoticeQuery query = params.getModel();
         Notice entity = BeanUtil.toBean(params.getModel(), Notice.class);
+
+        Long userId = ContextUtil.getUserId();
+        ArgumentAssert.notNull(userId, "用户ID不能为空");
+
         // 主表的所有字段
         Iterable<QueryColumn> queryColumns = QueryMethods.allColumns(Notice.class);
         QueryWrapper wrapper = QueryWrapper.create().select(queryColumns).select(NoticeRecipient::getRead, NoticeRecipient::getReadTime)
                 .from(Notice.class).innerJoin(NoticeRecipient.class).on(NoticeRecipient::getNoticeId, Notice::getId)
-                .where(NoticeRecipient::getUserId).eq(ContextUtil.getUserId())
+                .where(NoticeRecipient::getUserId).eq(userId)
                 .eq(NoticeRecipient::getRead, query.getRead())
                 .eq(Notice::getMsgCategory, query.getMsgCategory())
                 .like(Notice::getTitle, query.getTitle())

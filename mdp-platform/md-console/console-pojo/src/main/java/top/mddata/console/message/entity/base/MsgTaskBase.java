@@ -53,7 +53,7 @@ public class MsgTaskBase extends SuperEntity<Long> implements Serializable {
     /**
      * 消息分类
      * 站内信专属
-     * [1-待办 2-公告 3-预警]
+     * [1-待办 2-预警 3-提醒]
      */
     private Integer msgCategory;
 
