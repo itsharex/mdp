@@ -8,6 +8,7 @@ import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import cn.dev33.satoken.temp.SaTempUtil;
 import cn.dev33.satoken.util.SaFoxUtil;
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.UUID;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.spring.SpringUtil;
@@ -34,7 +35,6 @@ import top.mddata.common.constant.MsgTemplateKey;
 import top.mddata.common.entity.Org;
 import top.mddata.common.entity.OrgNature;
 import top.mddata.common.entity.User;
-import top.mddata.common.enumeration.organization.OrgNatureEnum;
 import top.mddata.common.properties.SystemProperties;
 import top.mddata.console.message.dto.MsgSendDto;
 import top.mddata.console.message.dto.MsgSendMailDto;
@@ -165,10 +165,10 @@ public class AuthServiceImpl implements AuthService {
         Long currentDeptId = null;
         // 当前所属单位
         Long currentCompanyId = null;
-        Integer currentCompanyNature = OrgNatureEnum.DEFAULT.getCode();
+        Integer currentCompanyNature = null;
         // 当前所属顶级单位
         Long currentTopCompanyId = null;
-        Integer currentTopCompanyNature = OrgNatureEnum.DEFAULT.getCode();
+        Integer currentTopCompanyNature = null;
 //        当前顶级组织是否超级管理
         boolean currentTopCompanyIsAdmin = false;
 
@@ -185,6 +185,8 @@ public class AuthServiceImpl implements AuthService {
 
         User updateUser = UpdateEntity.of(User.class, userId);
 
+        List<Long> orgIdList = ssoUserService.findOrgIdByUserId(userId);
+
 //            查最后一次登录时 所属部门
         if (sysUser.getLastDeptId() == null) {
             // 上次登录部门为空，则随机选择一个部门
@@ -195,11 +197,15 @@ public class AuthServiceImpl implements AuthService {
             updateUser.setLastDeptId(currentDeptId);
 
         } else {
-            currentDeptId = sysUser.getLastDeptId();
+            if (CollUtil.contains(orgIdList, sysUser.getLastDeptId())) {
+                currentDeptId = sysUser.getLastDeptId();
+            } else {
+                updateUser.setLastDeptId(null);
+            }
         }
 
 //            查最后一次登录时 所属单位
-        Org defaultCompany;
+        Org defaultCompany = null;
         if (sysUser.getLastCompanyId() == null) {
             if (currentDeptId != null) {
                 defaultCompany = ssoUserService.getCompanyByDeptId(currentDeptId);
@@ -212,8 +218,14 @@ public class AuthServiceImpl implements AuthService {
             currentCompanyId = defaultCompany != null ? defaultCompany.getId() : null;
             updateUser.setLastCompanyId(currentCompanyId);
         } else {
-            currentCompanyId = sysUser.getLastCompanyId();
-            defaultCompany = ssoUserService.getOrgByIdCache(currentCompanyId);
+
+            if (CollUtil.contains(orgIdList, sysUser.getLastCompanyId())) {
+                currentCompanyId = sysUser.getLastCompanyId();
+                defaultCompany = ssoUserService.getOrgByIdCache(currentCompanyId);
+            } else {
+                updateUser.setLastCompanyId(null);
+            }
+
         }
 
         // 查询单位的组织性质
@@ -238,8 +250,12 @@ public class AuthServiceImpl implements AuthService {
             currentTopCompanyId = rootCompany != null ? rootCompany.getId() : null;
             updateUser.setLastTopCompanyId(currentTopCompanyId);
         } else {
-            currentTopCompanyId = sysUser.getLastTopCompanyId();
-            rootCompany = ssoUserService.getOrgByIdCache(currentTopCompanyId);
+            if (CollUtil.contains(orgIdList, sysUser.getLastTopCompanyId())) {
+                currentTopCompanyId = sysUser.getLastTopCompanyId();
+                rootCompany = ssoUserService.getOrgByIdCache(currentTopCompanyId);
+            } else {
+                updateUser.setLastTopCompanyId(null);
+            }
         }
 
         // 查询顶级单位的组织性质

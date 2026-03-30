@@ -110,6 +110,13 @@ public interface SsoUserService extends SuperService<User> {
     List<Org> findCompanyByUserId(Long userId);
 
     /**
+     * 查询用户拥有的组织
+     * @param userId 用户id
+     * @return
+     */
+    List<Long> findOrgIdByUserId(Long userId);
+
+    /**
      * 根据id查询组织
      * @param id 组织id
      * @return 组织

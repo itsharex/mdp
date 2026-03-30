@@ -45,7 +45,7 @@ mdp:
     mode: boot
   ignore:
     # 是否启用网关的 uri权限鉴权 (设置为false，则后台不校验访问权限)
-    authEnabled: false
+    authEnabled: true
     # 前端校验按钮 是否区分大小写
     caseSensitive: false
     anyone: # 需要携带Token，但不需要验证uri权限

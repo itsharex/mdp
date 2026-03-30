@@ -25,7 +25,6 @@ import top.mddata.base.utils.DateUtils;
 import top.mddata.base.utils.MyTreeUtil;
 import top.mddata.common.cache.console.organization.OrgCacheKeyBuilder;
 import top.mddata.common.cache.console.organization.UserCacheKeyBuilder;
-import top.mddata.common.cache.console.organization.UserOrgCacheKeyBuilder;
 import top.mddata.common.cache.workbench.CaptchaCacheKeyBuilder;
 import top.mddata.common.cache.workbench.SsoUserEmailCacheKeyBuilder;
 import top.mddata.common.cache.workbench.SsoUserPhoneCacheKeyBuilder;
@@ -43,7 +42,6 @@ import top.mddata.common.enumeration.organization.OrgTypeEnum;
 import top.mddata.common.mapper.OrgMapper;
 import top.mddata.common.mapper.OrgNatureMapper;
 import top.mddata.common.mapper.UserMapper;
-import top.mddata.common.properties.SystemProperties;
 import top.mddata.console.system.dto.RelateFilesToBizDto;
 import top.mddata.console.system.facade.ConfigFacade;
 import top.mddata.console.system.facade.FileFacade;
@@ -75,7 +73,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> implements SsoUserService {
     private final OrgMapper orgMapper;
-    private final SystemProperties systemProperties;
     private final OrgNatureMapper orgNatureMapper;
     private final FileFacade fileFacade;
     private final CacheOps cacheOps;
@@ -239,6 +236,7 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
         return getCompanyByDeptId(org.getParentId());
     }
 
+
     @Override
     @Transactional(readOnly = true)
     public List<Org> findCompanyByUserId(Long userId) {
@@ -282,10 +280,14 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
         return companyList;
     }
 
-    private List<Long> findOrgIdByUserId(Long userId) {
-        CacheKey eoKey = UserOrgCacheKeyBuilder.build(userId);
-        CacheResult<List<Long>> orgIdResult = cacheOps.get(eoKey, k -> orgMapper.selectOrgByUserId(userId));
-        return orgIdResult.asList();
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Long> findOrgIdByUserId(Long userId) {
+//        CacheKey eoKey = UserOrgCacheKeyBuilder.build(userId);
+//        CacheResult<List<Long>> orgIdResult = cacheOps.get(eoKey, k -> orgMapper.selectOrgByUserId(userId));
+//        return orgIdResult.asList();
+        return orgMapper.selectOrgByUserId(userId);
     }
 
     @Override

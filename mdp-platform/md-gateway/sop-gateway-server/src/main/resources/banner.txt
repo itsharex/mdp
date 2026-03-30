@@ -3,7 +3,7 @@ ${AnsiColor.BRIGHT_YELLOW}
   MDP 主数据平台
   ┌─────────────────────────────────┐
   │  SpringBoot版本: ${spring-boot.version}
-  │  当前应用版本: ${mdp.system.applicationName}-${mdp.system.version}
+  │  当前应用版本: ${mdp.system.version}
   │  激活环境: ${spring.profiles.active}
   └─────────────────────────────────┘
 -------------------------------------------------
