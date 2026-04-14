@@ -11,6 +11,8 @@ import org.dromara.sms4j.api.entity.SmsResponse;
 import org.dromara.sms4j.chuanglan.config.ChuangLanConfig;
 import org.dromara.sms4j.core.factory.SmsFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.model.Kv;
 import top.mddata.base.utils.StrPool;
 import top.mddata.console.message.entity.InterfaceConfig;
@@ -42,6 +44,7 @@ public class ClSmsMsgTaskStrategyImpl extends AbstractMsgTaskStrategy {
     private static final String VAR = "{$var}";
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public MsgResult exec(MsgTaskParam msgParam) {
         validParam(msgParam);
 

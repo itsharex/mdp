@@ -6,6 +6,8 @@ import com.mybatisflex.core.query.QueryWrapper;
 import groovy.util.logging.Slf4j;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import top.mddata.common.entity.User;
 import top.mddata.common.properties.MsgProperties;
 import top.mddata.console.message.entity.MsgTask;
@@ -36,6 +38,7 @@ public class NoticeMsgTaskStrategyImpl extends AbstractMsgTaskStrategy {
     private final MsgProperties msgProperties;
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public MsgResult exec(MsgTaskParam msgParam) {
         validParam(msgParam);
 

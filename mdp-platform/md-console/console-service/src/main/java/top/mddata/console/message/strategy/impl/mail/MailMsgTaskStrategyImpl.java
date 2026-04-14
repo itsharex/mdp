@@ -9,6 +9,8 @@ import org.dromara.email.jakarta.comm.config.MailSmtpConfig;
 import org.dromara.email.jakarta.comm.entity.MailMessage;
 import org.dromara.email.jakarta.core.factory.MailFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.utils.StrPool;
 import top.mddata.common.properties.MsgProperties;
 import top.mddata.console.message.entity.MsgTask;
@@ -62,6 +64,7 @@ public class MailMsgTaskStrategyImpl extends AbstractMsgTaskStrategy {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class, propagation = Propagation.REQUIRES_NEW)
     public MsgResult exec(MsgTaskParam msgParam) {
         validParam(msgParam);
 
