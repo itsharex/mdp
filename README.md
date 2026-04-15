@@ -5,8 +5,8 @@
 [![Author](https://img.shields.io/badge/作者-很很-orange.svg)](https://github.com/henhen6)
 [![Star](https://img.shields.io/github/stars/henhen6/mdp?color=42b883&logo=github&style=flat-square)](https://github.com/henhen6/mdp/stargazers)
 [![Fork](https://img.shields.io/github/forks/henhen6/mdp?color=42b883&logo=github&style=flat-square)](https://github.com/henhen6/mdp/network/members)
-[![Star](https://gitee.com/henhen6/mdp/badge/star.svg?theme=gray)](https://gitee.com/henhen6/mdp/stargazers)
-[![Fork](https://gitee.com/henhen6/mdp/badge/fork.svg?theme=gray)](https://gitee.com/henhen6/mdp/members)
+[![Star](https://gitee.com/henhen6/mddata/badge/star.svg?theme=gray)](https://gitee.com/henhen6/mddata/stargazers)
+[![Fork](https://gitee.com/henhen6/mddata/badge/fork.svg?theme=gray)](https://gitee.com/henhen6/mddata/members)
 ![star](https://gitcode.com/henhen6/mdp/star/badge.svg)
 
 [![star](https://gitcode.com/henhen6/mdp/star/2025top.svg)](https://gitcode.com/henhen6/mdp)
