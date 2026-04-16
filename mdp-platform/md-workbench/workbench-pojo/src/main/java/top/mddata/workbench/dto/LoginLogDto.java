@@ -45,7 +45,7 @@ public class LoginLogDto implements Serializable {
     private LoginEventTypeEnum eventType;
 
     /**
-     * '登录状态
+     * 登录状态
      */
     private LoginStatusEnum status;
     /**

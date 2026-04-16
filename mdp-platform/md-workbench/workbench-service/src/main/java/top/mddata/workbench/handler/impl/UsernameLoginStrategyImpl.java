@@ -12,6 +12,7 @@ import top.mddata.base.utils.DateUtils;
 import top.mddata.base.utils.StrHelper;
 import top.mddata.base.utils.UaSecureUtil;
 import top.mddata.common.constant.ConfigKey;
+import top.mddata.common.constant.DefValConstants;
 import top.mddata.common.entity.User;
 import top.mddata.common.enumeration.organization.UserSourceEnum;
 import top.mddata.common.properties.SystemProperties;
@@ -66,7 +67,9 @@ public class UsernameLoginStrategyImpl implements LoginStrategy {
         // 密码过期
         if (passwordExpireNotAllowLogin && user.getPwExpireTime() != null && LocalDateTime.now().isAfter(user.getPwExpireTime())) {
             String msg = "用户密码已过期，请修改密码或者联系管理员重置!";
-            SpringUtil.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)));
+            LoginLogDto dto = LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)
+                    .setAppKey(DefValConstants.WORKBENCH_APP_KEY).setAppName(DefValConstants.WORKBENCH_APP_NAME);
+            SpringUtil.publishEvent(new LoginEvent(dto));
             throw new BizException(msg);
         }
 
@@ -89,7 +92,9 @@ public class UsernameLoginStrategyImpl implements LoginStrategy {
             if (passwordErrorLockExpireTime.isAfter(LocalDateTime.now())) {
                 // 登录失败事件
                 String msg = StrUtil.format("密码连续输错次数已超过最大限制：{}次,用户将被锁定至: {}", maxPasswordErrorNum, DateUtils.format(passwordErrorLockExpireTime));
-                SpringUtil.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)));
+                LoginLogDto dto = LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)
+                        .setAppKey(DefValConstants.WORKBENCH_APP_KEY).setAppName(DefValConstants.WORKBENCH_APP_NAME);
+                SpringUtil.publishEvent(new LoginEvent(dto));
                 throw new BizException(msg);
             }
         }
@@ -103,9 +108,9 @@ public class UsernameLoginStrategyImpl implements LoginStrategy {
         if (!passwordMd5.equalsIgnoreCase(user.getPassword())) {
             String msg = StrUtil.format("用户名或密码错误{}次，连续输错{}次您将被锁定！", (Convert.toInt(user.getPwErrorNum(), 0) + 1), maxPasswordErrorNum);
             // 密码错误事件
-            LoginLogDto loginLogDto = LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg);
-            loginLogDto.setPasswordError(true);
-            SpringUtil.publishEvent(new LoginEvent(loginLogDto));
+            LoginLogDto dto = LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)
+                    .setPasswordError(true).setAppKey(DefValConstants.WORKBENCH_APP_KEY).setAppName(DefValConstants.WORKBENCH_APP_NAME);
+            SpringUtil.publishEvent(new LoginEvent(dto));
             throw new BizException(msg);
         }
 
@@ -121,7 +126,9 @@ public class UsernameLoginStrategyImpl implements LoginStrategy {
         // 用户被禁用
         if (user.getState() == null || !user.getState()) {
             String msg = "您已被禁用，请联系管理员开通账号！";
-            SpringUtil.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)));
+            LoginLogDto dto = LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), user.getUsername(), msg)
+                    .setAppKey(DefValConstants.WORKBENCH_APP_KEY).setAppName(DefValConstants.WORKBENCH_APP_NAME);
+            SpringUtil.publishEvent(new LoginEvent(dto));
             throw new BizException(msg);
         }
     }

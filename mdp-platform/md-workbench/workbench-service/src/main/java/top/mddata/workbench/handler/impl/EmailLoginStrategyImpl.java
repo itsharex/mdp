@@ -10,6 +10,7 @@ import top.mddata.base.exception.BizException;
 import top.mddata.base.model.cache.CacheKey;
 import top.mddata.base.utils.StrHelper;
 import top.mddata.common.cache.workbench.CaptchaCacheKeyBuilder;
+import top.mddata.common.constant.DefValConstants;
 import top.mddata.common.constant.MsgTemplateKey;
 import top.mddata.common.entity.User;
 import top.mddata.common.properties.SystemProperties;
@@ -50,12 +51,17 @@ public class EmailLoginStrategyImpl extends UsernameLoginStrategyImpl {
             CacheResult<String> code = cacheOps.get(cacheKey);
             if (StrUtil.isEmpty(code.getValue())) {
                 String msg = "验证码已过期";
-                SpringUtil.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), msg)));
+                LoginLogDto dto = LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), msg)
+                        .setAppKey(DefValConstants.WORKBENCH_APP_KEY).setAppName(DefValConstants.WORKBENCH_APP_NAME);
+                SpringUtil.publishEvent(new LoginEvent(dto));
                 throw new BizException(msg);
             }
             if (!StrUtil.equalsIgnoreCase(code.getValue(), login.getCode())) {
                 String msg = "验证码不正确";
-                SpringUtil.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), msg)));
+                // 登录时，默认是默认应用 工作台
+                LoginLogDto dto = LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), msg)
+                        .setAppKey(DefValConstants.WORKBENCH_APP_KEY).setAppName(DefValConstants.WORKBENCH_APP_NAME);
+                SpringUtil.publishEvent(new LoginEvent(dto));
                 throw new BizException(msg);
             }
             cacheOps.del(cacheKey);

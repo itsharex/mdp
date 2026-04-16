@@ -53,12 +53,13 @@ public class LoginLogServiceImpl extends SuperServiceImpl<LoginLogMapper, LoginL
     @Transactional(rollbackFor = Exception.class)
     public void save(LoginLogDto dto, User user) {
         LoginLog loginLog = new LoginLog();
+        loginLog.setAccount(dto.getAccount());
         if (user != null) {
             loginLog.setUserId(user.getId());
             loginLog.setName(user.getName());
-            loginLog.setAccount(dto.getAccount());
-            loginLog.setStatus(dto.getStatus().getCode());
+            loginLog.setAccount(user.getUsername());
         }
+        loginLog.setStatus(dto.getStatus().getCode());
         loginLog.setEventType(dto.getEventType().getCode());
         loginLog.setStatus(dto.getStatus().getCode());
         loginLog.setStatusReason(dto.getStatusReason());

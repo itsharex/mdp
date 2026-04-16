@@ -151,10 +151,9 @@ public class AuthServiceImpl implements AuthService {
         loginVO.setId(userId);
 
         // 发送登录成功事件
-        LoginLogDto dto = LoginLogDto.success(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), "登录成功", JSON.toJSONString(tokenInfo));
-        // 登录时，默认是默认应用 工作台
-        dto.setAppKey(DefValConstants.WORKBENCH_APP_KEY);
-        dto.setAppName(DefValConstants.WORKBENCH_APP_NAME);
+        LoginLogDto dto = LoginLogDto.success(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), "登录成功", JSON.toJSONString(tokenInfo))
+                // 登录时，默认是默认应用 工作台
+                .setAppKey(DefValConstants.WORKBENCH_APP_KEY).setAppName(DefValConstants.WORKBENCH_APP_NAME);
         SpringUtil.publishEvent(new LoginEvent(dto));
 
         return R.success(loginVO);

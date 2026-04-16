@@ -11,6 +11,7 @@ import top.mddata.base.exception.CaptchaException;
 import top.mddata.base.model.cache.CacheKey;
 import top.mddata.base.utils.StrHelper;
 import top.mddata.common.cache.workbench.CaptchaCacheKeyBuilder;
+import top.mddata.common.constant.DefValConstants;
 import top.mddata.common.properties.SystemProperties;
 import top.mddata.console.system.facade.ConfigFacade;
 import top.mddata.workbench.dto.LoginDto;
@@ -47,12 +48,16 @@ public class CaptchaLoginStrategyImpl extends UsernameLoginStrategyImpl {
             CacheResult<String> code = cacheOps.get(cacheKey);
             if (StrUtil.isEmpty(code.getValue())) {
                 String msg = "验证码已过期";
-                SpringUtil.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), msg)));
+                LoginLogDto dto = LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), msg)
+                        .setAppKey(DefValConstants.WORKBENCH_APP_KEY).setAppName(DefValConstants.WORKBENCH_APP_NAME);
+                SpringUtil.publishEvent(new LoginEvent(dto));
                 throw CaptchaException.wrap(msg);
             }
             if (!StrUtil.equalsIgnoreCase(code.getValue(), login.getCode())) {
                 String msg = "验证码不正确";
-                SpringUtil.publishEvent(new LoginEvent(LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), msg)));
+                LoginLogDto dto = LoginLogDto.failByCheck(login.getAuthType(), login.getDeviceInfo(), login.getUsername(), msg)
+                        .setAppKey(DefValConstants.WORKBENCH_APP_KEY).setAppName(DefValConstants.WORKBENCH_APP_NAME);
+                SpringUtil.publishEvent(new LoginEvent(dto));
                 throw CaptchaException.wrap(msg);
             }
             cacheOps.del(cacheKey);

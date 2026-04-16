@@ -52,7 +52,7 @@ public class LoginLogVo implements Serializable {
      * 登录人账号
      */
     @Schema(description = "登录人账号")
-    private String username;
+    private String account;
 
     /**
      * 事件类型

@@ -47,17 +47,16 @@ public class LoginListener {
                 break;
         }
 
-        if (user == null) {
+        if (user != null) {
             log.debug("用户 {} 不存在", loginLogDto.getAccount());
-            return;
-        }
 
-        if (LoginStatusEnum.SUCCESS.eq(loginLogDto.getStatus())) {
-            // 重置错误次数 和 最后登录时间
-            this.ssoUserService.resetPwErrorNum(user.getId());
-        } else if (loginLogDto.isPasswordError()) {
-            // 密码错误
-            this.ssoUserService.incrPwErrorNumById(user.getId());
+            if (LoginStatusEnum.SUCCESS.eq(loginLogDto.getStatus())) {
+                // 重置错误次数 和 最后登录时间
+                this.ssoUserService.resetPwErrorNum(user.getId());
+            } else if (loginLogDto.isPasswordError()) {
+                // 密码错误
+                this.ssoUserService.incrPwErrorNumById(user.getId());
+            }
         }
 
         loginLogService.save(loginLogDto, user);
