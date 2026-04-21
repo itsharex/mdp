@@ -392,6 +392,7 @@ logging:
     # 开发、调试需要的日志
     top.mddata: info
     org.springframework: info
+    tech.powerjob: info
   pattern:
     dateformat: yyyy-MM-dd HH:mm:ss.SSS
     console: "[${spring.application.name}:%X{TenantId}:%X{UserId}] %d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] ${PID} [%X{trace}] [%t:%r] [%logger{50}.%M:%L] %m%n"
@@ -422,3 +423,24 @@ dubbo:
     check: false
     parameters:
       sba: ignore
+
+
+powerjob:
+  worker:
+    enabled: true
+    # 接入应用名称，用于分组隔离，推荐填写 本 Java 项目名称
+    app-name: MDP
+    # 调度服务器地址，IP:Port 或 域名，多值逗号分隔
+    server-address: 127.0.0.1:17700
+    # 通讯协议，4.3.0 开始支持 HTTP 和 AKKA 两种协议，官方推荐使用 HTTP 协议（注意 server 和 worker 都要开放相应端口）
+    protocol: http
+    # 持久化方式，可选，默认 disk
+    store-strategy: disk
+    # 任务返回结果信息的最大长度，超过这个长度的信息会被截断，默认值 8192
+    max-result-length: 4096
+    # 单个任务追加的工作流上下文最大长度，超过这个长度的会被直接丢弃，默认值 8192
+    max-appended-wf-context-length: 4096
+    # 同时运行的轻量级任务数量上限
+    max-lightweight-task-num: 1024
+    # 同时运行的重量级任务数量上限
+    maxHeavyweightTaskNum: 64

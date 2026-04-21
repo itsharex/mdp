@@ -164,6 +164,11 @@
                 <artifactId>sa-token-sso-server-starter</artifactId>
                 <version>${revision}</version>
             </dependency>
+            <dependency>
+                <groupId>top.mddata.base</groupId>
+                <artifactId>md-powerjob-worker-spring-boot-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>

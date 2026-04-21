@@ -42,6 +42,7 @@
         <module>md-sop-support</module>
         <module>md-sa-token</module>
         <module>md-captcha-starter</module>
+        <module>md-powerjob-worker-spring-boot-starter</module>
     </modules>
     <licenses>
         <license>
