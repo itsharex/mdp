@@ -20,5 +20,6 @@
 
     <modules>
         <module>boot-server</module>
+        <module>worker-server</module>
     </modules>
 </project>

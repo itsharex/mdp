@@ -242,7 +242,7 @@ mybatis-flex:
       value: 'uid'
 
 server:
-  port: 23455
+  port: 23457
   # 优雅停机
   shutdown: GRACEFUL
   servlet:
@@ -284,18 +284,10 @@ springdoc:
   api-docs:
     path: /v3/api-docs
   group-configs:
-    - group: 'workbench'
-      displayName: '工作台'
+    - group: 'api'
+      displayName: '第三方接口'
       paths-to-match: '/**'
-      packages-to-scan: top.mddata.workbench
-    - group: 'console'
-      displayName: '控制台'
-      paths-to-match: '/**'
-      packages-to-scan: top.mddata.console
-    - group: 'open'
-      displayName: '开发者平台'
-      paths-to-match: '/**'
-      packages-to-scan: top.mddata.open
+      packages-to-scan: top.mddata.api
 
 dromara:
   x-file-storage: #文件存储配置
