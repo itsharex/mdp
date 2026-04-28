@@ -19,7 +19,7 @@
     <modules>
         <module>api-pojo</module>
         <module>api-service</module>
-        <module>api-controller</module>
+        <module>api-web</module>
     </modules>
 
 

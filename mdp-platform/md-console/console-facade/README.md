@@ -6,7 +6,7 @@
 - console-boot-impl
   单体架构API实现类，通常的实现方式就是直接调用 console-service 层的接口
 - console-cloud-impl
-  微服务架构API实现类，通常的事项方式是封装一个OpenClient接口或者RPC接口，远程调用 console-controller 层的接口
+  微服务架构API实现类，通常的事项方式是封装一个OpenClient接口或者RPC接口，远程调用 console-web 层的接口
 
 # 简化项目
 
@@ -30,11 +30,11 @@
 
 - console-cloud-impl（微服务架构实现）
 
-  微服务架构下的 API 实现载体，采用 “远程调用” 方式：封装 OpenClient 或 RPC 接口，通过调用远程服务的 console-controller
+  微服务架构下的 API 实现载体，采用 “远程调用” 方式：封装 OpenClient 或 RPC 接口，通过调用远程服务的 console-web
   层接口完成跨服务交互，适配微服务的分布式部署场景。
 
   微服务架构下，典型调用链：
-  其他服务Controller或者Service 层 → console-api(Interface) → console-cloud-impl → 远程接口调用 → console-controller →
+  其他服务Controller或者Service 层 → console-api(Interface) → console-cloud-impl → 远程接口调用 → console-web →
   console-service
 
 # 二、开发和编写接口步骤
@@ -45,7 +45,7 @@
 2. 定义实现类
     - 单体架构：B服务的 B-boot-impl 层实现接口
     - 微服务架构：B服务的 B-cloud-impl 层实现接口
-3. A服务在 A-service 或 A-controller 层加入 B-api 层的依赖（在那层调用接口，就在那层引入依赖）
+3. A服务在 A-service 或 A-web 层加入 B-api 层的依赖（在那层调用接口，就在那层引入依赖）
 4. 在A服务编写代码，调用B-api层定义的接口
 4. 引入 B-api 的实现依赖
     - 单体架构：在 boot-server/pom.xml 引入 B-boot-impl 的依赖

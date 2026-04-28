@@ -16,7 +16,7 @@
     <dependencies>
         <dependency>
             <groupId>top.mddata.api</groupId>
-            <artifactId>api-controller</artifactId>
+            <artifactId>api-web</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>

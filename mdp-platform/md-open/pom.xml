@@ -21,7 +21,7 @@
         <module>open-pojo</module>
         <module>open-dao</module>
         <module>open-service</module>
-        <module>open-controller</module>
+        <module>open-web</module>
     </modules>
 
 </project>

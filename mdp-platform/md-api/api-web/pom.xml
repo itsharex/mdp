@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>api-controller</artifactId>
+    <artifactId>api-web</artifactId>
 
     <dependencies>
         <dependency>

@@ -17,17 +17,17 @@
         <!-- 项目业务控制层 -->
         <dependency>
             <groupId>top.mddata.workbench</groupId>
-            <artifactId>workbench-controller</artifactId>
+            <artifactId>workbench-web</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>top.mddata.console</groupId>
-            <artifactId>console-controller</artifactId>
+            <artifactId>console-web</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>top.mddata.open</groupId>
-            <artifactId>open-controller</artifactId>
+            <artifactId>open-web</artifactId>
             <version>${revision}</version>
         </dependency>
 
@@ -194,10 +194,10 @@
                     <groupId>io.minio</groupId>
                     <artifactId>minio</artifactId>
                 </dependency>
-                <!-- 默认情况下，开发环境不依赖api-controller，无法使用对外接口 -->
+                <!-- 默认情况下，开发环境不依赖api-web，无法使用对外接口 -->
                 <dependency>
                     <groupId>top.mddata.api</groupId>
-                    <artifactId>api-controller</artifactId>
+                    <artifactId>api-web</artifactId>
                     <version>${revision}</version>
                 </dependency>
             </dependencies>
@@ -220,10 +220,10 @@
                     <groupId>io.minio</groupId>
                     <artifactId>minio</artifactId>
                 </dependency>
-                <!-- 默认情况下，开发环境不依赖api-controller，无法使用对外接口 -->
+                <!-- 默认情况下，开发环境不依赖api-web，无法使用对外接口 -->
                 <dependency>
                     <groupId>top.mddata.api</groupId>
-                    <artifactId>api-controller</artifactId>
+                    <artifactId>api-web</artifactId>
                     <version>${revision}</version>
                 </dependency>
             </dependencies>
@@ -248,10 +248,10 @@
                     <artifactId>minio</artifactId>
                 </dependency>
 
-                <!-- 默认情况下，开发环境不依赖api-controller，无法使用对外接口 -->
+                <!-- 默认情况下，开发环境不依赖api-web，无法使用对外接口 -->
                 <dependency>
                     <groupId>top.mddata.api</groupId>
-                    <artifactId>api-controller</artifactId>
+                    <artifactId>api-web</artifactId>
                     <version>${revision}</version>
                 </dependency>
             </dependencies>

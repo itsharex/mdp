@@ -21,7 +21,7 @@
         <module>workbench-pojo</module>
         <module>workbench-dao</module>
         <module>workbench-service</module>
-        <module>workbench-controller</module>
+        <module>workbench-web</module>
     </modules>
 
 

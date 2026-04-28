@@ -10,7 +10,7 @@
         <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <artifactId>workbench-controller</artifactId>
+    <artifactId>workbench-web</artifactId>
 
     <dependencies>
         <!-- SpringBoot 集成 thymeleaf 模板 -->

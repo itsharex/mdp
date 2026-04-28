@@ -21,7 +21,7 @@
         <module>console-pojo</module>
         <module>console-dao</module>
         <module>console-service</module>
-        <module>console-controller</module>
+        <module>console-web</module>
     </modules>
 
 </project>
