@@ -8,6 +8,7 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -20,6 +21,12 @@ import java.util.Map;
  */
 @Configuration
 @Slf4j
+@ConditionalOnProperty(
+        prefix = "dubbo",
+        name = {"enabled"},
+        havingValue = "true",
+        matchIfMissing = true
+)
 public class SopAutoConfiguration implements InitializingBean {
 
     @Autowired
@@ -33,6 +40,8 @@ public class SopAutoConfiguration implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
+        log.info("SopAutoConfiguration 已加载");
+
         String appName = environment.getProperty("spring.application.name");
         Map<String, Object> beanMap = applicationContext.getBeansWithAnnotation(DubboService.class);
         // 注册接口
