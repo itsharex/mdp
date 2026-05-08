@@ -1,12 +1,12 @@
 package top.mddata.console.system.service.impl;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.console.system.entity.RequestLogDetail;
 import top.mddata.console.system.mapper.RequestLogDetailMapper;
 import top.mddata.console.system.service.RequestLogDetailService;
-import org.springframework.stereotype.Service;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * 请求日志 服务层实现。

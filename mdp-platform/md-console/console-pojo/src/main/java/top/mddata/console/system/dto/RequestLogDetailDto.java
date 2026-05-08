@@ -1,19 +1,15 @@
 package top.mddata.console.system.dto;
 
-import com.mybatisflex.annotation.Id;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 import top.mddata.base.base.entity.BaseEntity;
 
 import java.io.Serial;
-
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.experimental.FieldNameConstants;
-import lombok.Builder;
-import lombok.Data;
-import lombok.experimental.Accessors;
+import java.io.Serializable;
 
 /**
  * 请求日志 DTO（写入方法入参）。

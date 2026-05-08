@@ -23,7 +23,6 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.MDC;
 import org.springframework.core.DefaultParameterNameDiscoverer;
-import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
@@ -34,7 +33,6 @@ import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
 import top.mddata.base.constant.ContextConstants;
 import top.mddata.base.log.event.SysLogEvent;
-import top.mddata.base.log.properties.Mode;
 import top.mddata.base.log.properties.OptLogProperties;
 import top.mddata.base.log.util.LogUtil;
 import top.mddata.base.log.util.ThreadLocalParam;
@@ -192,16 +190,11 @@ public class SysLogAspect {
 
         optLogDTO.setCreatedBy(ContextUtil.getUserId());
         optLogDTO.setStartTime(LocalDateTime.now());
-        if (Mode.CLOUD.name().equals(properties.getMode().name())) {
-            optLogDTO.setUserId(ContextUtil.getUserId());
-            optLogDTO.setCreatedOrgId(ContextUtil.getCurrentCompanyId());
-            optLogDTO.setToken(ContextUtil.getToken());
-        } else {
-            optLogDTO.setToken(Convert.toStr(request.getHeader(ContextConstants.TOKEN)));
-            optLogDTO.setUserId(Convert.toLong(request.getHeader(ContextConstants.USER_ID)));
-            optLogDTO.setCreatedOrgId(Convert.toLong(request.getHeader(ContextConstants.COMPANY_ID)));
-        }
+        optLogDTO.setUserId(ContextUtil.getUserId());
+        optLogDTO.setCreatedOrgId(ContextUtil.getCurrentCompanyId());
+        optLogDTO.setToken(ContextUtil.getToken());
         optLogDTO.setLogType(sysLog.logType()); // 补全：日志类型（1查询/2新增/3修改/4删除/9其他）
+        optLogDTO.setHttpThreadLocal(JSON.toJSONString(ContextUtil.getLocalMap()));
         // 类名
         optLogDTO.setClassPath(joinPoint.getTarget().getClass().getName());
         //获取执行的方法名
@@ -345,34 +338,5 @@ public class SysLogAspect {
             return Arrays.toString(args);
         }
     }
-
-    /**
-     * 解析spEL表达式
-     */
-    private String getValBySpEl(String spEl, MethodSignature methodSignature, Object[] args) {
-        try {
-            //获取方法形参名数组
-            String[] paramNames = nameDiscoverer.getParameterNames(methodSignature.getMethod());
-            if (paramNames != null && paramNames.length > 0) {
-                Expression expression = spelExpressionParser.parseExpression(spEl);
-                // spring的表达式上下文对象
-                EvaluationContext context = new StandardEvaluationContext();
-                // 给上下文赋值
-                for (int i = 0; i < args.length; i++) {
-                    context.setVariable(paramNames[i], args[i]);
-                    context.setVariable("p" + i, args[i]);
-                }
-                ThreadLocalParam tlp = new ThreadLocalParam();
-                BeanUtil.fillBeanWithMap(ContextUtil.getLocalMap(), tlp, true);
-                context.setVariable("threadLocal", tlp);
-                Object value = expression.getValue(context);
-                return value == null ? spEl : value.toString();
-            }
-        } catch (Exception e) {
-            log.warn("解析操作日志的el表达式出错", e);
-        }
-        return spEl;
-    }
-
 
 }

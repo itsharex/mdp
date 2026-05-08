@@ -1,11 +1,11 @@
 package top.mddata.console.system.entity;
 
 import com.mybatisflex.annotation.Table;
-import top.mddata.console.system.entity.base.RequestLogDetailBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
+import top.mddata.console.system.entity.base.RequestLogDetailBase;
 
 /**
  * 请求日志实体类。

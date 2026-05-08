@@ -1,17 +1,15 @@
 package top.mddata.console.system.query;
 
-import com.mybatisflex.annotation.Id;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 import top.mddata.base.base.ExtraParams;
 
 import java.io.Serial;
-
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
-import lombok.experimental.Accessors;
-import lombok.experimental.FieldNameConstants;
-import lombok.EqualsAndHashCode;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 请求日志 Query类（查询方法入参）。

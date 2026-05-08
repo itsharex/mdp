@@ -4,7 +4,6 @@ import io.undertow.Undertow;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -14,8 +13,6 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import top.mddata.base.boot.config.BaseConfig;
-import top.mddata.base.constant.Constants;
-import top.mddata.base.log.event.SysLogListener;
 import top.mddata.common.configurer.HeaderThreadLocalConfigurer;
 import top.mddata.common.configurer.TokenContextFilterConfigurer;
 import top.mddata.common.properties.IgnoreProperties;
@@ -64,12 +61,4 @@ public class WebConfiguration extends BaseConfig implements WebMvcConfigurer {
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }
 
-    /**
-     * 操作日志 监听器
-     */
-    @Bean
-    @ConditionalOnExpression("${" + Constants.PROJECT_PREFIX + ".log.enabled:true} && 'DB'.equals('${" + Constants.PROJECT_PREFIX + ".log.type:LOGGER}')")
-    public SysLogListener sysLogListener() {
-        return new SysLogListener(data -> log.info("log: {}", data));
-    }
 }

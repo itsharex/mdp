@@ -19,7 +19,9 @@ import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.console.system.dto.RequestLogDto;
+import top.mddata.console.system.entity.RequestLogDetail;
 import top.mddata.console.system.query.RequestLogQuery;
+import top.mddata.console.system.service.RequestLogDetailService;
 import top.mddata.console.system.service.RequestLogService;
 import top.mddata.console.system.vo.RequestLogVo;
 
@@ -37,6 +39,7 @@ import java.util.List;
 @RequestMapping("/system/requestLog")
 @RequiredArgsConstructor
 public class RequestLogController extends SuperController<RequestLogService, top.mddata.console.system.entity.RequestLog> {
+    private final RequestLogDetailService requestLogDetailService;
     /**
      * 添加请求日志。
      *
@@ -45,7 +48,6 @@ public class RequestLogController extends SuperController<RequestLogService, top
      */
     @PostMapping("/save")
     @Operation(summary = "新增", description = "保存请求日志")
-    @RequestLog(value = "新增", request = false)
     public R<Long> save(@Validated @RequestBody RequestLogDto dto) {
         return R.success(superService.saveDto(dto).getId());
     }
@@ -58,7 +60,7 @@ public class RequestLogController extends SuperController<RequestLogService, top
      */
     @PostMapping("/delete")
     @Operation(summary = "删除", description = "根据主键删除请求日志")
-    @RequestLog("'删除:' + #ids")
+    @RequestLog(value = "'删除:' + #ids", logType = RequestLog.LogType.DELETE)
     public R<Boolean> delete(@RequestBody List<Long> ids) {
         return R.success(superService.removeByIds(ids));
     }
@@ -72,10 +74,12 @@ public class RequestLogController extends SuperController<RequestLogService, top
      */
     @GetMapping("/getById")
     @Operation(summary = "单体查询", description = "根据主键获取请求日志")
-    @RequestLog("'单体查询:' + #id")
     public R<RequestLogVo> get(@RequestParam Long id) {
         top.mddata.console.system.entity.RequestLog entity = superService.getById(id);
-        return R.success(BeanUtil.toBean(entity, RequestLogVo.class));
+        RequestLogVo vo = BeanUtil.toBean(entity, RequestLogVo.class);
+        RequestLogDetail detail = requestLogDetailService.getById(id);
+        BeanUtil.copyProperties(detail, vo);
+        return R.success(vo);
     }
 
     /**
@@ -86,7 +90,6 @@ public class RequestLogController extends SuperController<RequestLogService, top
      */
     @PostMapping("/page")
     @Operation(summary = "分页列表查询", description = "分页查询请求日志")
-    @RequestLog(value = "'分页列表查询:第' + #params?.current + '页, 显示' + #params?.size + '行'", response = false)
     public R<Page<RequestLogVo>> page(@RequestBody @Validated PageParams<RequestLogQuery> params) {
         Page<RequestLogVo> page = Page.of(params.getCurrent(), params.getSize());
         top.mddata.console.system.entity.RequestLog entity = BeanUtil.toBean(params.getModel(), top.mddata.console.system.entity.RequestLog.class);

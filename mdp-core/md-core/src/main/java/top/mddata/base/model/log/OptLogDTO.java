@@ -124,5 +124,10 @@ public class OptLogDTO implements Serializable {
     private Long createdOrgId;
     private String token;
 
+    /**
+     * 请求线程变量
+     */
+    private String httpThreadLocal;
+
 
 }

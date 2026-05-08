@@ -2,16 +2,15 @@ package top.mddata.console.system.vo;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import top.mddata.console.system.entity.base.RequestLogBase;
-
-import java.io.Serial;
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import lombok.experimental.FieldNameConstants;
+import top.mddata.console.system.entity.base.RequestLogBase;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 请求日志 VO类（通常用作Controller出参）。
@@ -139,5 +138,29 @@ public class RequestLogVo implements Serializable {
      */
     @Schema(description = "创建人")
     private Long createdBy;
+
+
+    /**
+     * 请求参数
+     */
+    @Schema(description = "请求参数")
+    private String requestParam;
+
+    /**
+     * 返回值
+     */
+    @Schema(description = "返回值")
+    private String responseBody;
+
+    /**
+     * 异常堆栈
+     */
+    @Schema(description = "异常堆栈")
+    private String exceptionStack;
+
+    /**
+     * 请求线程变量
+     */
+    private String httpThreadLocal;
 
 }

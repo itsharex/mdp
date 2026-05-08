@@ -1,14 +1,13 @@
 package top.mddata.console.system.entity.base;
 
-import java.io.Serializable;
-import top.mddata.base.base.entity.SuperEntity;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
+import top.mddata.base.base.entity.BaseEntity;
 
 import java.io.Serial;
-
-import lombok.experimental.FieldNameConstants;
-import lombok.Data;
-import lombok.experimental.Accessors;
-import lombok.EqualsAndHashCode;
+import java.io.Serializable;
 
 /**
  * 请求日志实体类。
@@ -20,7 +19,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @Accessors(chain = true)
 @EqualsAndHashCode(callSuper = true)
-public class RequestLogDetailBase extends SuperEntity<Long> implements Serializable {
+public class RequestLogDetailBase extends BaseEntity<Long> implements Serializable {
     /** 表名称 */
     public static final String TABLE_NAME = "mdc_request_log_detail";
 

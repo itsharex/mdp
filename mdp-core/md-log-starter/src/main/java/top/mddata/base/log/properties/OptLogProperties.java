@@ -23,7 +23,6 @@ public class OptLogProperties {
      * 是否启用
      */
     private Boolean enabled = true;
-    private Mode mode = Mode.CLOUD;
     /**
      * 日志存储类型
      */

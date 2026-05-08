@@ -1,20 +1,17 @@
 package top.mddata.console.system.dto;
 
-import com.mybatisflex.annotation.Id;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 import top.mddata.base.base.entity.BaseEntity;
 
 import java.io.Serial;
-
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.experimental.FieldNameConstants;
-import lombok.Builder;
-import lombok.Data;
-import lombok.experimental.Accessors;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
  * 请求日志 DTO（写入方法入参）。
@@ -141,4 +138,33 @@ public class RequestLogDto implements Serializable {
     @Schema(description = "调用链")
     private String trace;
 
+
+    /**
+     * 请求参数
+     */
+    @Size(max = 536870911, message = "请求参数长度不能超过{max}")
+    @Schema(description = "请求参数")
+    private String requestParam;
+
+    /**
+     * 返回值
+     */
+    @Size(max = 536870911, message = "返回值长度不能超过{max}")
+    @Schema(description = "返回值")
+    private String responseBody;
+
+    /**
+     * 异常堆栈
+     */
+    @Size(max = 536870911, message = "异常堆栈长度不能超过{max}")
+    @Schema(description = "异常堆栈")
+    private String exceptionStack;
+
+    /**
+     * 请求线程变量
+     */
+    @Size(max = 1024, message = "异常堆栈长度不能超过{max}")
+    @Schema(description = "请求线程变量")
+    private String httpThreadLocal;
+    private Long createdBy;
 }
