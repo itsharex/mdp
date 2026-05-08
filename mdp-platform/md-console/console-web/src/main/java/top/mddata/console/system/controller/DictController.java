@@ -55,7 +55,7 @@ public class DictController extends SuperController<DictService, Dict> {
      */
     @PostMapping("/save")
     @Operation(summary = "新增", description = "保存字典")
-    @RequestLog(value = "新增", request = false)
+    @RequestLog(value = "新增", request = false, logType = RequestLog.LogType.ADD)
     public R<Long> save(@Validated @RequestBody DictDto dto) {
         return R.success(superService.saveDto(dto).getId());
     }
@@ -68,7 +68,7 @@ public class DictController extends SuperController<DictService, Dict> {
      */
     @PostMapping("/delete")
     @Operation(summary = "删除", description = "根据主键删除字典")
-    @RequestLog("'删除:' + #ids")
+    @RequestLog(value = "'删除:' + #ids", logType = RequestLog.LogType.DELETE)
     public R<Boolean> delete(@RequestBody List<Long> ids) {
         return R.success(superService.removeByIds(ids));
     }
@@ -81,7 +81,7 @@ public class DictController extends SuperController<DictService, Dict> {
      */
     @PostMapping("/update")
     @Operation(summary = "修改", description = "根据主键更新字典")
-    @RequestLog(value = "修改", request = false)
+    @RequestLog(value = "修改", request = false, logType = RequestLog.LogType.UPDATE)
     public R<Long> update(@Validated(BaseEntity.Update.class) @RequestBody DictDto dto) {
         return R.success(superService.updateDtoById(dto).getId());
     }
@@ -94,7 +94,7 @@ public class DictController extends SuperController<DictService, Dict> {
      */
     @PostMapping("/page")
     @Operation(summary = "分页列表查询", description = "分页查询字典")
-    @RequestLog(value = "'分页列表查询:第' + #params?.current + '页, 显示' + #params?.size + '行'", response = false)
+    @RequestLog(value = "'分页列表查询:第' + #params?.current + '页, 显示' + #params?.size + '行'", response = false, logType = RequestLog.LogType.QUERY)
     public R<Page<DictVo>> page(@RequestBody @Validated PageParams<DictQuery> params) {
         Page<DictVo> page = Page.of(params.getCurrent(), params.getSize());
         Dict entity = BeanUtil.toBean(params.getModel(), Dict.class);
@@ -112,7 +112,7 @@ public class DictController extends SuperController<DictService, Dict> {
      */
     @PostMapping("/list")
     @Operation(summary = "批量查询", description = "批量查询")
-    @RequestLog(value = "批量查询", response = false)
+    @RequestLog(value = "批量查询", response = false, logType = RequestLog.LogType.QUERY)
     public R<List<DictVo>> list(@RequestBody @Validated DictQuery params) {
         Dict entity = BeanUtil.toBean(params, Dict.class);
         QueryWrapper wrapper = QueryWrapper.create(entity, WrapperUtil.buildOperators(entity.getClass()));
@@ -126,21 +126,21 @@ public class DictController extends SuperController<DictService, Dict> {
     })
     @Operation(summary = "检测字典标识是否可用", description = "检测字典标识是否可用")
     @GetMapping("/check")
-    @RequestLog("检测字典标识是否可用")
+    @RequestLog(value = "检测字典标识是否可用", logType = RequestLog.LogType.QUERY)
     public R<Boolean> check(@RequestParam String uniqKey, @RequestParam(required = false) Long id) {
         return R.success(superService.checkByUniqKey(uniqKey, id));
     }
 
     @Operation(summary = "通过枚举导入字典", description = "通过枚举导入字典")
     @PostMapping("/importDictByEnum")
-    @RequestLog("通过枚举导入字典")
+    @RequestLog(value = "通过枚举导入字典", logType = RequestLog.LogType.ADD)
     public R<Boolean> importDictByEnum(@RequestBody List<DictVo> list) {
         return R.success(superService.importDictByEnum(list));
     }
 
     @Operation(summary = "清空缓存", description = "清空缓存")
     @PostMapping("/clearCache")
-    @RequestLog("清空缓存")
+    @RequestLog(value = "清空缓存", logType = RequestLog.LogType.OTHER)
     public R<Boolean> clearCache(@RequestBody List<Serializable> list) {
         superService.clearCache(list);
         return R.success();
