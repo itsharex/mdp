@@ -1,0 +1,16 @@
+package top.mddata.console.system.mapper;
+
+import org.springframework.stereotype.Repository;
+import top.mddata.base.mvcflex.mapper.SuperMapper;
+import top.mddata.console.system.entity.RequestLogDetail;
+
+/**
+ * 请求日志 映射层。
+ *
+ * @author henhen6
+ * @since 2026-05-08 12:35:58
+ */
+@Repository
+public interface RequestLogDetailMapper extends SuperMapper<RequestLogDetail> {
+
+}

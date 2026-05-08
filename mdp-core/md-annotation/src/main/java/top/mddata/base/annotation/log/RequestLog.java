@@ -1,5 +1,7 @@
 package top.mddata.base.annotation.log;
 
+import lombok.Getter;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -29,6 +31,26 @@ public @interface RequestLog {
      * @return {String}
      */
     String value() default "";
+
+    /**
+     * 日志类型 1-查询 2-新增 3-修改 4-删除 9-其他
+     */
+    LogType logType() default LogType.OTHER;
+
+    @Getter
+    enum LogType {
+        QUERY("1"),
+        ADD("2"),
+        UPDATE("3"),
+        DELETE("4"),
+        OTHER("9");
+        private final String value;
+
+        LogType(String value) {
+            this.value = value;
+        }
+
+    }
 
     /**
      * 模块

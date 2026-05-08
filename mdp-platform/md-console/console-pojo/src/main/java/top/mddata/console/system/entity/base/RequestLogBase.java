@@ -1,28 +1,25 @@
 package top.mddata.console.system.entity.base;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import top.mddata.base.base.entity.SuperEntity;
 
 import java.io.Serial;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+
+import lombok.experimental.FieldNameConstants;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.EqualsAndHashCode;
 
 /**
  * 请求日志实体类。
  *
  * @author henhen6
- * @since 2025-11-12 16:21:25
+ * @since 2026-05-08 12:35:58
  */
+@FieldNameConstants
 @Data
-@Builder
 @Accessors(chain = true)
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 public class RequestLogBase extends SuperEntity<Long> implements Serializable {
     /** 表名称 */
@@ -37,10 +34,15 @@ public class RequestLogBase extends SuperEntity<Long> implements Serializable {
     private String ipAddress;
 
     /**
-     * 日志类型
-     * #LogType{OPT:操作类型;EX:异常类型}
+     * 是否异常
      */
-    private String type;
+    private Boolean abnormal;
+
+    /**
+     * 日志类型
+     * [1-查询 2-新增 3-修改 4-删除 9-其他]
+     */
+    private String logType;
 
     /**
      * 用户id
@@ -74,24 +76,9 @@ public class RequestLogBase extends SuperEntity<Long> implements Serializable {
     private String httpMethod;
 
     /**
-     * 请求参数
-     */
-    private String httpParam;
-
-    /**
-     * 返回值
-     */
-    private String httpResponse;
-
-    /**
      * 操作描述
      */
     private String description;
-
-    /**
-     * 异常日志
-     */
-    private String exInfo;
 
     /**
      * 开始时间
@@ -112,5 +99,10 @@ public class RequestLogBase extends SuperEntity<Long> implements Serializable {
      * 浏览器
      */
     private String ua;
+
+    /**
+     * 调用链
+     */
+    private String trace;
 
 }

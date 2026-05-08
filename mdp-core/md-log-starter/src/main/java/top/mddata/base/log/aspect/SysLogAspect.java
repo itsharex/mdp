@@ -46,6 +46,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
@@ -69,6 +70,10 @@ public class SysLogAspect {
      * 用于获取方法参数定义名字.
      */
     private final DefaultParameterNameDiscoverer nameDiscoverer = new DefaultParameterNameDiscoverer();
+    /**
+     * 方法参数名解析器
+     */
+    private final DefaultParameterNameDiscoverer parameterNameDiscoverer = new DefaultParameterNameDiscoverer();
 
     public SysLogAspect(OptLogProperties properties) {
         this.properties = properties;
@@ -93,6 +98,24 @@ public class SysLogAspect {
     }
 
     /**
+     * 执行方法之前
+     *
+     * @param joinPoint 端点
+     */
+    @Before(value = "sysLogAspect()")
+    public void doBefore(JoinPoint joinPoint) {
+        tryCatch(val -> {
+            RequestLog sysLog = LogUtil.getTargetAnnotation(joinPoint);
+            if (check(sysLog)) {
+                return;
+            }
+            OptLogDTO optLogDTO = buildOptLogDTO(joinPoint, sysLog);
+            THREAD_LOCAL.set(optLogDTO);
+        });
+    }
+
+
+    /**
      * 返回通知
      *
      * @param ret       返回值
@@ -102,26 +125,26 @@ public class SysLogAspect {
     public void doAfterReturning(JoinPoint joinPoint, Object ret) {
         tryCatch(p -> {
             RequestLog sysLog = LogUtil.getTargetAnnotation(joinPoint);
-            if (check(joinPoint, sysLog)) {
+            if (check(sysLog)) {
                 return;
             }
 
             R r = Convert.convert(R.class, ret);
             OptLogDTO sysLogDTO = get();
             if (r == null) {
-                sysLogDTO.setType("OPT");
+                sysLogDTO.setAbnormal(false);
                 if (sysLog.response()) {
-                    sysLogDTO.setResult(getText(String.valueOf(ret == null ? StrPool.EMPTY : ret)));
+                    sysLogDTO.setResponseBody(getText(String.valueOf(ret == null ? StrPool.EMPTY : ret)));
                 }
             } else {
                 if (r.getIsSuccess()) {
-                    sysLogDTO.setType("OPT");
+                    sysLogDTO.setAbnormal(false);
                 } else {
-                    sysLogDTO.setType("EX");
-                    sysLogDTO.setExDetail(r.getMsg());
+                    sysLogDTO.setAbnormal(true);
+                    sysLogDTO.setExceptionStack(r.getMsg());
                 }
                 if (sysLog.response()) {
-                    sysLogDTO.setResult(getText(r.toString()));
+                    sysLogDTO.setResponseBody(getText(r.toString()));
                 }
             }
 
@@ -140,61 +163,35 @@ public class SysLogAspect {
     public void doAfterThrowable(JoinPoint joinPoint, Throwable e) {
         tryCatch((aaa) -> {
             RequestLog sysLog = LogUtil.getTargetAnnotation(joinPoint);
-            if (check(joinPoint, sysLog)) {
+            if (check(sysLog)) {
                 return;
             }
 
             OptLogDTO optLogDTO = get();
-            optLogDTO.setType("EX");
+            optLogDTO.setAbnormal(true);
 
-            // 遇到错误时，请求参数若为空，则记录
-            if (!sysLog.request() && sysLog.requestByError() && StrUtil.isEmpty(optLogDTO.getParams())) {
-                Object[] args = joinPoint.getArgs();
-                HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-                String strArgs = getArgs(args, request);
-                optLogDTO.setParams(getText(strArgs));
+            // 异常时强制记录参数
+            if (sysLog.requestByError() && StrUtil.isEmpty(optLogDTO.getRequestParam())) {
+                HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+                String params = getArgs(joinPoint.getArgs(), request);
+                optLogDTO.setRequestParam(getText(params));
             }
-
             // 异常对象
-            optLogDTO.setExDetail(ExceptionUtil.stacktraceToString(e, MAX_LENGTH));
+            optLogDTO.setExceptionStack(ExceptionUtil.stacktraceToString(e, MAX_LENGTH));
 
             publishEvent(optLogDTO);
         });
     }
 
-    /**
-     * 执行方法之前
-     *
-     * @param joinPoint 端点
-     */
-    @Before(value = "sysLogAspect()")
-    public void doBefore(JoinPoint joinPoint) {
-        tryCatch(val -> {
-            RequestLog sysLog = LogUtil.getTargetAnnotation(joinPoint);
-            if (check(joinPoint, sysLog)) {
-                return;
-            }
-            OptLogDTO optLogDTO = buildOptLogDTO(joinPoint, sysLog);
-            THREAD_LOCAL.set(optLogDTO);
-        });
-    }
 
     @NonNull
     private OptLogDTO buildOptLogDTO(JoinPoint joinPoint, RequestLog sysLog) {
         // 开始时间
         OptLogDTO optLogDTO = get();
-        optLogDTO.setCreatedBy(ContextUtil.getUserId());
-        setDescription(joinPoint, sysLog, optLogDTO);
-        // 类名
-        optLogDTO.setClassPath(joinPoint.getTarget().getClass().getName());
-        //获取执行的方法名
-        optLogDTO.setActionMethod(joinPoint.getSignature().getName());
-
         HttpServletRequest request = setParams(joinPoint, sysLog, optLogDTO);
-        optLogDTO.setRequestIp(JakartaServletUtil.getClientIP(request));
-        optLogDTO.setRequestUri(URLUtil.getPath(request.getRequestURI()));
-        optLogDTO.setHttpMethod(request.getMethod());
-        optLogDTO.setUa(StrUtil.sub(request.getHeader("user-agent"), 0, 500));
+
+        optLogDTO.setCreatedBy(ContextUtil.getUserId());
+        optLogDTO.setStartTime(LocalDateTime.now());
         if (Mode.CLOUD.name().equals(properties.getMode().name())) {
             optLogDTO.setUserId(ContextUtil.getUserId());
             optLogDTO.setCreatedOrgId(ContextUtil.getCurrentCompanyId());
@@ -204,11 +201,22 @@ public class SysLogAspect {
             optLogDTO.setUserId(Convert.toLong(request.getHeader(ContextConstants.USER_ID)));
             optLogDTO.setCreatedOrgId(Convert.toLong(request.getHeader(ContextConstants.COMPANY_ID)));
         }
-        optLogDTO.setTrace(MDC.get(ContextConstants.TRACE));
+        optLogDTO.setLogType(sysLog.logType()); // 补全：日志类型（1查询/2新增/3修改/4删除/9其他）
+        // 类名
+        optLogDTO.setClassPath(joinPoint.getTarget().getClass().getName());
+        //获取执行的方法名
+        optLogDTO.setMethodName(joinPoint.getSignature().getName());
+
+        optLogDTO.setIpAddress(JakartaServletUtil.getClientIP(request));
+        optLogDTO.setHttpUri(URLUtil.getPath(request.getRequestURI()));
+        optLogDTO.setHttpMethod(request.getMethod());
+        optLogDTO.setUa(StrUtil.sub(request.getHeader("user-agent"), 0, 500));
+
+        fillLogDescription(joinPoint, sysLog, optLogDTO);
+
         if (StrUtil.isEmpty(optLogDTO.getTrace())) {
-            optLogDTO.setTrace(request.getHeader(ContextConstants.TRACE));
+            optLogDTO.setTrace(StrUtil.blankToDefault(MDC.get(ContextConstants.TRACE), request.getHeader(ContextConstants.TRACE)));
         }
-        optLogDTO.setStartTime(LocalDateTime.now());
         return optLogDTO;
     }
 
@@ -220,36 +228,59 @@ public class SysLogAspect {
         HttpServletRequest request = ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes(), "只能在Spring Web环境使用@RequestLog记录日志")).getRequest();
         if (sysLog.request()) {
             String strArgs = getArgs(args, request);
-            optLogDTO.setParams(getText(strArgs));
+            optLogDTO.setRequestParam(getText(strArgs));
         }
         return request;
     }
 
-    private void setDescription(JoinPoint joinPoint, RequestLog sysLog, OptLogDTO optLogDTO) {
-        String controllerDescription = "";
-        Tag api = joinPoint.getTarget().getClass().getAnnotation(Tag.class);
-        if (api != null) {
-            controllerDescription = api.name();
-        }
+    private void fillLogDescription(JoinPoint joinPoint, RequestLog sysLog, OptLogDTO optLogDTO) {
+        // 控制器模块描述（@Tag注解）
+        String classDesc = Optional.ofNullable(joinPoint.getTarget().getClass().getAnnotation(Tag.class))
+                .map(Tag::name)
+                .orElse(StrUtil.EMPTY);
+        // 方法操作描述
+        String methodDesc = parseSpEl(joinPoint, sysLog.value());
 
-        String controllerMethodDescription = LogUtil.getDescribe(sysLog);
-
-        if (StrUtil.isNotEmpty(controllerMethodDescription) && StrUtil.contains(controllerMethodDescription, StrPool.HASH)) {
-            //获取方法参数值
-            Object[] args = joinPoint.getArgs();
-
-            MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
-            controllerMethodDescription = getValBySpEl(controllerMethodDescription, methodSignature, args);
-        }
-
-        if (StrUtil.isEmpty(controllerDescription)) {
-            optLogDTO.setDescription(controllerMethodDescription);
+        // 拼接描述
+        if (sysLog.controllerApiValue() && StrUtil.isNotEmpty(classDesc)) {
+            optLogDTO.setDescription(StrUtil.format("{}-{}", classDesc, methodDesc));
         } else {
-            if (sysLog.controllerApiValue()) {
-                optLogDTO.setDescription(controllerDescription + "-" + controllerMethodDescription);
-            } else {
-                optLogDTO.setDescription(controllerMethodDescription);
+            optLogDTO.setDescription(methodDesc);
+        }
+
+    }
+
+    /**
+     * 解析SpEL表达式
+     */
+    private String parseSpEl(JoinPoint joinPoint, String spEl) {
+        if (StrUtil.isEmpty(spEl) || !spEl.contains(StrPool.HASH)) {
+            return spEl;
+        }
+        try {
+            MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+            String[] paramNames = parameterNameDiscoverer.getParameterNames(signature.getMethod());
+            if (Objects.isNull(paramNames) || paramNames.length == 0) {
+                return spEl;
             }
+
+            StandardEvaluationContext context = new StandardEvaluationContext();
+            Object[] args = joinPoint.getArgs();
+            for (int i = 0; i < args.length; i++) {
+                context.setVariable(paramNames[i], args[i]);
+                context.setVariable("p" + i, args[i]);
+            }
+            // 注入线程上下文参数
+            ThreadLocalParam threadLocalParam = new ThreadLocalParam();
+            BeanUtil.fillBeanWithMap(ContextUtil.getLocalMap(), threadLocalParam, true);
+            context.setVariable("threadLocal", threadLocalParam);
+
+            Expression expression = spelExpressionParser.parseExpression(spEl);
+            Object value = expression.getValue(context);
+            return Objects.isNull(value) ? spEl : value.toString();
+        } catch (Exception e) {
+            log.warn("SpEL表达式解析失败：{}", spEl, e);
+            return spEl;
         }
     }
 
@@ -281,18 +312,11 @@ public class SysLogAspect {
     /**
      * 监测是否需要记录日志
      *
-     * @param joinPoint 端点
-     * @param sysLog    操作日志
+     * @param requestLog    操作日志
      * @return true 表示不需要记录日志
      */
-    private boolean check(JoinPoint joinPoint, RequestLog sysLog) {
-        if (sysLog == null || !sysLog.enabled()) {
-            return true;
-        }
-        // 读取目标类上的注解
-        RequestLog targetClass = joinPoint.getTarget().getClass().getAnnotation(RequestLog.class);
-        // 加上 sysLog == null 会导致父类上的方法永远需要记录日志
-        return targetClass != null && !targetClass.enabled();
+    private boolean check(RequestLog requestLog) {
+        return Objects.isNull(requestLog) || !requestLog.enabled();
     }
 
     /**
@@ -306,21 +330,20 @@ public class SysLogAspect {
     }
 
     private String getArgs(Object[] args, HttpServletRequest request) {
-        String strArgs = StrPool.EMPTY;
-        Object[] params = Arrays.stream(args).filter(item -> !(item instanceof ServletRequest || item instanceof ServletResponse)).toArray();
-
         try {
-            if (!request.getContentType().contains(FORM_DATA_CONTENT_TYPE)) {
-                strArgs = JSON.toJSONString(params);
+            // 过滤掉请求/响应对象
+            Object[] params = Arrays.stream(args)
+                    .filter(item -> !(item instanceof ServletRequest || item instanceof ServletResponse))
+                    .toArray();
+            // 文件上传不序列化
+            if (StrUtil.contains(request.getContentType(), FORM_DATA_CONTENT_TYPE)) {
+                return StrUtil.EMPTY;
             }
+            return JSON.toJSONString(params);
         } catch (Exception e) {
-            try {
-                strArgs = Arrays.toString(params);
-            } catch (Exception ex) {
-                log.warn("解析参数异常", ex);
-            }
+            log.warn("请求参数解析失败", e);
+            return Arrays.toString(args);
         }
-        return strArgs;
     }
 
     /**

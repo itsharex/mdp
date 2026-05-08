@@ -1,7 +1,7 @@
 package top.mddata.console.system.entity;
 
 import com.mybatisflex.annotation.Table;
-import top.mddata.console.system.entity.base.RequestLogBase;
+import top.mddata.console.system.entity.base.RequestLogDetailBase;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,6 +18,6 @@ import lombok.experimental.Accessors;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
-@Table(RequestLogBase.TABLE_NAME)
-public class RequestLog extends RequestLogBase {
+@Table(RequestLogDetailBase.TABLE_NAME)
+public class RequestLogDetail extends RequestLogDetailBase {
 }

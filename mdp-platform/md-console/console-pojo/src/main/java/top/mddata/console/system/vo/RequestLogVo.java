@@ -2,36 +2,32 @@ package top.mddata.console.system.vo;
 
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.Table;
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.Accessors;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import top.mddata.console.system.entity.base.RequestLogBase;
 
 import java.io.Serial;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Data;
+import lombok.experimental.Accessors;
+import lombok.experimental.FieldNameConstants;
 
 /**
  * 请求日志 VO类（通常用作Controller出参）。
  *
  * @author henhen6
- * @since 2025-11-12 16:21:25
+ * @since 2026-05-08 12:35:58
  */
 @Accessors(chain = true)
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Schema(description = "请求日志")
+@FieldNameConstants
+@Schema(description = "请求日志Vo")
 @Table(RequestLogBase.TABLE_NAME)
 public class RequestLogVo implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
-
 
     /**
      * 主键
@@ -47,11 +43,17 @@ public class RequestLogVo implements Serializable {
     private String ipAddress;
 
     /**
+     * 是否异常
+     */
+    @Schema(description = "是否异常")
+    private Boolean abnormal;
+
+    /**
      * 日志类型
-     * #LogType{OPT:操作类型;EX:异常类型}
+     * [1-查询 2-新增 3-修改 4-删除 9-其他]
      */
     @Schema(description = "日志类型")
-    private String type;
+    private String logType;
 
     /**
      * 用户id
@@ -91,28 +93,10 @@ public class RequestLogVo implements Serializable {
     private String httpMethod;
 
     /**
-     * 请求参数
-     */
-    @Schema(description = "请求参数")
-    private String httpParam;
-
-    /**
-     * 返回值
-     */
-    @Schema(description = "返回值")
-    private String httpResponse;
-
-    /**
      * 操作描述
      */
     @Schema(description = "操作描述")
     private String description;
-
-    /**
-     * 异常日志
-     */
-    @Schema(description = "异常日志")
-    private String exInfo;
 
     /**
      * 开始时间
@@ -137,6 +121,12 @@ public class RequestLogVo implements Serializable {
      */
     @Schema(description = "浏览器")
     private String ua;
+
+    /**
+     * 调用链
+     */
+    @Schema(description = "调用链")
+    private String trace;
 
     /**
      * 创建时间

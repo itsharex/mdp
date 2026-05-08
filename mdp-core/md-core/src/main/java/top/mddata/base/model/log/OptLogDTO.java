@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import lombok.experimental.Accessors;
+import top.mddata.base.annotation.log.RequestLog;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -34,11 +35,9 @@ public class OptLogDTO implements Serializable {
     /**
      * 操作IP
      */
-    private String requestIp;
+    private String ipAddress;
 
     private Long userId;
-    private Long basePoolNameHeader;
-    private Long extendPoolNameHeader;
 
     /**
      * 日志链路追踪id日志标志
@@ -46,10 +45,14 @@ public class OptLogDTO implements Serializable {
     private String trace;
 
     /**
-     * 日志类型
-     * #LogType{OPT:操作类型;EX:异常类型}
+     * 是否异常
      */
-    private String type;
+    private Boolean abnormal;
+    /**
+     * 日志类型
+     * [1-查询 2-新增 3-修改 4-删除 9-其他]
+     */
+    private RequestLog.LogType logType;
 
     /**
      * 操作人
@@ -67,14 +70,14 @@ public class OptLogDTO implements Serializable {
     private String classPath;
 
     /**
-     * 请求类型
+     * 方法名
      */
-    private String actionMethod;
+    private String methodName;
 
     /**
      * 请求地址
      */
-    private String requestUri;
+    private String httpUri;
 
     /**
      * 请求类型
@@ -85,17 +88,17 @@ public class OptLogDTO implements Serializable {
     /**
      * 请求参数
      */
-    private String params;
+    private String requestParam;
 
     /**
      * 返回值
      */
-    private String result;
+    private String responseBody;
 
     /**
      * 异常描述
      */
-    private String exDetail;
+    private String exceptionStack;
 
     /**
      * 开始时间
