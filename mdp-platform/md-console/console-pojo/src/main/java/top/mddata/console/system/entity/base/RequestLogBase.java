@@ -31,6 +31,26 @@ public class RequestLogBase extends BaseEntity<Long> implements Serializable {
      * IP地址
      */
     private String ipAddress;
+    /**
+     * 国家
+     */
+    private String ipCountry;
+    /**
+     * 区域
+     */
+    private String ipRegion;
+    /**
+     * 省
+     */
+    private String ipProvince;
+    /**
+     * 市
+     */
+    private String ipCity;
+    /**
+     * 运营商
+     */
+    private String ipIsp;
 
     /**
      * 是否异常
@@ -95,9 +115,24 @@ public class RequestLogBase extends BaseEntity<Long> implements Serializable {
     private Long consumingTime;
 
     /**
-     * 浏览器
+     * 浏览器请求头
      */
     private String ua;
+
+    /**
+     * 浏览器名称
+     */
+    private String browserName;
+
+    /**
+     * 浏览器版本
+     */
+    private String browserVersion;
+
+    /**
+     * 操作系统
+     */
+    private String os;
 
     /**
      * 调用链

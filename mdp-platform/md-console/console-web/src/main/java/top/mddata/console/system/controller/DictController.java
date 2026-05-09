@@ -94,7 +94,7 @@ public class DictController extends SuperController<DictService, Dict> {
      */
     @PostMapping("/page")
     @Operation(summary = "分页列表查询", description = "分页查询字典")
-    @RequestLog(value = "'分页列表查询:第' + #params?.current + '页, 显示' + #params?.size + '行'", response = false, logType = RequestLog.LogType.QUERY)
+    @RequestLog(value = "'分页列表查询:第' + #params?.current + '页, 显示' + #params?.size + '行'", logType = RequestLog.LogType.QUERY)
     public R<Page<DictVo>> page(@RequestBody @Validated PageParams<DictQuery> params) {
         Page<DictVo> page = Page.of(params.getCurrent(), params.getSize());
         Dict entity = BeanUtil.toBean(params.getModel(), Dict.class);

@@ -32,7 +32,10 @@
             <groupId>org.dromara.x-file-storage</groupId>
             <artifactId>x-file-storage-core</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>top.mddata.base</groupId>
+            <artifactId>md-log-starter</artifactId>
+        </dependency>
         <dependency>
             <groupId>top.mddata.common</groupId>
             <artifactId>md-cache-key</artifactId>

@@ -78,7 +78,6 @@ public class FileUploadController {
      */
     @Operation(summary = "根据文件id查询文件的临时访问路径", description = "根据文件id查询文件的临时访问路径")
     @PostMapping(value = "/findUrlByIds")
-    @RequestLog("根据文件id获取文件临时的访问路径")
     public R<Map<Long, FileVo>> findUrlByIds(@RequestBody List<Long> ids) {
         return R.success(fileService.findUrlByIds(ids));
     }
@@ -91,7 +90,6 @@ public class FileUploadController {
      */
     @Operation(summary = "根据业务类型和业务id，获取文件的访问路径", description = "根据业务类型和业务id，获取文件的访问路径")
     @PostMapping(value = "/findUrlByObject")
-    @RequestLog("根据业务类型和业务id，获取文件的访问路径")
     public R<Map<Long, FileVo>> findUrlByObject(@RequestParam String objectType, @RequestParam Long objectId) {
         return R.success(fileService.findUrlByObject(objectType, objectId));
     }

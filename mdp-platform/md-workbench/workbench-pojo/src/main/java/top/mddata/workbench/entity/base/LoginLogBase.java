@@ -84,6 +84,27 @@ public class LoginLogBase extends BaseEntity<Long> implements Serializable {
      * IP 归属地
      */
     private String ipLocation;
+    /**
+     * 国家
+     */
+    private String ipCountry;
+    /**
+     * 区域
+     */
+    private String ipRegion;
+    /**
+     * 省
+     */
+    private String ipProvince;
+    /**
+     * 市
+     */
+    private String ipCity;
+    /**
+     * 运营商
+     */
+    private String ipIsp;
+
 
     /**
      * 浏览器请求头

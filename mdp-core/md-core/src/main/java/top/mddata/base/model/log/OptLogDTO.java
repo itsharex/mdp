@@ -116,7 +116,7 @@ public class OptLogDTO implements Serializable {
     private Long consumingTime;
 
     /**
-     * 浏览器
+     * 浏览器请求头
      */
     private String ua;
 

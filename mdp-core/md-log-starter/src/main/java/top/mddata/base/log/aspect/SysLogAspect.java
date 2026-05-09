@@ -142,7 +142,7 @@ public class SysLogAspect {
                     sysLogDTO.setExceptionStack(r.getMsg());
                 }
                 if (sysLog.response()) {
-                    sysLogDTO.setResponseBody(getText(r.toString()));
+                    sysLogDTO.setResponseBody(getText(JSON.toJSONString(r)));
                 }
             }
 

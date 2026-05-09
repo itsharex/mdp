@@ -125,10 +125,10 @@ public class RequestLogDto implements Serializable {
     private Long consumingTime;
 
     /**
-     * 浏览器
+     * 浏览器请求头
      */
     @Size(max = 500, message = "浏览器长度不能超过{max}")
-    @Schema(description = "浏览器")
+    @Schema(description = "浏览器请求头")
     private String ua;
 
     /**

@@ -40,7 +40,31 @@ public class RequestLogVo implements Serializable {
      */
     @Schema(description = "IP地址")
     private String ipAddress;
-
+    /**
+     * 国家
+     */
+    @Schema(description = "国家")
+    private String ipCountry;
+    /**
+     * 区域
+     */
+    @Schema(description = "区域")
+    private String ipRegion;
+    /**
+     * 省
+     */
+    @Schema(description = "省")
+    private String ipProvince;
+    /**
+     * 市
+     */
+    @Schema(description = "市")
+    private String ipCity;
+    /**
+     * 运营商
+     */
+    @Schema(description = "运营商")
+    private String ipIsp;
     /**
      * 是否异常
      */
@@ -116,11 +140,27 @@ public class RequestLogVo implements Serializable {
     private Long consumingTime;
 
     /**
-     * 浏览器
+     * 浏览器请求头
      */
-    @Schema(description = "浏览器")
+    @Schema(description = "浏览器请求头")
     private String ua;
+    /**
+     * 浏览器名称
+     */
+    @Schema(description = "浏览器名称")
+    private String browserName;
 
+    /**
+     * 浏览器版本
+     */
+    @Schema(description = "浏览器版本")
+    private String browserVersion;
+
+    /**
+     * 操作系统
+     */
+    @Schema(description = "操作系统")
+    private String os;
     /**
      * 调用链
      */

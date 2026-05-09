@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.log.util.AddressUtil;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.DateUtils;
+import top.mddata.base.utils.StrPool;
 import top.mddata.common.entity.User;
 import top.mddata.workbench.dto.LoginLogDto;
 import top.mddata.workbench.entity.LoginLog;
@@ -21,6 +22,7 @@ import top.mddata.workbench.service.LoginLogService;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -81,7 +83,22 @@ public class LoginLogServiceImpl extends SuperServiceImpl<LoginLogMapper, LoginL
         if (os != null) {
             loginLog.setOs(simplifyOperatingSystem(os.getName()));
         }
-        loginLog.setIpLocation(isLocalHostIp(dto.getLoginIp()) ? "localhost" : AddressUtil.getRegion(dto.getLoginIp()));
+        String ipLocation = isLocalHostIp(loginLog.getLoginIp()) ? "" : AddressUtil.getRegion(loginLog.getLoginIp());
+        List<String> ipLocationArray = StrUtil.split(ipLocation, StrPool.PIPE);
+        loginLog.setIpLocation(ipLocation);
+        if (ipLocationArray.size() >= 5) {
+            String country = ipLocationArray.get(0);    // 中国
+            String region = ipLocationArray.get(1);    // 0
+            String province = ipLocationArray.get(2);  // 广东省
+            String city = ipLocationArray.get(3);      // 广州市
+            String isp = ipLocationArray.get(4);       // 电信
+            loginLog.setIpCountry(country);
+            loginLog.setIpRegion(region);
+            loginLog.setIpProvince(province);
+            loginLog.setIpCity(city);
+            loginLog.setIpIsp(isp);
+        }
+
         loginLog.setDeviceInfo(dto.getDeviceInfo());
         loginLog.setAppKey(dto.getAppKey());
         loginLog.setAppName(dto.getAppName());
