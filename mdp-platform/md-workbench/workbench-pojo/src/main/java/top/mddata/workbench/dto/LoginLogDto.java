@@ -39,6 +39,10 @@ public class LoginLogDto implements Serializable {
      */
     private String account;
     /**
+     * 用户id
+     */
+    private Long userId;
+    /**
      * 事件类型
      * [01-登录 02-退出 03-注销 04-切换 05-扮演]
      */

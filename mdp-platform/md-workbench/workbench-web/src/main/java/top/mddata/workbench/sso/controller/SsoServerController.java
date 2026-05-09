@@ -7,6 +7,7 @@ import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaFoxUtil;
 import cn.dev33.satoken.util.SaResult;
+import cn.hutool.core.convert.Convert;
 import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson2.JSON;
 import io.swagger.v3.oas.annotations.Operation;
@@ -98,8 +99,10 @@ public class SsoServerController {
         }
 
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
+
         // 发送登录成功事件
-        LoginLogDto dto = LoginLogDto.success(param.getAuthType(), param.getDeviceInfo(), param.getUsername(), "登录成功", JSON.toJSONString(tokenInfo));
+        LoginLogDto dto = LoginLogDto.success(param.getAuthType(), param.getDeviceInfo(), null, "登录成功", JSON.toJSONString(tokenInfo));
+        dto.setUserId(Convert.toLong(tokenInfo.getLoginId()));
         if (app != null) {
             dto.setAppKey(app.getAppKey());
             dto.setAppName(app.getName());

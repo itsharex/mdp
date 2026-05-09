@@ -1,5 +1,7 @@
 package top.mddata.workbench.event.listener;
 
+import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson2.JSON;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -35,20 +37,32 @@ public class LoginListener {
         switch (loginLogDto.getAuthType()) {
             case USERNAME:
             case CAPTCHA:
-                user = ssoUserService.getByUsername(loginLogDto.getAccount());
+                if (StrUtil.isNotEmpty(loginLogDto.getAccount())) {
+                    user = ssoUserService.getByUsername(loginLogDto.getAccount());
+                } else if (loginLogDto.getUserId() != null) {
+                    user = ssoUserService.getByIdCache(loginLogDto.getUserId());
+                }
                 break;
             case PHONE:
-                user = ssoUserService.getByPhone(loginLogDto.getAccount());
+                if (StrUtil.isNotEmpty(loginLogDto.getAccount())) {
+                    user = ssoUserService.getByPhone(loginLogDto.getAccount());
+                } else if (loginLogDto.getUserId() != null) {
+                    user = ssoUserService.getByIdCache(loginLogDto.getUserId());
+                }
                 break;
             case EMAIL:
-                user = ssoUserService.getByEmail(loginLogDto.getAccount());
+                if (StrUtil.isNotEmpty(loginLogDto.getAccount())) {
+                    user = ssoUserService.getByEmail(loginLogDto.getAccount());
+                } else if (loginLogDto.getUserId() != null) {
+                    user = ssoUserService.getByIdCache(loginLogDto.getUserId());
+                }
                 break;
             default:
                 break;
         }
 
         if (user != null) {
-            log.debug("用户 {} 不存在", loginLogDto.getAccount());
+
 
             if (LoginStatusEnum.SUCCESS.eq(loginLogDto.getStatus())) {
                 // 重置错误次数 和 最后登录时间
@@ -57,6 +71,8 @@ public class LoginListener {
                 // 密码错误
                 this.ssoUserService.incrPwErrorNumById(user.getId());
             }
+        } else {
+            log.warn("用户 {} 不存在", JSON.toJSONString(loginLogDto));
         }
 
         loginLogService.save(loginLogDto, user);

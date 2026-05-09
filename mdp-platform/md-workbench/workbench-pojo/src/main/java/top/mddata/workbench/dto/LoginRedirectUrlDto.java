@@ -22,8 +22,8 @@ public class LoginRedirectUrlDto {
     @Schema(description = "授权类型", example = "CAPTCHA", allowableValues = "CAPTCHA,USERNAME,EMAIL,PHONE")
     @NotNull(message = "请选择正确的登录方式")
     private AuthTypeEnum authType;
-    @Schema(description = "用户名")
-    private String username;
+//    @Schema(description = "用户名")
+//    private String username;
     /**
      * 前端获取
      */
