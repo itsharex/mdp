@@ -807,12 +807,6 @@
             </activation>
         </profile>
         <profile>
-            <id>sop</id>
-            <properties>
-                <profile.active>sop</profile.active>
-            </properties>
-        </profile>
-        <profile>
             <id>test</id>
             <properties>
                 <profile.active>test</profile.active>

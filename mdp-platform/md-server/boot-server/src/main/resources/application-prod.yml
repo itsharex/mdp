@@ -46,8 +46,3 @@ dromara:
         storage-path: /data_mdp/upload-file/
         enableStorage: true
         enableAccess: true
-
-dubbo:
-  registry:
-    # 使用nacos注册中心
-    address: nacos://${mdp.nacos.username}:${mdp.nacos.password}@${mdp.nacos.ip}:${mdp.nacos.port}?namespace=${mdp.nacos.namespace}

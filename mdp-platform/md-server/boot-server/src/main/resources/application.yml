@@ -408,25 +408,4 @@ logging:
       max-file-size: 64MB
 
 dubbo:
-  protocol:
-    name: dubbo
-    port: -1
-    parameters:
-      sba: ignore
-  application:
-    qos-enable: false
-  # 提供方
-  provider:
-    validation: jvalidationNew
-    filter: globalExceptionFilter,exception
-  # 消费方
-  consumer:
-    timeout: 30000  # 全局默认30秒
-    retries: 0     # 全局关闭重试（超时后重试会导致服务端处理多份相同请求）
-    check: false
-    validation: jvalidationNew
-  # 注册中心
-  registry:
-    check: false
-    parameters:
-      sba: ignore
+  enabled: false
