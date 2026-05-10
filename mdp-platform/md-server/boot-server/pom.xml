@@ -162,10 +162,9 @@
 
     <!--
      根据不同的配置环境，引入不同的依赖。
-     dev: 本地环境，不集成开放平台功能（无需注册到 zookeeper 和 nacos），文件存储使用本地存储
-     sop: 本地环境，集成开放平台功能（注册到 zookeeper），文件存储使用 minio
-     test: 测试环境 集成开放平台功能（注册到 nacos），文件存储使用 minio
-     prod: 生产环境 集成开放平台功能（注册到 nacos），文件存储使用 minio
+     dev: 本地环境，文件存储使用本地存储
+     test: 测试环境 文件存储使用 minio
+     prod: 生产环境 文件存储使用 minio
      -->
     <profiles>
         <profile>

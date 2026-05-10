@@ -24,12 +24,6 @@
             <version>${revision}</version>
         </dependency>
 
-        <dependency>
-            <groupId>top.mddata.open</groupId>
-            <artifactId>open-api</artifactId>
-            <version>${revision}</version>
-        </dependency>
-
         <!-- 自定义扩展插件：整合SSO服务端 -->
         <dependency>
             <groupId>top.mddata.base</groupId>
