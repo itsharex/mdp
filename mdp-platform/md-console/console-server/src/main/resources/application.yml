@@ -1,0 +1,57 @@
+mdp:
+  swagger:
+    version: '@project.version@'
+  nacos:
+    ip: ${NACOS_IP:@config.nacos.ip@}
+    port: ${NACOS_PORT:@config.nacos.port@}
+    namespace: ${NACOS_NAMESPACE:@config.nacos.namespace@}
+    username: ${NACOS_USERNAME:@config.nacos.username@}
+    password: ${NACOS_PASSWORD:@config.nacos.password@}
+    group: DEFAULT_GROUP
+  sentinel:
+    dashboard: ${SENTINEL_DASHBOARD:@sentinel.dashboard@}
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application:
+    name: '@project.artifactId@'
+    path: /console
+  profiles:
+    active: '@profile.active@'
+  config:
+    import:
+      - nacos:common.yml?group=${mdp.nacos.group}&refresh=true
+      - nacos:redis.yml?group=${mdp.nacos.group}&refresh=true
+      - nacos:db.yml?group=${mdp.nacos.group}&refresh=true
+      - nacos:${spring.application.name}.yml?refresh=true
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+    sentinel:
+      enabled: true
+      filter:
+        enabled: true
+      eager: true  # 取消Sentinel控制台懒加载
+      transport:
+        dashboard: ${mdp.sentinel.dashboard}
+    nacos:
+      server-addr: ${mdp.nacos.ip}:${mdp.nacos.port}
+      username: ${mdp.nacos.username}
+      password: ${mdp.nacos.password}
+      config:
+        file-extension: yml
+        namespace: ${mdp.nacos.namespace}
+        enabled: true
+      discovery:
+        namespace: ${mdp.nacos.namespace}
+        metadata: # 元数据，用于权限服务实时获取各个服务的所有接口
+          management.context-path: ${server.servlet.context-path:}${spring.mvc.servlet.path:}${management.endpoints.web.base-path:}
+          gray_version: henhen
+
+# 用于/actuator/info
+info:
+  name: '@project.name@'
+  description: '@project.description@'
+  version: '@project.version@'
