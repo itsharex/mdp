@@ -65,11 +65,7 @@ public class SystemProperties {
      * 记录 cloud 或 boot 项目所有方法的返回值
      */
     private Boolean recordResult = true;
-    /**
-     * 缓存Key前缀
-     *
-     */
-    private String cachePrefix;
+
     /** oauth 服务扫描枚举类的包路径 */
     private String enumPackage;
     /**

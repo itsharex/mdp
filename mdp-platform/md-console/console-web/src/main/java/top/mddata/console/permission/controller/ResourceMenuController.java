@@ -23,7 +23,7 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.interfaces.echo.EchoService;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.tree.MyTreeBuilder;
-import top.mddata.base.utils.ContextUtil;
+import top.mddata.base.util.ContextUtil;
 import top.mddata.common.enumeration.BooleanEnum;
 import top.mddata.common.enumeration.permission.RoleCategoryEnum;
 import top.mddata.console.permission.dto.ResourceMenuDto;

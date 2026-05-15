@@ -144,8 +144,8 @@ public class OauthScopeController extends SuperController<OauthScopeService, Oau
 
 
     @Operation(summary = "根据权限编码查询应用权限", description = "根据权限编码查询应用权限")
-    @GetMapping("/getScopeListByCode")
-    public R<List<OauthScopeVo>> getScopeListByCode(List<String> scopes) {
+    @PostMapping("/getScopeListByCode")
+    public R<List<OauthScopeVo>> getScopeListByCode(@RequestBody List<String> scopes) {
         return R.success(superService.getScopeListByCode(scopes));
     }
 

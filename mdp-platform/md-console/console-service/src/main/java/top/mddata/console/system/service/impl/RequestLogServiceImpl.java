@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import top.mddata.base.log.util.AddressUtil;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 import top.mddata.common.entity.User;
 import top.mddata.console.organization.service.UserService;
 import top.mddata.console.system.entity.RequestLog;

@@ -1,7 +1,7 @@
 package top.mddata.base.db.typehandler;
 
 import cn.hutool.core.util.StrUtil;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 
 public class SqlUtils {
 

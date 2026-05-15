@@ -25,5 +25,5 @@ public interface MsgTaskService extends SuperService<MsgTask> {
      *
      * @param data 消息参数
      */
-    void sendByTemplateKey(MsgSendDto data);
+    Long sendByTemplateKey(MsgSendDto data);
 }

@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.lang.NonNull;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 
 import java.time.Duration;
 

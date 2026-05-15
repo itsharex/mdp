@@ -11,7 +11,7 @@ import org.dromara.email.jakarta.core.factory.MailFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 import top.mddata.common.properties.MsgProperties;
 import top.mddata.console.message.entity.MsgTask;
 import top.mddata.console.message.entity.MsgTaskRecipient;

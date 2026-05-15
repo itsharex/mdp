@@ -1,6 +1,8 @@
 mdp:
   cache:
     serializerType: jack_son
+    # 缓存Key前缀
+    cachePrefix: mdp
   database: # 字段介绍参考 DatabaseProperties
     flex:
       audit: true
@@ -20,8 +22,6 @@ mdp:
     applicationName: ${spring.application.name}
     applicationDescription: '@project.description@'
     version: '@project.version@'
-    # 缓存Key前缀
-    cachePrefix: mdp
 ####### gateway config #######
   gateway:
     # 接口请求入口前缀

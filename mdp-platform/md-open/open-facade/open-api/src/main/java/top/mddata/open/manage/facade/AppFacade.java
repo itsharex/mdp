@@ -2,7 +2,6 @@ package top.mddata.open.manage.facade;
 
 import top.mddata.base.base.R;
 import top.mddata.open.admin.vo.AppVo;
-import top.mddata.open.admin.vo.OauthScopeVo;
 
 import java.util.List;
 
@@ -20,13 +19,7 @@ public interface AppFacade {
      */
     R<List<AppVo>> listNeedPushApp();
 
-    /**
-     * 根据权限编码查询 应用权限
-     *
-     * @param scopes 权限编码
-     * @return 应用权限
-     */
-    R<List<OauthScopeVo>> getScopeListByCode(List<String> scopes);
+
 
     /**
      * 根据id查询应用

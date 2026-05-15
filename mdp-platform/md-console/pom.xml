@@ -22,6 +22,7 @@
         <module>console-dao</module>
         <module>console-service</module>
         <module>console-web</module>
+        <module>console-server</module>
     </modules>
 
 </project>

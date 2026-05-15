@@ -1,15 +1,13 @@
 package top.mddata.common.configuration;
 
-import cn.hutool.core.util.StrUtil;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import top.mddata.base.model.cache.CacheKeyBuilder;
 import top.mddata.common.configurer.AlwaysConfigurer;
+import top.mddata.common.properties.MsgProperties;
 import top.mddata.common.properties.SystemProperties;
 
 /**
@@ -22,9 +20,8 @@ import top.mddata.common.properties.SystemProperties;
 @Configuration
 @RequiredArgsConstructor
 @ConditionalOnWebApplication
-@EnableConfigurationProperties({SystemProperties.class})
+@EnableConfigurationProperties({MsgProperties.class, SystemProperties.class})
 public class SystemAutoConfiguration {
-    private final SystemProperties systemProperties;
 
 
     @Bean
@@ -41,12 +38,5 @@ public class SystemAutoConfiguration {
      }
      */
 
-    @PostConstruct
-    public void init() {
-        if (StrUtil.isNotEmpty(systemProperties.getCachePrefix())) {
-            log.info("检查到配置文件中：{}.cachePrefix={}", SystemProperties.PREFIX, systemProperties.getCachePrefix());
-            CacheKeyBuilder.Key.setPrefix(systemProperties.getCachePrefix());
-        }
-    }
 
 }

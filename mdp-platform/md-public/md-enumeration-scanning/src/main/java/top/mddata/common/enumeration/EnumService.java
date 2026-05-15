@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import top.mddata.base.interfaces.BaseEnum;
 import top.mddata.base.utils.ClassUtils;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 import top.mddata.common.enumeration.system.DataTypeEnum;
 import top.mddata.common.properties.SystemProperties;
 import top.mddata.common.vo.Option;

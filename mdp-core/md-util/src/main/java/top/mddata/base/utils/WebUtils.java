@@ -5,6 +5,7 @@ import cn.hutool.core.util.URLUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import top.mddata.base.util.StrPool;
 
 import java.util.Objects;
 

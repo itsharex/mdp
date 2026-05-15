@@ -69,7 +69,7 @@ public class DictItemServiceImpl extends SuperServiceImpl<DictItemMapper, DictIt
 
         Map<Serializable, Object> codeValueMap = MapUtil.newHashMap();
         dictKeys.forEach(dictKey -> {
-            Function<CacheKey, Map<String, String>> fun = ck -> {
+            Function<CacheKey, Map<String, DictItem>> fun = ck -> {
                 Dict dict = dictMapper.selectOneByQuery(QueryWrapper.create().eq(Dict::getUniqKey, dictKey));
                 if (dict == null) {
                     return Collections.emptyMap();
@@ -79,12 +79,12 @@ public class DictItemServiceImpl extends SuperServiceImpl<DictItemMapper, DictIt
                 List<DictItem> list = this.list(QueryWrapper.create().eq(DictItem::getDictId, dictId));
 
                 if (CollUtil.isNotEmpty(list)) {
-                    return CollHelper.uniqueIndex(list, DictItem::getUniqKey, DictItem::getName);
+                    return CollHelper.uniqueIndex(list, DictItem::getUniqKey, item -> item);
                 } else {
-                    return MapBuilder.<String, String>create().put(DefValConstants.DICT_NULL_VAL_KEY, "无数据").build();
+                    return MapBuilder.<String, DictItem>create().put(DefValConstants.DICT_NULL_VAL_KEY, new DictItem()).build();
                 }
             };
-            Map<String, CacheResult<String>> map = cachePlusOps.hGetAll(DictItemHashCacheKeyBuilder.builder(dictKey), fun);
+            Map<String, CacheResult<DictItem>> map = cachePlusOps.hGetAll(DictItemHashCacheKeyBuilder.builder(dictKey), fun);
             map.forEach((itemKey, itemName) -> {
                 if (!DefValConstants.DICT_NULL_VAL_KEY.equals(itemKey)) {
                     codeValueMap.put(StrUtil.join(ips.getDictSeparator(), dictKey, itemKey), itemName.getValue());

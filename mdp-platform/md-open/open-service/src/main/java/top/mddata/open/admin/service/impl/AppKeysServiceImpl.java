@@ -13,7 +13,7 @@ import top.mddata.base.cache.redis.CacheResult;
 import top.mddata.base.model.cache.CacheKey;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 import top.mddata.common.cache.open.AppKeysCkBuilder;
 import top.mddata.open.admin.dto.AppKeysDto;
 import top.mddata.open.admin.entity.App;

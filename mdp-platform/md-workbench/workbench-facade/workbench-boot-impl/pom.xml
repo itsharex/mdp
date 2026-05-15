@@ -12,7 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>workbench-boot-impl</artifactId>
     <name>${project.artifactId}</name>
-    <description>用户中心-单体版实现</description>
+    <description>工作台-单体版实现</description>
 
     <dependencies>
         <dependency>

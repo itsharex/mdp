@@ -326,7 +326,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void registerByEmail(User user) {
+    public boolean registerByEmail(User user) {
         ArgumentAssert.isFalse(checkEmail(user.getEmail(), null), "邮箱：{}已经存在", user.getEmail());
         user.setPassword(systemProperties.getDefPwd());
         user.setUsername(UUID.randomUUID().toString(true));
@@ -341,6 +341,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
                 .setEventContent(IdDto.builder().id(user.getId()).build().toString())
                 .setTriggerAt(LocalDateTime.now());
         notifyAndEventPushFacade.eventPush(request);
+        return true;
     }
 
     private void saveDefRole(User user) {
@@ -372,7 +373,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void registerByPhone(User user) {
+    public boolean registerByPhone(User user) {
         ArgumentAssert.isFalse(checkPhone(user.getPhone(), null), "手机号：{}已经存在", user.getPhone());
         user.setPassword(systemProperties.getDefPwd());
         user.setUsername(UUID.randomUUID().toString(true));
@@ -387,11 +388,12 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
                 .setEventContent(IdDto.builder().id(user.getId()).build().toString())
                 .setTriggerAt(LocalDateTime.now());
         notifyAndEventPushFacade.eventPush(request);
+        return true;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void registerByUsername(User user) {
+    public boolean registerByUsername(User user) {
         ArgumentAssert.isFalse(checkUsername(user.getUsername(), null), "用户名：{}已经存在", user.getUsername());
         initSsoUser(user);
         user.setName(user.getUsername());
@@ -404,6 +406,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
                 .setEventContent(IdDto.builder().id(user.getId()).build().toString())
                 .setTriggerAt(LocalDateTime.now());
         notifyAndEventPushFacade.eventPush(request);
+        return true;
     }
 
     private void initSsoUser(User defUser) {

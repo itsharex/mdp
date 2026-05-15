@@ -19,6 +19,7 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
+import top.mddata.console.message.dto.MsgSendDto;
 import top.mddata.console.message.dto.MsgTaskDto;
 import top.mddata.console.message.entity.MsgTask;
 import top.mddata.console.message.mapper.MsgTaskMapper;
@@ -133,5 +134,16 @@ public class MsgTaskController extends SuperController<MsgTaskService, MsgTask> 
     @RequestLog("发布站内信")
     public R<Boolean> publish(@RequestBody @Validated MsgTaskDto data) {
         return R.success(superService.publish(data));
+    }
+
+    /**
+     * 根据消息模板发送消息
+     *
+     * @param data 消息参数
+     */
+    @PostMapping("/sendByTemplateKey")
+    @RequestLog("发布站内信")
+    public R<Long> sendByTemplateKey(@RequestBody @Validated MsgSendDto data) {
+        return R.success(superService.sendByTemplateKey(data));
     }
 }

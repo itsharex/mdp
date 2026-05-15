@@ -63,6 +63,10 @@ public final class ContextConstants {
      * WriteInterceptor 放行标志
      */
     public static final String PROCEED = "proceed";
+    /**
+     * 是否 内部调用项目
+     */
+    public static final String FEIGN = "x-feign";
 
     private ContextConstants() {
     }

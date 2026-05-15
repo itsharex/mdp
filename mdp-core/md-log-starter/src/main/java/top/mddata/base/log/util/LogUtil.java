@@ -5,7 +5,7 @@ import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 import top.mddata.base.annotation.log.RequestLog;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 
 import java.lang.reflect.Method;
 import java.util.Objects;

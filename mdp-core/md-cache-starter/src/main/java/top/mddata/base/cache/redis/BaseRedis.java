@@ -27,7 +27,7 @@ import top.mddata.base.model.cache.CacheKey;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.CollHelper;
 import top.mddata.base.utils.JsonUtil;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 
 import java.time.Duration;
 import java.util.ArrayList;

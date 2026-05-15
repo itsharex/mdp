@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.log.util.AddressUtil;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.DateUtils;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 import top.mddata.common.entity.User;
 import top.mddata.workbench.dto.LoginLogDto;
 import top.mddata.workbench.entity.LoginLog;

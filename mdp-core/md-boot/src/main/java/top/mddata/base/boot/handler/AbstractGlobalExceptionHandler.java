@@ -36,7 +36,7 @@ import top.mddata.base.exception.CaptchaException;
 import top.mddata.base.exception.ForbiddenException;
 import top.mddata.base.exception.UnauthorizedException;
 import top.mddata.base.exception.code.ExceptionCode;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 
 import java.sql.SQLException;
 import java.util.List;

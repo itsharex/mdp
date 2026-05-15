@@ -22,7 +22,7 @@
         <module>workbench-dao</module>
         <module>workbench-service</module>
         <module>workbench-web</module>
-<!--        <module>workbench-server</module>-->
+        <module>workbench-server</module>
     </modules>
 
 

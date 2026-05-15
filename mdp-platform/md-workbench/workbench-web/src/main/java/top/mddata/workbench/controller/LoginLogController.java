@@ -18,7 +18,7 @@ import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.base.utils.ContextUtil;
+import top.mddata.base.util.ContextUtil;
 import top.mddata.workbench.entity.LoginLog;
 import top.mddata.workbench.query.LoginLogQuery;
 import top.mddata.workbench.service.LoginLogService;

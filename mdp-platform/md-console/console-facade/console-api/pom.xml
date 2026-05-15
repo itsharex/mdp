@@ -13,7 +13,7 @@
     <artifactId>console-api</artifactId>
 
     <name>${project.artifactId}</name>
-    <description>api模块</description>
+    <description>控制台服务-api层</description>
     <dependencies>
         <dependency>
             <groupId>top.mddata.console</groupId>

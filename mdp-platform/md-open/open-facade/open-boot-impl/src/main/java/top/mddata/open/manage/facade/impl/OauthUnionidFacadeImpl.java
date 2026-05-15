@@ -14,7 +14,7 @@ import top.mddata.open.manage.facade.OauthUnionidFacade;
  */
 @Component
 @RequiredArgsConstructor
-public class OpOauthUnionidFacadeImpl implements OauthUnionidFacade {
+public class OauthUnionidFacadeImpl implements OauthUnionidFacade {
     private final OauthUnionidService oauthUnionidService;
 
     @Override

@@ -19,7 +19,7 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.base.utils.ContextUtil;
+import top.mddata.base.util.ContextUtil;
 import top.mddata.open.admin.dto.AppDto;
 import top.mddata.open.admin.dto.AppGroupRelDto;
 import top.mddata.open.admin.dto.AppKeysDto;
@@ -156,10 +156,10 @@ public class AppController extends SuperController<AppService, App> {
      *
      * @return 应用
      */
-    @GetMapping("/listNeedPushApplication")
+    @GetMapping("/listNeedPushApp")
     @Operation(summary = "查询需要接收事件推送的应用", description = "查询需要接收事件推送的应用")
     @RequestLog(value = "查询需要接收事件推送的应用")
-    public R<List<AppVo>> listNeedPushApplication() {
+    public R<List<AppVo>> listNeedPushApp() {
         return R.success(superService.listNeedPushApp());
     }
 

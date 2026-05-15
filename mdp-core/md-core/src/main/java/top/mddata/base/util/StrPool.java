@@ -1,4 +1,4 @@
-package top.mddata.base.utils;
+package top.mddata.base.util;
 
 import cn.hutool.core.util.RandomUtil;
 

@@ -13,7 +13,7 @@
     <artifactId>workbench-api</artifactId>
 
     <name>${project.artifactId}</name>
-    <description>api模块</description>
+    <description>工作台-api层</description>
     <dependencies>
         <dependency>
             <groupId>top.mddata.workbench</groupId>

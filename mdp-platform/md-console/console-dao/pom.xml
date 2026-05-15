@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>console-dao</artifactId>
+    <description>控制台服务-持久层</description>
 
     <dependencies>
         <dependency>

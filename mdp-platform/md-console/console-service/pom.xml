@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>console-service</artifactId>
+    <description>控制台服务-业务层</description>
 
     <dependencies>
         <dependency>

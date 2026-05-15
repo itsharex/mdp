@@ -18,5 +18,9 @@
             <groupId>top.mddata.base</groupId>
             <artifactId>md-all-boot</artifactId>
         </dependency>
+        <dependency>
+            <groupId>top.mddata.base</groupId>
+            <artifactId>md-cloud-starter</artifactId>
+        </dependency>
     </dependencies>
 </project>

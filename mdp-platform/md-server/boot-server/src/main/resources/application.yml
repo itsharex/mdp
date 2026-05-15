@@ -19,6 +19,8 @@ mdp:
       padding-factor: 50
   cache:
     serializerType: jack_son
+    # 缓存Key前缀
+    cachePrefix: mdp
   scan:
     enabled: true
     basePackage: top.mddata
@@ -37,8 +39,6 @@ mdp:
     recordLog: true
     recordArgs: true
     recordResult: true
-    # 缓存Key前缀
-    cachePrefix: mdp
     # oauth 服务扫描枚举类的包路径
     enumPackage: "top.mddata,com.gitee.sop"
     # 单体架构

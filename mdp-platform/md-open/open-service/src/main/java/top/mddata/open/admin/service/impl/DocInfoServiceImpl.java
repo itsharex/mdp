@@ -13,7 +13,7 @@ import top.mddata.base.exception.BizException;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.MyTreeUtil;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 import top.mddata.common.constant.ConfigKey;
 import top.mddata.common.enumeration.BooleanEnum;
 import top.mddata.console.system.facade.ConfigFacade;

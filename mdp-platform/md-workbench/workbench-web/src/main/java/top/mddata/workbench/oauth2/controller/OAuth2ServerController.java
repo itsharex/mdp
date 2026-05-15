@@ -27,11 +27,12 @@ import top.mddata.base.base.R;
 import top.mddata.base.exception.BizException;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.BeanPlusUtil;
-import top.mddata.base.utils.ContextUtil;
+import top.mddata.base.util.ContextUtil;
 import top.mddata.common.entity.User;
 import top.mddata.open.admin.vo.AppVo;
 import top.mddata.open.admin.vo.OauthScopeVo;
 import top.mddata.open.manage.facade.AppFacade;
+import top.mddata.open.manage.facade.OauthScopeFacade;
 import top.mddata.workbench.dto.LoginDto;
 import top.mddata.workbench.enumeration.AuthTypeEnum;
 import top.mddata.workbench.oauth2.dto.ConfirmDto;
@@ -60,6 +61,8 @@ import static top.mddata.workbench.oauth2.data.Oauth2DataResolver.readClientIdAn
 public class OAuth2ServerController {
     @Autowired
     private AppFacade appFacade;
+    @Autowired
+    private OauthScopeFacade oauthScopeFacade;
     @Autowired
     private SsoUserService ssoUserService;
     @Autowired
@@ -208,7 +211,7 @@ public class OAuth2ServerController {
         ConfirmInfoVo vo = new ConfirmInfoVo();
         // 查询权限信息
         List<String> scopes = SaOAuth2Manager.getDataConverter().convertScopeStringToList(scope);
-        R<List<OauthScopeVo>> scopeList = appFacade.getScopeListByCode(scopes);
+        R<List<OauthScopeVo>> scopeList = oauthScopeFacade.getScopeListByCode(scopes);
 
 
         User ssoUser = ssoUserService.getById(ContextUtil.getUserId());

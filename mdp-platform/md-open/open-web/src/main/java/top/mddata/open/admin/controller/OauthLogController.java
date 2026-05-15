@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
-import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
@@ -66,19 +65,6 @@ public class OauthLogController extends SuperController<OauthLogService, OauthLo
     }
 
     /**
-     * 根据主键更新授权记录。
-     *
-     * @param dto 授权记录
-     * @return {@code true} 更新成功，{@code false} 更新失败
-     */
-    @PostMapping("/update")
-    @Operation(summary = "修改", description = "根据主键更新授权记录")
-    @RequestLog(value = "修改", request = false)
-    public R<Long> update(@Validated(BaseEntity.Update.class) @RequestBody OauthLogDto dto) {
-        return R.success(superService.updateDtoById(dto).getId());
-    }
-
-    /**
      * 根据授权记录主键获取详细信息。
      *
      * @param id 授权记录主键
@@ -111,18 +97,4 @@ public class OauthLogController extends SuperController<OauthLogService, OauthLo
         return R.success(page);
     }
 
-    /**
-     * 批量查询
-     * @param params 查询参数
-     * @return 集合
-     */
-    @PostMapping("/list")
-    @Operation(summary = "批量查询", description = "批量查询")
-    @RequestLog(value = "批量查询", response = false)
-    public R<List<OauthLogVo>> list(@RequestBody @Validated OauthLogQuery params) {
-        OauthLog entity = BeanUtil.toBean(params, OauthLog.class);
-        QueryWrapper wrapper = QueryWrapper.create(entity, WrapperUtil.buildOperators(entity.getClass()));
-        List<OauthLogVo> listVo = superService.listAs(wrapper, OauthLogVo.class);
-        return R.success(listVo);
-    }
 }

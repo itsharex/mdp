@@ -116,8 +116,8 @@ public class ConfigController extends SuperController<ConfigService, Config> {
      * @param uniqKey 参数标识
      * @return 系统参数
      */
-    @GetMapping("/getParam")
-    public R<ConfigVo> getParam(@RequestParam String uniqKey) {
+    @GetMapping("/getConfig")
+    public R<ConfigVo> getConfig(@RequestParam String uniqKey) {
         return R.success(superService.getConfig(uniqKey));
     }
 

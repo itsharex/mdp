@@ -12,7 +12,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>console-boot-impl</artifactId>
     <name>${project.artifactId}</name>
-    <description>基础服务-单体版实现</description>
+    <description>控制台服务-单体版实现层</description>
 
     <dependencies>
         <dependency>

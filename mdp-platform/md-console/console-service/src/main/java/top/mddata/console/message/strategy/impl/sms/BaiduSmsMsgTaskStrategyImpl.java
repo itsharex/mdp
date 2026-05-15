@@ -10,7 +10,7 @@ import org.dromara.sms4j.core.factory.SmsFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 import top.mddata.console.message.entity.InterfaceConfig;
 import top.mddata.console.message.entity.MsgTask;
 import top.mddata.console.message.entity.MsgTaskRecipient;

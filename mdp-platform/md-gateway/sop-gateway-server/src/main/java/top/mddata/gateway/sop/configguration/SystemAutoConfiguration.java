@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
+import top.mddata.base.cache.properties.CustomCacheProperties;
 import top.mddata.base.model.cache.CacheKeyBuilder;
 import top.mddata.common.properties.SystemProperties;
 
@@ -22,13 +23,13 @@ import top.mddata.common.properties.SystemProperties;
 @ConditionalOnWebApplication
 @EnableConfigurationProperties({SystemProperties.class})
 public class SystemAutoConfiguration {
-    private final SystemProperties systemProperties;
+    private final CustomCacheProperties cacheProperties;
 
     @PostConstruct
     public void init() {
-        if (StrUtil.isNotEmpty(systemProperties.getCachePrefix())) {
-            CacheKeyBuilder.Key.setPrefix(systemProperties.getCachePrefix());
-            log.info("检查到配置文件中：{}.cachePrefix={}", SystemProperties.PREFIX, systemProperties.getCachePrefix());
+        if (StrUtil.isNotEmpty(cacheProperties.getCachePrefix())) {
+            CacheKeyBuilder.Key.setPrefix(cacheProperties.getCachePrefix());
+            log.info("检查到配置文件中：{}.cachePrefix={}", SystemProperties.PREFIX, cacheProperties.getCachePrefix());
         }
     }
 

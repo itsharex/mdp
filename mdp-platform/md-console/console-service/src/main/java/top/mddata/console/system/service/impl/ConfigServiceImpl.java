@@ -15,7 +15,7 @@ import top.mddata.base.model.cache.CacheKeyBuilder;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.CollHelper;
-import top.mddata.base.utils.ContextUtil;
+import top.mddata.base.util.ContextUtil;
 import top.mddata.common.cache.console.system.ConfigCacheKeyBuilder;
 import top.mddata.common.cache.console.system.ConfigUniqKeyCacheKeyBuilder;
 import top.mddata.common.enumeration.system.DataTypeEnum;

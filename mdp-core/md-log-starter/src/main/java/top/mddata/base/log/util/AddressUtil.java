@@ -5,7 +5,7 @@ import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.lionsoul.ip2region.xdb.Searcher;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 
 import java.io.File;
 import java.io.InputStream;

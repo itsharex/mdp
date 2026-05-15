@@ -18,5 +18,6 @@
     <modules>
         <module>console-api</module>
         <module>console-boot-impl</module>
+        <module>console-cloud-impl</module>
     </modules>
 </project>

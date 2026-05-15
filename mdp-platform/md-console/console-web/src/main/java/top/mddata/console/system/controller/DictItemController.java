@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
@@ -27,7 +28,10 @@ import top.mddata.console.system.service.DictItemService;
 import top.mddata.console.system.service.DictService;
 import top.mddata.console.system.vo.DictItemVo;
 
+import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 字典项 控制层。
@@ -132,5 +136,11 @@ public class DictItemController extends SuperController<DictItemService, DictIte
         List<DictItemVo> list = superService.listAs(new QueryWrapper().eq(DictItem::getDictId, query.getDictId()).orderBy(DictItem::getWeight, true), DictItemVo.class);
         List<DictItemVo> menuTreeList = MyTreeUtil.buildTreeEntity(list, DictItemVo::new);
         return R.success(menuTreeList);
+    }
+
+    @Operation(summary = "查询字典项", description = "根据字典编码查询字典项")
+    @PostMapping("/findByIds")
+    public Map<Serializable, Object> findDictByIds(@RequestParam("ids") Set<Serializable> ids) {
+        return this.superService.findByIds(ids);
     }
 }

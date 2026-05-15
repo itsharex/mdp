@@ -18,7 +18,7 @@ import top.mddata.base.exception.BizException;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.DateUtils;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 
 import java.lang.reflect.Field;
 import java.util.Collection;

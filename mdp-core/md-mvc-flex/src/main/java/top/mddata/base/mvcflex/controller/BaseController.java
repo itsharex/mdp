@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.SneakyThrows;
 import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.base.utils.ContextUtil;
+import top.mddata.base.util.ContextUtil;
 
 import java.io.IOException;
 

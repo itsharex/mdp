@@ -13,7 +13,7 @@
     <artifactId>open-api</artifactId>
 
     <name>${project.artifactId}</name>
-    <description>api模块</description>
+    <description>开发者中心服务-api层</description>
     <dependencies>
         <dependency>
             <groupId>top.mddata.open</groupId>

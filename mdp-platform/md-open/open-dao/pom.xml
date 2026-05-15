@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>open-dao</artifactId>
+    <description>开发者中心服务-持久层</description>
 
     <dependencies>
         <dependency>

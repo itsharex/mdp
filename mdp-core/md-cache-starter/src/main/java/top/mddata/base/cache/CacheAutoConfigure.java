@@ -5,7 +5,7 @@ import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.interceptor.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 
 /**
  * 缓存配置

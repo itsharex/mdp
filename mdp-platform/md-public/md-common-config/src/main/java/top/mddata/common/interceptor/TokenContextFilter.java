@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
 import org.springframework.web.method.HandlerMethod;
 import top.mddata.base.constant.ContextConstants;
-import top.mddata.base.utils.ContextUtil;
+import top.mddata.base.util.ContextUtil;
 import top.mddata.common.properties.IgnoreProperties;
 
 import static top.mddata.base.constant.ContextConstants.APP_ID;

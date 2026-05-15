@@ -22,6 +22,7 @@
         <module>open-dao</module>
         <module>open-service</module>
         <module>open-web</module>
+        <module>open-server</module>
     </modules>
 
 </project>

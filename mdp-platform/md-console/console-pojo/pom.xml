@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>console-pojo</artifactId>
+    <description>控制台服务-数据对象层</description>
 
     <dependencies>
         <dependency>

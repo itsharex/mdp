@@ -11,6 +11,7 @@
     </parent>
 
     <artifactId>open-pojo</artifactId>
+    <description>开发者中心服务-实体层</description>
 
     <dependencies>
         <dependency>

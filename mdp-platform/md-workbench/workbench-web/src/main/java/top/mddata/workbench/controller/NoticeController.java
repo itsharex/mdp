@@ -20,11 +20,12 @@ import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
+import top.mddata.base.util.ContextUtil;
 import top.mddata.base.utils.ArgumentAssert;
-import top.mddata.base.utils.ContextUtil;
 import top.mddata.workbench.entity.Notice;
 import top.mddata.workbench.entity.NoticeRecipient;
 import top.mddata.workbench.query.NoticeQuery;
+import top.mddata.workbench.service.NoticeRecipientService;
 import top.mddata.workbench.service.NoticeService;
 import top.mddata.workbench.vo.NoticeVo;
 
@@ -42,6 +43,7 @@ import java.util.List;
 @RequestMapping("/notice")
 @RequiredArgsConstructor
 public class NoticeController extends SuperController<NoticeService, Notice> {
+    private final NoticeRecipientService noticeRecipientService;
 
     /**
      * 根据主键删除站内通知。
@@ -115,6 +117,26 @@ public class NoticeController extends SuperController<NoticeService, Notice> {
         WrapperUtil.buildWrapperByOrder(wrapper, params, entity.getClass());
         superService.pageAs(page, wrapper, NoticeVo.class);
         return R.success(page);
+    }
+
+    /**
+     * 批量保存 站内通知接收人
+     * @param recipientList 站内通知接收人
+     */
+    @PostMapping("/saveBatchNoticeRecipient")
+    @Operation(hidden = true)
+    public R<Boolean> saveBatchNoticeRecipient(@RequestBody @Validated List<NoticeRecipient> recipientList) {
+        return R.success(noticeRecipientService.saveBatch(recipientList));
+    }
+
+    /**
+     * 保存 通知
+     * @param notice 通知
+     */
+    @PostMapping("/save")
+    @Operation(hidden = true)
+    public R<Boolean> save(@RequestBody @Validated Notice notice) {
+        return R.success(superService.save(notice));
     }
 
 

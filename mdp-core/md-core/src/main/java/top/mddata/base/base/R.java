@@ -145,6 +145,9 @@ public class R<T> {
         return fail(OPERATION_EX_CODE, msg);
     }
 
+    public static <E> R<E> timeout() {
+        return fail(TIMEOUT_CODE, HYSTRIX_ERROR_MESSAGE);
+    }
 
     public R<T> put(String key, Object value) {
         if (this.extra == null) {

@@ -207,4 +207,31 @@ public class UserController extends SuperController<UserService, User> {
         superService.pageAs(page, wrapper, UserVo.class);
         return R.success(page);
     }
+
+    /**
+     * 根据邮箱注册账号
+     * @param ssoUser 用户
+     */
+    @PostMapping("/registerByEmail")
+    public R<Boolean> registerByEmail(User ssoUser) {
+        return R.success(superService.registerByEmail(ssoUser));
+    }
+
+    /**
+     * 根据手机注册账号
+     * @param ssoUser 用户
+     */
+    @PostMapping("/registerByPhone")
+    public R<Boolean> registerByPhone(User ssoUser) {
+        return R.success(superService.registerByPhone(ssoUser));
+    }
+
+    /**
+     * 注册账号
+     * @param defUser 用户信息
+     */
+    @PostMapping("/registerByUsername")
+    public R<Boolean> registerByUsername(User defUser) {
+        return R.success(superService.registerByUsername(defUser));
+    }
 }

@@ -27,6 +27,12 @@ public class CustomCacheProperties {
     private Boolean cacheNullVal = true;
 
     /**
+     * 缓存Key前缀
+     *
+     */
+    private String cachePrefix;
+
+    /**
      * 通过 @Cacheable 注解标注的方法的缓存策略
      */
     private Cache def = new Cache();

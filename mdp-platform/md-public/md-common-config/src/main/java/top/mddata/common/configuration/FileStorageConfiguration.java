@@ -1,6 +1,7 @@
 package top.mddata.common.configuration;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.x.file.storage.spring.SpringFileStorageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,10 @@ public class FileStorageConfiguration {
     @Bean
     public List<LocalPlusExtFileStorage> getLocalPlusExtFileStorageList() {
         List<? extends SpringFileStorageProperties.SpringLocalPlusConfig> localPlus = properties.getLocalPlus();
+
+        if (CollUtil.isEmpty(localPlus)) {
+            return Collections.emptyList();
+        }
 
         SpringFileStorageProperties.SpringLocalPlusConfig config = BeanUtil.toBean(localPlus.get(0), SpringFileStorageProperties.SpringLocalPlusConfig.class);
         config.setPlatform("localPlusExt");

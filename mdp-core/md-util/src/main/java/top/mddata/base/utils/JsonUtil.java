@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import top.mddata.base.exception.BizException;
 import top.mddata.base.exception.code.ExceptionCode;
 import top.mddata.base.jackson.MyJacksonModule;
+import top.mddata.base.util.StrPool;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -19,6 +19,7 @@ import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.common.dto.IdDto;
+import top.mddata.open.admin.dto.NotifyInfoDto;
 import top.mddata.open.admin.entity.NotifyInfo;
 import top.mddata.open.admin.query.NotifyInfoQuery;
 import top.mddata.open.admin.service.NotifyInfoService;
@@ -111,5 +112,17 @@ public class NotifyInfoController extends SuperController<NotifyInfoService, Not
     @RequestLog("'结束重试:' + #param.id")
     public R<Boolean> end(@Validated @RequestBody IdDto param) {
         return R.success(superService.end(param.getId()));
+    }
+
+    /**
+     * 回调
+     *
+     * @param request 回调内容
+     * @return 返回回调id
+     */
+    @Operation(hidden = true)
+    @PostMapping("/notify")
+    public R<Long> notify(@Validated @RequestBody NotifyInfoDto request) {
+        return superService.notify(request);
     }
 }

@@ -18,6 +18,7 @@ import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
+import top.mddata.open.admin.dto.EventTriggerDto;
 import top.mddata.open.admin.entity.EventTrigger;
 import top.mddata.open.admin.query.EventTriggerQuery;
 import top.mddata.open.admin.service.EventTriggerService;
@@ -98,4 +99,17 @@ public class EventTriggerController extends SuperController<EventTriggerService,
         List<EventTriggerVo> listVo = superService.listAs(wrapper, EventTriggerVo.class);
         return R.success(listVo);
     }
+
+    /**
+     * 保存事件触发
+     *
+     * @param save 事件触发参数
+     * @return 事件触发
+     */
+    @PostMapping("/save")
+    @Operation(hidden = true)
+    public R<EventTrigger> save(@RequestBody EventTriggerDto save) {
+        return R.success(superService.save(save));
+    }
+
 }

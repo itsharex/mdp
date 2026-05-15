@@ -1,7 +1,7 @@
 package top.mddata.base.exception;
 
 import cn.hutool.core.util.StrUtil;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 
 import java.io.Serial;
 

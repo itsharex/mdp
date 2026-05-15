@@ -29,6 +29,11 @@
             </dependency>
             <dependency>
                 <groupId>top.mddata.base</groupId>
+                <artifactId>md-cloud-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.mddata.base</groupId>
                 <artifactId>md-codegen</artifactId>
                 <version>${revision}</version>
             </dependency>

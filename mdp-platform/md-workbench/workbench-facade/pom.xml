@@ -18,5 +18,6 @@
     <modules>
         <module>workbench-api</module>
         <module>workbench-boot-impl</module>
+        <module>workbench-cloud-impl</module>
     </modules>
 </project>

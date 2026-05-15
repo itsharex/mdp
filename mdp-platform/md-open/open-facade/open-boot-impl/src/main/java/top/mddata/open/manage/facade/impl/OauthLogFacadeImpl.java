@@ -13,7 +13,7 @@ import top.mddata.open.manage.facade.OauthLogFacade;
  */
 @Service
 @RequiredArgsConstructor
-public class OpOauthLogFacadeImpl implements OauthLogFacade {
+public class OauthLogFacadeImpl implements OauthLogFacade {
     private final OauthLogService oauthLogService;
 
     @Override

@@ -26,6 +26,7 @@
         <module>md-codegen</module>
         <module>md-core</module>
         <module>md-boot</module>
+        <module>md-cloud-starter</module>
         <module>md-util</module>
         <module>md-db</module>
         <module>md-db-mybatis-flex</module>

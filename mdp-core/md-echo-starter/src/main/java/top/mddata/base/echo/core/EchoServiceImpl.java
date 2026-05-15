@@ -36,7 +36,7 @@ import top.mddata.base.interfaces.BaseEnum;
 import top.mddata.base.interfaces.echo.EchoService;
 import top.mddata.base.interfaces.echo.EchoVO;
 import top.mddata.base.interfaces.echo.LoadService;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -53,7 +53,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import static top.mddata.base.utils.StrPool.EMPTY;
+import static top.mddata.base.util.StrPool.EMPTY;
 
 
 /**

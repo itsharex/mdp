@@ -9,7 +9,7 @@ import org.slf4j.MDC;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.AsyncHandlerInterceptor;
 import top.mddata.base.constant.ContextConstants;
-import top.mddata.base.utils.ContextUtil;
+import top.mddata.base.util.ContextUtil;
 import top.mddata.base.utils.WebUtils;
 
 import java.util.Map;

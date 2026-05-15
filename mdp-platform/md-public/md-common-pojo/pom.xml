@@ -47,7 +47,6 @@
         <dependency>
             <groupId>top.mddata.base</groupId>
             <artifactId>sop-service-support</artifactId>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 

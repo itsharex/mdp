@@ -11,8 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
+import top.mddata.base.util.ContextUtil;
 import top.mddata.base.utils.ArgumentAssert;
-import top.mddata.base.utils.ContextUtil;
 import top.mddata.common.constant.ConfigKey;
 import top.mddata.console.message.dto.MsgSendDto;
 import top.mddata.console.message.dto.MsgSendMailDto;
@@ -164,7 +164,7 @@ public class MsgTaskServiceImpl extends SuperServiceImpl<MsgTaskMapper, MsgTask>
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void sendByTemplateKey(MsgSendDto data) {
+    public Long sendByTemplateKey(MsgSendDto data) {
         MsgTemplate msgTemplate = validParam(data);
         MsgTask entity = new MsgTask();
         entity.setTemplateId(msgTemplate.getId());
@@ -237,6 +237,7 @@ public class MsgTaskServiceImpl extends SuperServiceImpl<MsgTaskMapper, MsgTask>
             SpringUtil.publishEvent(new MsgSendEvent(dto));
         }
 
+        return entity.getId();
     }
 
     /**

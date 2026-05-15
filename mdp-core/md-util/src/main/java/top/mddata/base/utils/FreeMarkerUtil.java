@@ -13,6 +13,7 @@ import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateModelException;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import top.mddata.base.util.StrPool;
 
 import java.io.StringWriter;
 import java.util.Map;

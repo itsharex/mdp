@@ -17,7 +17,7 @@ import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.BeanPlusUtil;
 import top.mddata.base.utils.MyTreeUtil;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 import top.mddata.common.constant.console.AdminConstant;
 import top.mddata.common.entity.UserRoleRel;
 import top.mddata.common.enumeration.permission.MenuTypeEnum;

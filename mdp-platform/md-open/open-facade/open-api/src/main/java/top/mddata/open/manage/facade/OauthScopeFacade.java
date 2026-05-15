@@ -19,4 +19,12 @@ public interface OauthScopeFacade {
      * @return 权限
      */
     R<List<OauthScopeVo>> listByAppId(Long appId);
+
+    /**
+     * 根据权限编码查询 应用权限
+     *
+     * @param scopes 权限编码
+     * @return 应用权限
+     */
+    R<List<OauthScopeVo>> getScopeListByCode(List<String> scopes);
 }

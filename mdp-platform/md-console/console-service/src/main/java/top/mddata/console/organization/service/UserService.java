@@ -80,17 +80,17 @@ public interface UserService extends SuperService<User> {
      * 根据邮箱注册账号
      * @param ssoUser 用户
      */
-    void registerByEmail(User ssoUser);
+    boolean registerByEmail(User ssoUser);
 
     /**
      * 根据手机注册账号
      * @param ssoUser 用户
      */
-    void registerByPhone(User ssoUser);
+    boolean registerByPhone(User ssoUser);
 
     /**
      * 注册账号
      * @param defUser 用户信息
      */
-    void registerByUsername(User defUser);
+    boolean registerByUsername(User defUser);
 }

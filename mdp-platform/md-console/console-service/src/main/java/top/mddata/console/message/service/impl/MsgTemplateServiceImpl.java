@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.model.Kv;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 import top.mddata.console.message.entity.InterfaceConfig;
 import top.mddata.console.message.entity.MsgTemplate;
 import top.mddata.console.message.mapper.MsgTemplateMapper;

@@ -12,6 +12,7 @@ import org.springframework.core.type.ClassMetadata;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import top.mddata.base.exception.BizException;
+import top.mddata.base.util.StrPool;
 
 import java.io.IOException;
 import java.util.Collections;

@@ -8,7 +8,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.annotation.Async;
 import top.mddata.base.model.log.OptLogDTO;
-import top.mddata.base.utils.ContextUtil;
+import top.mddata.base.util.ContextUtil;
 
 import java.util.Map;
 import java.util.function.Consumer;

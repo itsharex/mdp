@@ -1,7 +1,7 @@
 package top.mddata.base.cache;
 
+import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Maps;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -28,7 +28,8 @@ import top.mddata.base.cache.repository.CachePlusOps;
 import top.mddata.base.cache.repository.impl.RedisOpsImpl;
 import top.mddata.base.cache.utils.ProtoStuffSerializer;
 import top.mddata.base.cache.utils.RedisObjectSerializer;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.model.cache.CacheKeyBuilder;
+import top.mddata.base.util.StrPool;
 
 import java.util.Map;
 import java.util.Objects;
@@ -43,10 +44,18 @@ import java.util.Optional;
  */
 @ConditionalOnClass(RedisConnectionFactory.class)
 @EnableConfigurationProperties({RedisProperties.class, CustomCacheProperties.class})
-@RequiredArgsConstructor
 @Slf4j
 public class RedisAutoConfigure {
     private final CustomCacheProperties cacheProperties;
+
+    public RedisAutoConfigure(CustomCacheProperties cacheProperties) {
+        this.cacheProperties = cacheProperties;
+        if (StrUtil.isNotEmpty(cacheProperties.getCachePrefix())) {
+            log.info("检查到配置文件中：{}.cachePrefix={}", CustomCacheProperties.PREFIX, cacheProperties.getCachePrefix());
+            CacheKeyBuilder.Key.setPrefix(cacheProperties.getCachePrefix());
+        }
+
+    }
 
     /**
      * RedisTemplate配置

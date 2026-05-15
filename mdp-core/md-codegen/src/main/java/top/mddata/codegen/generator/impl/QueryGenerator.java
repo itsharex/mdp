@@ -16,7 +16,7 @@ import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.extern.slf4j.Slf4j;
 import top.mddata.base.utils.DateUtils;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 import top.mddata.codegen.config.GlobalConfig;
 import top.mddata.codegen.config.PackageConfig;
 import top.mddata.codegen.config.QueryConfig;

@@ -20,7 +20,7 @@ import cn.hutool.core.util.StrUtil;
 import com.mybatisflex.core.util.StringUtil;
 import lombok.Data;
 import lombok.experimental.Accessors;
-import top.mddata.base.utils.StrPool;
+import top.mddata.base.util.StrPool;
 
 import java.io.Serial;
 import java.io.Serializable;

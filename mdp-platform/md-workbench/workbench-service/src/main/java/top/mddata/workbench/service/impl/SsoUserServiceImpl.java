@@ -20,7 +20,7 @@ import top.mddata.base.model.cache.CacheKey;
 import top.mddata.base.model.cache.CacheKeyBuilder;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
-import top.mddata.base.utils.ContextUtil;
+import top.mddata.base.util.ContextUtil;
 import top.mddata.base.utils.DateUtils;
 import top.mddata.base.utils.MyTreeUtil;
 import top.mddata.common.cache.console.organization.OrgCacheKeyBuilder;
