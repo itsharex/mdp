@@ -9,7 +9,7 @@ mdp:
     password: ${NACOS_PASSWORD:@config.nacos.password@}
     group: DEFAULT_GROUP
   sentinel:
-    dashboard: ${SENTINEL_DASHBOARD:@sentinel.dashboard@}
+    dashboard: ${SENTINEL_DASHBOARD:@config.sentinel.dashboard@}
 
 spring:
   main:

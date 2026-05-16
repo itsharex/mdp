@@ -1,4 +1,4 @@
-package top.mddata.common.configuration;
+package top.mddata.configuration;
 
 
 import org.springframework.context.annotation.Bean;

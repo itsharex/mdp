@@ -20,6 +20,7 @@
         <module>api-pojo</module>
         <module>api-service</module>
         <module>api-web</module>
+        <module>api-server</module>
     </modules>
 
 

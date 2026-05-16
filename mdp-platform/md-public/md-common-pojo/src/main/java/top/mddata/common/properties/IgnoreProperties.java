@@ -89,6 +89,14 @@ public class IgnoreProperties {
     private Map<String, Set<String>> anyUser = MapUtil.newHashMap();
 
 
+    public Map<String, Set<String>> buildAnyone() {
+        return putAll(getBaseUri(), this.getAnyUser(), this.getAnyone());
+    }
+
+    public Map<String, Set<String>> buildAnyUser() {
+        return putAll(getBaseUri(), this.getAnyUser());
+    }
+
     /**
      * 是否忽略uri权限认证
      *
