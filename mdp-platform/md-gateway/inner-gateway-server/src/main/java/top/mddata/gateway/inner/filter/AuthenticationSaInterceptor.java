@@ -52,6 +52,7 @@ public class AuthenticationSaInterceptor implements WebFilter, Ordered {
 
         // 写入WebFilterChain对象
         exchange.getAttributes().put(SaReactorHolder.EXCHANGE_KEY, chain);
+        // TODO 待处理
         if (true) {
             return chain.filter(exchange).contextWrite(ctx -> {
                 ctx = ctx.put(SaReactorHolder.CHAIN_KEY, exchange);

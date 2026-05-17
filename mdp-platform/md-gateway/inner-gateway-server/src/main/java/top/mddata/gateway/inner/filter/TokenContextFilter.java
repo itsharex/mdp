@@ -6,6 +6,7 @@ import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.core.util.URLUtil;
+import com.alibaba.fastjson.JSON;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.MDC;
@@ -31,6 +32,12 @@ import top.mddata.base.util.StrPool;
 import top.mddata.common.properties.IgnoreProperties;
 
 import static top.mddata.base.constant.ContextConstants.APP_ID;
+import static top.mddata.base.constant.ContextConstants.COMPANY_ID;
+import static top.mddata.base.constant.ContextConstants.COMPANY_NATURE;
+import static top.mddata.base.constant.ContextConstants.DEPT_ID;
+import static top.mddata.base.constant.ContextConstants.TOP_COMPANY_ID;
+import static top.mddata.base.constant.ContextConstants.TOP_COMPANY_IS_ADMIN;
+import static top.mddata.base.constant.ContextConstants.TOP_COMPANY_NATURE;
 
 
 /**
@@ -135,20 +142,36 @@ public class TokenContextFilter implements WebFilter, Ordered {
 
         if (tokenSession != null) {
             Long userId = (Long) tokenSession.getLoginId();
-            long topCompanyId = tokenSession.getLong(ContextConstants.TOP_COMPANY_ID);
-            long topCompanyNature = tokenSession.getLong(ContextConstants.TOP_COMPANY_NATURE);
-            long companyId = tokenSession.getLong(ContextConstants.COMPANY_ID);
-            long companyNature = tokenSession.getLong(ContextConstants.COMPANY_NATURE);
-            long topCompanyIsAdmin = tokenSession.getLong(ContextConstants.TOP_COMPANY_IS_ADMIN);
-            long deptId = tokenSession.getLong(ContextConstants.DEPT_ID);
+            Object topCompanyId = tokenSession.get(TOP_COMPANY_ID);
+            Object companyId = tokenSession.get(COMPANY_ID);
+            Object topCompanyNature = tokenSession.get(TOP_COMPANY_NATURE);
+            Object companyNature = tokenSession.get(COMPANY_NATURE);
+            Object deptId = tokenSession.get(DEPT_ID);
+            Object topCompanyIsAdmin = tokenSession.get(TOP_COMPANY_IS_ADMIN);
 
-            mutate.header(ContextConstants.USER_ID, String.valueOf(userId));
-            mutate.header(ContextConstants.TOP_COMPANY_ID, String.valueOf(topCompanyId));
-            mutate.header(ContextConstants.TOP_COMPANY_NATURE, String.valueOf(topCompanyNature));
-            mutate.header(ContextConstants.COMPANY_ID, String.valueOf(companyId));
-            mutate.header(ContextConstants.COMPANY_NATURE, String.valueOf(companyNature));
-            mutate.header(ContextConstants.TOP_COMPANY_IS_ADMIN, String.valueOf(topCompanyIsAdmin));
-            mutate.header(ContextConstants.DEPT_ID, String.valueOf(deptId));
+
+            if (userId != null) {
+                mutate.header(ContextConstants.USER_ID, String.valueOf(userId));
+            }
+            if (topCompanyId != null) {
+                mutate.header(ContextConstants.TOP_COMPANY_ID, String.valueOf(topCompanyId));
+            }
+            if (topCompanyNature != null) {
+                mutate.header(ContextConstants.TOP_COMPANY_NATURE, String.valueOf(topCompanyNature));
+            }
+            if (companyId != null) {
+                mutate.header(ContextConstants.COMPANY_ID, String.valueOf(companyId));
+            }
+            if (companyNature != null) {
+                mutate.header(ContextConstants.COMPANY_NATURE, String.valueOf(companyNature));
+            }
+            if (topCompanyIsAdmin != null) {
+                mutate.header(ContextConstants.TOP_COMPANY_IS_ADMIN, String.valueOf(topCompanyIsAdmin));
+            }
+            if (deptId != null) {
+                mutate.header(ContextConstants.DEPT_ID, String.valueOf(deptId));
+            }
+
         }
 
         return null;
@@ -190,8 +213,8 @@ public class TokenContextFilter implements WebFilter, Ordered {
     protected Mono<Void> errorResponse(ServerHttpResponse response, String errMsg, int errCode, HttpStatus httpStatus) {
         R tokenError = R.fail(errCode, errMsg);
         response.getHeaders().add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-        response.setStatusCode(httpStatus);
-        DataBuffer dataBuffer = response.bufferFactory().wrap(tokenError.toString().getBytes());
+        response.setStatusCode(HttpStatus.OK);
+        DataBuffer dataBuffer = response.bufferFactory().wrap(JSON.toJSONString(tokenError).getBytes());
         return response.writeWith(Mono.just(dataBuffer));
     }
 

@@ -50,8 +50,8 @@ public class GatewayServerApplication {
                 InetAddress.getLocalHost().getHostAddress(),
                 env.getProperty("server.port"),
                 env.getProperty("server.servlet.context-path", ""),
-                env.getProperty("server.port"),
-                env.getProperty("spring.profiles.active"), env.getProperty("LOG_PATH")
+                env.getProperty("spring.profiles.active"),
+                env.getProperty("LOG_PATH")
         );
     }
 }

@@ -60,7 +60,6 @@ mdp:
         - /**/oauth2/refresh
         - /**/oauth2/revoke
         - /**/oauth2/client_token
-        - /**/user/**
   echo: #详情看: EchoProperties
     # 是否启用 远程数据 注解AOP注入
     aop-enabled: true

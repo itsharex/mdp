@@ -110,7 +110,7 @@ public class AuthServiceImpl implements AuthService {
                 .setDeviceType("PC")
                 .setDeviceId(StrUtil.isEmpty(login.getDeviceId()) ? SaFoxUtil.getRandomString(32) : login.getDeviceId()));
 
-        SaSession session = StpUtil.getSession();
+        SaSession session = StpUtil.getTokenSession();
         session.setLoginId(ssoUser.getId());
         if (org.getCurrentTopCompanyId() != null) {
             session.set(TOP_COMPANY_ID, org.getCurrentTopCompanyId());
