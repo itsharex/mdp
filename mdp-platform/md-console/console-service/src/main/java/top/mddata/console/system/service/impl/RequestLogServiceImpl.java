@@ -84,12 +84,13 @@ public class RequestLogServiceImpl extends SuperServiceImpl<RequestLogMapper, Re
             log.warn("解析ip失败", e);
         }
         List<String> ipLocationArray = StrUtil.split(ipLocation, StrPool.PIPE);
+        // 中国|贵州省|贵阳市|联通|CN
         if (ipLocationArray.size() >= 5) {
             String country = ipLocationArray.get(0);    // 中国
-            String region = ipLocationArray.get(1);    // 0
-            String province = ipLocationArray.get(2);  // 广东省
-            String city = ipLocationArray.get(3);      // 广州市
-            String isp = ipLocationArray.get(4);       // 电信
+            String province = ipLocationArray.get(1);  // 广东省
+            String city = ipLocationArray.get(2);      // 广州市
+            String isp = ipLocationArray.get(3);       // 电信
+            String region = ipLocationArray.get(4);    // CN
             requestLog.setIpCountry(country);
             requestLog.setIpRegion(region);
             requestLog.setIpProvince(province);

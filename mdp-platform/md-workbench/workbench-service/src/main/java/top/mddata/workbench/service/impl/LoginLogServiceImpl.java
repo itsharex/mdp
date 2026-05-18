@@ -94,10 +94,10 @@ public class LoginLogServiceImpl extends SuperServiceImpl<LoginLogMapper, LoginL
         loginLog.setIpLocation(ipLocation);
         if (ipLocationArray.size() >= 5) {
             String country = ipLocationArray.get(0);    // 中国
-            String region = ipLocationArray.get(1);    // 0
-            String province = ipLocationArray.get(2);  // 广东省
-            String city = ipLocationArray.get(3);      // 广州市
-            String isp = ipLocationArray.get(4);       // 电信
+            String province = ipLocationArray.get(1);  // 广东省
+            String city = ipLocationArray.get(2);      // 广州市
+            String isp = ipLocationArray.get(3);       // 电信
+            String region = ipLocationArray.get(4);    // CN
             loginLog.setIpCountry(country);
             loginLog.setIpRegion(region);
             loginLog.setIpProvince(province);
