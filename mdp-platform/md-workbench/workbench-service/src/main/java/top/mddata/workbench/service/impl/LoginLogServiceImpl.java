@@ -7,12 +7,12 @@ import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.lionsoul.ip2region.service.Ip2Region;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.mddata.base.log.util.AddressUtil;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.base.utils.DateUtils;
 import top.mddata.base.util.StrPool;
+import top.mddata.base.utils.DateUtils;
 import top.mddata.common.entity.User;
 import top.mddata.workbench.dto.LoginLogDto;
 import top.mddata.workbench.entity.LoginLog;
@@ -36,6 +36,7 @@ import java.util.stream.Stream;
 @Slf4j
 @RequiredArgsConstructor
 public class LoginLogServiceImpl extends SuperServiceImpl<LoginLogMapper, LoginLog> implements LoginLogService {
+    private final Ip2Region ip2Region;
     private static final Supplier<Stream<String>> BROWSER = () -> Stream.of(
             "Chrome", "Firefox", "Microsoft Edge", "Safari", "Opera"
     );
@@ -83,7 +84,12 @@ public class LoginLogServiceImpl extends SuperServiceImpl<LoginLogMapper, LoginL
         if (os != null) {
             loginLog.setOs(simplifyOperatingSystem(os.getName()));
         }
-        String ipLocation = isLocalHostIp(loginLog.getLoginIp()) ? "" : AddressUtil.getRegion(loginLog.getLoginIp());
+        String ipLocation = null;
+        try {
+            ipLocation = isLocalHostIp(loginLog.getLoginIp()) ? "" : ip2Region.search(loginLog.getLoginIp());
+        } catch (Exception e) {
+            log.warn("解析ip失败", e);
+        }
         List<String> ipLocationArray = StrUtil.split(ipLocation, StrPool.PIPE);
         loginLog.setIpLocation(ipLocation);
         if (ipLocationArray.size() >= 5) {
