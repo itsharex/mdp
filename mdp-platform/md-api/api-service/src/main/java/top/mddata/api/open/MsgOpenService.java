@@ -1,0 +1,37 @@
+package top.mddata.api.open;
+
+import com.gitee.sop.support.annotation.Open;
+import top.mddata.api.open.dto.SendMailDto;
+import top.mddata.api.open.dto.SendNoticeDto;
+import top.mddata.api.open.dto.SendSmsDto;
+
+/**
+ * 消息数据接口
+ * @author henhen
+ * @since 2026/1/7 11:14
+ */
+public interface MsgOpenService {
+    /**
+     * 根据消息模板发送 短信
+     *
+     * @param data 消息参数
+     */
+    @Open("msg.sendSms")
+    void sendSmsByTemplateKey(SendSmsDto data);
+
+    /**
+     * 根据消息模板发送 邮件
+     *
+     * @param data 消息参数
+     */
+    @Open("msg.sendEmail")
+    void sendEmailByTemplateKey(SendMailDto data);
+
+    /**
+     * 根据消息模板发送 站内信
+     *
+     * @param data 消息参数
+     */
+    @Open("msg.sendNotice")
+    void sendNoticeByTemplateKey(SendNoticeDto data);
+}

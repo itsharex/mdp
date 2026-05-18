@@ -1,13 +1,11 @@
-package top.mddata.console.message.dto;
+package top.mddata.api.open.dto;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import top.mddata.base.model.Kv;
-import top.mddata.console.message.enumeration.MsgChannelEnum;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -24,7 +22,6 @@ import java.util.List;
 @Accessors(chain = true)
 @Data
 @Schema(description = "消息发送抽象Dto")
-@JsonTypeInfo(use = JsonTypeInfo.Id.CLASS, include = JsonTypeInfo.As.PROPERTY)
 public abstract class MsgSendDto implements Serializable {
 
     @Serial
@@ -67,13 +64,6 @@ public abstract class MsgSendDto implements Serializable {
     @Schema(description = "业务类型")
     @Size(max = 255, message = "业务类型长度不能超过{max}")
     private String bizType;
-
-    /**
-     * 发送渠道
-     * [1-后台发送 2-API发送 3-JOB发送]
-     */
-    @Schema(description = "发送渠道")
-    private MsgChannelEnum channel;
 
     /**
      * 添加参数

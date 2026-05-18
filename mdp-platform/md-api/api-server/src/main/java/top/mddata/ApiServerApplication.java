@@ -1,6 +1,7 @@
 package top.mddata;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.spring.context.annotation.EnableDubbo;
 import org.dromara.x.file.storage.spring.EnableFileStorage;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -27,6 +28,7 @@ import static top.mddata.base.constant.Constants.UTIL_PACKAGE;
 @EnableFeignClients(value = {
         UTIL_PACKAGE,
 })
+@EnableDubbo(scanBasePackages = UTIL_PACKAGE)
 public class ApiServerApplication extends ServerApplication {
     public static void main(String[] args) throws UnknownHostException {
         ServerApplication.start(ApiServerApplication.class, args);
