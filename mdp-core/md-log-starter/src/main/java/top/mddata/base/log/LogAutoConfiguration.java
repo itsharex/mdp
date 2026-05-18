@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -29,7 +28,6 @@ import top.mddata.base.log.properties.OptLogProperties;
 @Configuration
 @AllArgsConstructor
 @ConditionalOnWebApplication
-@EnableConfigurationProperties(OptLogProperties.class)
 @ConditionalOnProperty(prefix = OptLogProperties.PREFIX, name = "enabled", havingValue = "true", matchIfMissing = true)
 public class LogAutoConfiguration {
 

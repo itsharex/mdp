@@ -8,8 +8,8 @@ import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.lionsoul.ip2region.service.Ip2Region;
 import org.springframework.stereotype.Service;
-import top.mddata.base.log.util.AddressUtil;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.util.StrPool;
 import top.mddata.common.entity.User;
@@ -39,6 +39,7 @@ public class RequestLogServiceImpl extends SuperServiceImpl<RequestLogMapper, Re
 
     private final RequestLogDetailService requestLogDetailService;
     private final UserService userService;
+    private final Ip2Region ip2Region;
     private static final Supplier<Stream<String>> BROWSER = () -> Stream.of(
             "Chrome", "Firefox", "Microsoft Edge", "Safari", "Opera"
     );
@@ -76,7 +77,12 @@ public class RequestLogServiceImpl extends SuperServiceImpl<RequestLogMapper, Re
         if (os != null) {
             requestLog.setOs(simplifyOperatingSystem(os.getName()));
         }
-        String ipLocation = isLocalHostIp(requestLog.getIpAddress()) ? "" : AddressUtil.getRegion(requestLog.getIpAddress());
+        String ipLocation = null;
+        try {
+            ipLocation = isLocalHostIp(requestLog.getIpAddress()) ? "" : ip2Region.search(requestLog.getIpAddress());
+        } catch (Exception e) {
+            log.warn("解析ip失败", e);
+        }
         List<String> ipLocationArray = StrUtil.split(ipLocation, StrPool.PIPE);
         if (ipLocationArray.size() >= 5) {
             String country = ipLocationArray.get(0);    // 中国

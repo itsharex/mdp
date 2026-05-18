@@ -83,7 +83,7 @@
         <!-- 本机操作系统和硬件信息 -->
         <oshi.version>6.8.2</oshi.version>
         <!-- ip地址查询 -->
-        <ip2region.version>2.7.0</ip2region.version>
+        <ip2region.version>3.3.7</ip2region.version>
         <!-- 配置文件加密 -->
         <jasypt.version>4.0.3</jasypt.version>
         <!-- 序列化 -->

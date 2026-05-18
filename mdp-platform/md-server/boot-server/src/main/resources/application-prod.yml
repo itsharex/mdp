@@ -7,6 +7,13 @@ mdp:
     password: '@config.nacos.password@'
   system:
     forgetPasswordUrl: 'http://workbench.mddata.top/#/auth/forget-password-update?token='
+  log:
+    ipv4:
+      enabled: true
+      xdbPath: file:/data_mdp/target/ip2region_v4.xdb
+    ipv6:
+      enabled: true
+      xdbPath: file:/data_mdp/target/ip2region_v6.xdb
 
 spring:
   data:
