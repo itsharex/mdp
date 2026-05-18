@@ -13,7 +13,7 @@ import top.mddata.console.system.dto.RequestLogDto;
  * @author henhen
  * @since 2026/5/10 23:07
  */
-@FeignClient(name = AppConstants.CONSOLE_SERVER, fallback = RequestLogApiFallback.class)
+@FeignClient(name = AppConstants.CONSOLE_SERVER, fallback = RequestLogApiFallback.class, path = "/system/requestLog")
 public interface RequestLogApi {
     @PostMapping("/save")
     R<Long> saveRequestLog(@RequestBody RequestLogDto dto);

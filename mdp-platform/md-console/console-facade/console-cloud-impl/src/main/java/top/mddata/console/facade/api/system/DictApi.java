@@ -15,7 +15,7 @@ import java.util.Set;
  * @author henhen
  * @since 2026/5/10 23:07
  */
-@FeignClient(name = AppConstants.CONSOLE_SERVER, fallback = DictApiFallback.class)
+@FeignClient(name = AppConstants.CONSOLE_SERVER, fallback = DictApiFallback.class, path = "/system/dictItem")
 public interface DictApi {
     /**
      * 查询字典项
@@ -23,6 +23,6 @@ public interface DictApi {
      * @param dictKeys 字典key
      * @return 字典key#字典项key -> 字典
      */
-    @PostMapping("/system/dictItem/findByIds")
+    @PostMapping("/findByIds")
     Map<Serializable, Object> findByIds(@RequestParam(value = "ids") Set<Serializable> dictKeys);
 }

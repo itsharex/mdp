@@ -14,7 +14,7 @@ import top.mddata.console.system.dto.RelateFilesToBizDto;
  * @author henhen
  * @since 2026/5/10 23:07
  */
-@FeignClient(name = AppConstants.CONSOLE_SERVER, fallback = FileApiFallback.class)
+@FeignClient(name = AppConstants.CONSOLE_SERVER, fallback = FileApiFallback.class, path = "/system/file")
 public interface FileApi {
     /**
      * 关联文件到业务 （新增、修改时调用）
