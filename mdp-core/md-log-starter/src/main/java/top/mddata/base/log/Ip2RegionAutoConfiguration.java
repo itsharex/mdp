@@ -118,12 +118,4 @@ public class Ip2RegionAutoConfiguration {
         return isV4 ? builder.asV4() : builder.asV6();
     }
 
-    public static void main(String[] args) {
-        String path = "file:/Users/tangyh/data/x.xdb";
-        System.out.println(FileUtil.isAbsolutePath(path));
-        System.out.println(FileUtil.isAbsolutePath("/Users/tangyh/data/x.xdb"));
-        System.out.println(FileUtil.isAbsolutePath("file:./tangyh/data/x.xdb"));
-        System.out.println(StrUtil.subAfter(path, URLUtil.FILE_URL_PREFIX, false));
-        System.out.println(StrUtil.subAfter(path, URLUtil.FILE_URL_PREFIX, true));
-    }
 }
