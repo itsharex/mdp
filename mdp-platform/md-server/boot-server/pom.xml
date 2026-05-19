@@ -128,7 +128,7 @@
         <!-- Sa-Token 自动配置 -->
         <dependency>
             <groupId>cn.dev33</groupId>
-            <artifactId>sa-token-spring-boot-autoconfig</artifactId>
+            <artifactId>sa-token-spring-boot-webmvc-v3v4-common</artifactId>
         </dependency>
         <!-- Sa-Token 插件：整合 Forest 请求工具 (模式三需要通过 http 请求推送消息) -->
         <dependency>
