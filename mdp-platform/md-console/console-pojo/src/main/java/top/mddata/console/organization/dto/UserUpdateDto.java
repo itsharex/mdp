@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import top.mddata.base.annotation.constraints.NotEmptyPattern;
@@ -31,6 +32,7 @@ import static top.mddata.base.utils.ValidatorUtil.REGEX_MOBILE;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "用户修改")
+@EqualsAndHashCode(callSuper=false)
 public class UserUpdateDto implements Serializable {
 
     @Serial

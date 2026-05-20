@@ -3,6 +3,7 @@ package top.mddata.api.open.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 import top.mddata.base.base.entity.BaseEntity;
 
@@ -17,6 +18,7 @@ import java.io.Serializable;
  */
 @Accessors(chain = true)
 @Data
+@EqualsAndHashCode(callSuper=false)
 @Schema(description = "组织修改")
 public class OrgUpdateDto extends OrgSaveDto implements Serializable {
 
