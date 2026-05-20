@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.base.R;
 import top.mddata.open.vo.admin.AppVo;
-import top.mddata.open.manage.facade.AppFacade;
+import top.mddata.open.facade.admin.AppFacade;
 import top.mddata.workbench.dto.LoginLogDto;
 import top.mddata.workbench.dto.LoginRedirectUrlDto;
 import top.mddata.workbench.event.LoginEvent;

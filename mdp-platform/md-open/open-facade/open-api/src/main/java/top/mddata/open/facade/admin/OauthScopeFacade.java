@@ -1,0 +1,30 @@
+package top.mddata.open.facade.admin;
+
+import top.mddata.base.base.R;
+import top.mddata.open.vo.admin.OauthScopeVo;
+
+import java.util.List;
+
+/**
+ * 应用权限
+ *
+ * @author henhen6
+ * @since 2025/8/24 23:42
+ */
+public interface OauthScopeFacade {
+    /**
+     * 根据应用id查询应用拥有的权限
+     *
+     * @param appId 应用id
+     * @return 权限
+     */
+    R<List<OauthScopeVo>> listByAppId(Long appId);
+
+    /**
+     * 根据权限编码查询 应用权限
+     *
+     * @param scopes 权限编码
+     * @return 应用权限
+     */
+    R<List<OauthScopeVo>> getScopeListByCode(List<String> scopes);
+}

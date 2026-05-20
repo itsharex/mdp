@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.Scheduled;
-import top.mddata.open.admin.service.EventPushService;
-import top.mddata.open.admin.service.NotifyInfoService;
+import top.mddata.open.service.admin.EventPushService;
+import top.mddata.open.service.admin.NotifyInfoService;
 
 import java.time.LocalDateTime;
 

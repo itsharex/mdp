@@ -46,7 +46,7 @@ import top.mddata.console.dto.system.RelateFilesToBizDto;
 import top.mddata.console.facade.system.ConfigFacade;
 import top.mddata.console.facade.system.FileFacade;
 import top.mddata.open.dto.admin.EventTriggerDto;
-import top.mddata.open.manage.facade.NotifyAndEventPushFacade;
+import top.mddata.open.facade.admin.NotifyAndEventPushFacade;
 import top.mddata.workbench.dto.ProfileEmailDto;
 import top.mddata.workbench.dto.ProfilePasswordDto;
 import top.mddata.workbench.dto.ProfilePhoneDto;

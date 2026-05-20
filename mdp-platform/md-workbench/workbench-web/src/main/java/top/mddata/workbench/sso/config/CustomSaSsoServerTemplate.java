@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import top.mddata.base.base.R;
 import top.mddata.base.exception.BizException;
 import top.mddata.open.vo.admin.AppVo;
-import top.mddata.open.manage.facade.AppFacade;
+import top.mddata.open.facade.admin.AppFacade;
 
 import java.util.List;
 

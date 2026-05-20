@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 import top.mddata.open.entity.admin.ApiCallLog;
-import top.mddata.open.admin.mapper.ApiCallLogMapper;
+import top.mddata.open.mapper.admin.ApiCallLogMapper;
 
 /**
  * 调用日志事件监听

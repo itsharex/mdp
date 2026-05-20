@@ -57,7 +57,7 @@ import top.mddata.console.service.system.ConfigService;
 import top.mddata.console.service.system.DictItemService;
 import top.mddata.console.service.system.FileService;
 import top.mddata.open.dto.admin.EventTriggerDto;
-import top.mddata.open.manage.facade.NotifyAndEventPushFacade;
+import top.mddata.open.facade.admin.NotifyAndEventPushFacade;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

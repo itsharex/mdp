@@ -28,7 +28,7 @@ import top.mddata.console.service.organization.OrgNatureService;
 import top.mddata.console.service.organization.OrgService;
 import top.mddata.console.service.organization.UserOrgRelService;
 import top.mddata.open.dto.admin.EventTriggerDto;
-import top.mddata.open.manage.facade.NotifyAndEventPushFacade;
+import top.mddata.open.facade.admin.NotifyAndEventPushFacade;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

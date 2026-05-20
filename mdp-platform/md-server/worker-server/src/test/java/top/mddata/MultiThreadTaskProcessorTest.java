@@ -1,7 +1,7 @@
 package top.mddata;
 
 import org.junit.jupiter.api.Test;
-import top.mddata.open.admin.service.processor.MultiThreadTaskProcessor;
+import top.mddata.open.service.admin.processor.MultiThreadTaskProcessor;
 
 import java.util.ArrayList;
 import java.util.List;

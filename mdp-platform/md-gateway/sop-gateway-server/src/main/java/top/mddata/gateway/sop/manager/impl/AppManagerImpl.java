@@ -24,9 +24,9 @@ import top.mddata.open.entity.admin.AppGroupRel;
 import top.mddata.open.entity.admin.AppKeys;
 import top.mddata.open.entity.admin.GroupApiRel;
 import top.mddata.open.entity.admin.ScopeGroup;
-import top.mddata.open.admin.mapper.AppKeysMapper;
-import top.mddata.open.admin.mapper.AppMapper;
-import top.mddata.open.admin.mapper.GroupApiRelMapper;
+import top.mddata.open.mapper.admin.AppKeysMapper;
+import top.mddata.open.mapper.admin.AppMapper;
+import top.mddata.open.mapper.admin.GroupApiRelMapper;
 
 import java.util.List;
 
