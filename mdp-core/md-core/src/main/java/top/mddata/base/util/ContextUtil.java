@@ -75,6 +75,20 @@ public final class ContextUtil {
     }
 
     /**
+     * 前端的多语言环境
+     */
+    public static String getLocale() {
+        return get(ContextConstants.LOCALE, String.class, StrPool.EMPTY);
+    }
+    /**
+     * 前端的多语言环境
+     *
+     * @param locale 多语言环境
+     */
+    public static void setLocale(Object locale) {
+        set(ContextConstants.LOCALE, locale == null ? StrPool.EMPTY : locale);
+    }
+    /**
      * 用户ID
      *
      * @return 用户ID

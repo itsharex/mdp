@@ -5,6 +5,8 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.map.MapBuilder;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.baidu.fsg.uid.UidGenerator;
 import com.mybatisflex.core.query.QueryColumn;
 import com.mybatisflex.core.query.QueryMethods;
@@ -20,6 +22,7 @@ import top.mddata.base.exception.BizException;
 import top.mddata.base.model.cache.CacheHashKey;
 import top.mddata.base.model.cache.CacheKey;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
+import top.mddata.base.util.ContextUtil;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.CollHelper;
 import top.mddata.base.utils.MyTreeUtil;
@@ -67,7 +70,7 @@ public class DictItemServiceImpl extends SuperServiceImpl<DictItemMapper, DictIt
             return Collections.emptyMap();
         }
 
-        Map<Serializable, Object> codeValueMap = MapUtil.newHashMap();
+        Map<Serializable, DictItem> codeValueMap = MapUtil.newHashMap();
         dictKeys.forEach(dictKey -> {
             Function<CacheKey, Map<String, DictItem>> fun = ck -> {
                 Dict dict = dictMapper.selectOneByQuery(QueryWrapper.create().eq(Dict::getUniqKey, dictKey));
@@ -91,7 +94,32 @@ public class DictItemServiceImpl extends SuperServiceImpl<DictItemMapper, DictIt
                 }
             });
         });
-        return codeValueMap;
+
+        Map<Serializable, Object> echoMap = MapUtil.newHashMap();
+        String locale = ContextUtil.getLocale();
+        execI18n(codeValueMap, locale, echoMap);
+
+        return echoMap;
+    }
+
+
+    private static void execI18n(Map<Serializable, DictItem> defMap, String locale, Map<Serializable, Object> map) {
+        defMap.forEach((key, value) -> {
+            String name = value.getName();
+            if (StrUtil.isNotEmpty(locale)) {
+                String i18nJson = value.getI18nJson();
+                try {
+                    JSONObject i18n = JSONUtil.parseObj(i18nJson);
+                    String i18nValue = i18n.getStr(locale);
+                    if (StrUtil.isNotEmpty(i18nValue)) {
+                        name = i18nValue;
+                    }
+                } catch (Exception e) {
+                    log.debug("字典翻译失败: {}=={} ", value.getUniqKey(), value.getName());
+                }
+            }
+            map.put(key, name);
+        });
     }
 
     @Override

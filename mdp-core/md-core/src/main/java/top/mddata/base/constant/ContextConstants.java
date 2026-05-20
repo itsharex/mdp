@@ -52,6 +52,10 @@ public final class ContextConstants {
      */
     public static final String PATH = "Path";
     /**
+     * 请求头中存放的 前端语言环境
+     */
+    public static final String LOCALE = "Locale";
+    /**
      * 日志链路追踪id信息头
      */
     public static final String TRACE = "trace";
