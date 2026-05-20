@@ -16,7 +16,7 @@ import top.mddata.common.properties.MsgProperties;
 import top.mddata.console.dto.message.MsgSendDto;
 import top.mddata.console.dto.message.MsgSendMailDto;
 import top.mddata.console.dto.message.MsgSendSmsDto;
-import top.mddata.console.message.facade.MsgFacade;
+import top.mddata.console.facade.message.MsgFacade;
 import top.mddata.workbench.service.VerificationCodeService;
 import top.mddata.workbench.vo.CaptchaVo;
 

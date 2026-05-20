@@ -16,7 +16,7 @@ import top.mddata.base.utils.MyTreeUtil;
 import top.mddata.base.util.StrPool;
 import top.mddata.common.constant.ConfigKey;
 import top.mddata.common.enumeration.BooleanEnum;
-import top.mddata.console.system.facade.ConfigFacade;
+import top.mddata.console.facade.system.ConfigFacade;
 import top.mddata.open.admin.TreeNode;
 import top.mddata.open.admin.entity.DocContent;
 import top.mddata.open.admin.entity.DocGroup;

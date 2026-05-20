@@ -13,7 +13,7 @@ import top.mddata.console.dto.message.MsgSendNoticeDto;
 import top.mddata.console.dto.message.MsgSendSmsDto;
 import top.mddata.console.enumeration.message.MsgChannelEnum;
 import top.mddata.console.enumeration.message.MsgRecipientScopeEnum;
-import top.mddata.console.message.facade.MsgFacade;
+import top.mddata.console.facade.message.MsgFacade;
 
 /**
  * 在使用微服务架构时，msgFacade 接口依赖于console-server。

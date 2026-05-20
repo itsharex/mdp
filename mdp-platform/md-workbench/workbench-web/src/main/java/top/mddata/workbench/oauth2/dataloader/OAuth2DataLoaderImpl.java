@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import top.mddata.base.base.R;
 import top.mddata.base.exception.BizException;
 import top.mddata.common.constant.ConfigKey;
-import top.mddata.console.system.facade.ConfigFacade;
+import top.mddata.console.facade.system.ConfigFacade;
 import top.mddata.open.admin.vo.AppVo;
 import top.mddata.open.admin.vo.OauthOpenidVo;
 import top.mddata.open.admin.vo.OauthScopeVo;

@@ -13,7 +13,7 @@ import top.mddata.base.utils.StrHelper;
 import top.mddata.common.cache.workbench.CaptchaCacheKeyBuilder;
 import top.mddata.common.constant.DefValConstants;
 import top.mddata.common.properties.SystemProperties;
-import top.mddata.console.system.facade.ConfigFacade;
+import top.mddata.console.facade.system.ConfigFacade;
 import top.mddata.workbench.dto.LoginDto;
 import top.mddata.workbench.dto.LoginLogDto;
 import top.mddata.workbench.event.LoginEvent;

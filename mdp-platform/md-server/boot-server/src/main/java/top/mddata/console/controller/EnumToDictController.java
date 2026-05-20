@@ -15,7 +15,7 @@ import top.mddata.common.enumeration.EnumService;
 import top.mddata.common.vo.Option;
 import top.mddata.console.entity.system.Dict;
 import top.mddata.console.entity.system.DictItem;
-import top.mddata.console.system.service.DictService;
+import top.mddata.console.service.system.DictService;
 import top.mddata.console.vo.system.DictItemVo;
 import top.mddata.console.vo.system.DictVo;
 

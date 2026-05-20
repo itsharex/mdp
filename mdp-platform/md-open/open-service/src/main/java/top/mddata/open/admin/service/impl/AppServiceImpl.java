@@ -29,7 +29,7 @@ import top.mddata.common.enumeration.permission.RoleCategoryEnum;
 import top.mddata.console.entity.permission.Role;
 import top.mddata.console.entity.permission.RoleAppRel;
 import top.mddata.console.dto.system.RelateFilesToBizDto;
-import top.mddata.console.system.facade.FileFacade;
+import top.mddata.console.facade.system.FileFacade;
 import top.mddata.open.admin.dto.AppDto;
 import top.mddata.open.admin.entity.App;
 import top.mddata.open.admin.entity.AppKeys;

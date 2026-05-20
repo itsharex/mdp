@@ -21,7 +21,7 @@ import top.mddata.base.base.R;
 import top.mddata.console.dto.system.CopyFilesDto;
 import top.mddata.console.dto.system.FileUploadDto;
 import top.mddata.console.dto.system.RelateFilesToBizDto;
-import top.mddata.console.system.service.FileService;
+import top.mddata.console.service.system.FileService;
 import top.mddata.console.vo.system.FileVo;
 
 import java.util.List;

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.base.R;
-import top.mddata.console.system.service.ConfigService;
-import top.mddata.console.system.service.DictItemService;
+import top.mddata.console.service.system.ConfigService;
+import top.mddata.console.service.system.DictItemService;
 import top.mddata.console.vo.system.ConfigVo;
 import top.mddata.console.vo.system.DictItemVo;
 

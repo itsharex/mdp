@@ -6,7 +6,7 @@ import top.mddata.base.base.R;
 import top.mddata.console.facade.api.system.FileApi;
 import top.mddata.console.dto.system.CopyFilesDto;
 import top.mddata.console.dto.system.RelateFilesToBizDto;
-import top.mddata.console.system.facade.FileFacade;
+import top.mddata.console.facade.system.FileFacade;
 
 @Service
 @RequiredArgsConstructor

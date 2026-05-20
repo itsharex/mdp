@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.mddata.console.facade.api.message.MsgApi;
 import top.mddata.console.dto.message.MsgSendDto;
-import top.mddata.console.message.facade.MsgFacade;
+import top.mddata.console.facade.message.MsgFacade;
 
 /**
  * 消息发送服务实现类

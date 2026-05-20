@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.mddata.base.base.R;
 import top.mddata.console.facade.api.system.ConfigApi;
-import top.mddata.console.system.facade.ConfigFacade;
+import top.mddata.console.facade.system.ConfigFacade;
 import top.mddata.console.vo.system.ConfigVo;
 
 /**

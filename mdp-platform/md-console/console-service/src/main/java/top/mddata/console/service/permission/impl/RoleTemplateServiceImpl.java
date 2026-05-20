@@ -1,0 +1,70 @@
+package top.mddata.console.service.permission.impl;
+
+import cn.hutool.core.bean.BeanUtil;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
+import top.mddata.base.utils.ArgumentAssert;
+import top.mddata.common.enumeration.permission.RoleCategoryEnum;
+import top.mddata.console.service.organization.UserRoleRelService;
+import top.mddata.console.entity.permission.Role;
+import top.mddata.console.mapper.permission.RoleMapper;
+import top.mddata.console.service.permission.RoleAppRelService;
+import top.mddata.console.service.permission.RoleResourceRelService;
+import top.mddata.console.service.permission.RoleService;
+import top.mddata.console.service.permission.RoleTemplateService;
+
+import java.io.Serializable;
+import java.util.Collection;
+
+/**
+ * 角色 服务层实现。
+ *
+ * @author henhen6
+ * @since 2025-11-12 16:27:16
+ */
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class RoleTemplateServiceImpl extends SuperServiceImpl<RoleMapper, Role> implements RoleTemplateService {
+
+    private final RoleService roleService;
+    private final RoleResourceRelService roleResourceRelService;
+    private final RoleAppRelService roleAppRelService;
+    private final UserRoleRelService userRoleRelService;
+
+    @Override
+    protected Role saveBefore(Object save) {
+        Role entity = BeanUtil.toBean(save, getEntityClass());
+        entity.setId(null);
+        entity.setTemplateRole(true);
+        ArgumentAssert.isFalse(roleService.checkCode(entity.getRoleCategory(), entity.getCode(), null), "角色编码重复");
+        if (RoleCategoryEnum.PERM_SET.eq(entity.getRoleCategory())) {
+            ArgumentAssert.isFalse(roleService.checkCategoryAndOrgNature(entity.getRoleCategory(), entity.getOrgNature(), null), "当前组织性质下，已存在权限集合");
+        }
+        return entity;
+    }
+
+    @Override
+    protected Role updateBefore(Object updateDto) {
+        Role entity = BeanUtil.toBean(updateDto, getEntityClass());
+        entity.setTemplateRole(true);
+        ArgumentAssert.isFalse(roleService.checkCode(entity.getRoleCategory(), entity.getCode(), entity.getId()), "角色编码重复");
+        if (RoleCategoryEnum.PERM_SET.eq(entity.getRoleCategory())) {
+            ArgumentAssert.isFalse(roleService.checkCategoryAndOrgNature(entity.getRoleCategory(), entity.getOrgNature(), entity.getId()), "当前组织性质下，已存在权限集合");
+        }
+        return entity;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean removeByIds(Collection<? extends Serializable> idList) {
+        roleResourceRelService.removeByRoleIds(idList);
+        roleAppRelService.removeByRoleIds(idList);
+        userRoleRelService.removeByRoleIds(idList);
+
+        return super.removeByIds(idList);
+    }
+}

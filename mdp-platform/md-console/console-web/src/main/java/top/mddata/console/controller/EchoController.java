@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import top.mddata.console.system.service.DictItemService;
+import top.mddata.console.service.system.DictItemService;
 
 import java.io.Serializable;
 import java.util.Map;

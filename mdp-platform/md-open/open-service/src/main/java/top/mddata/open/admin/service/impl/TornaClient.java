@@ -11,7 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.util.UriUtils;
 import top.mddata.base.exception.BizException;
 import top.mddata.common.constant.ConfigKey;
-import top.mddata.console.system.facade.ConfigFacade;
+import top.mddata.console.facade.system.ConfigFacade;
 
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;

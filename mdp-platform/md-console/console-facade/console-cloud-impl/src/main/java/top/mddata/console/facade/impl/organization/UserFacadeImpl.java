@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.mddata.common.entity.User;
 import top.mddata.console.facade.api.organization.UserApi;
-import top.mddata.console.organization.facade.UserFacade;
+import top.mddata.console.facade.organization.UserFacade;
 
 /**
  *

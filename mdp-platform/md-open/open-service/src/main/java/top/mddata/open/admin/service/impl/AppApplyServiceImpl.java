@@ -17,7 +17,7 @@ import top.mddata.common.dto.IdDto;
 import top.mddata.common.enumeration.AuditStatusEnum;
 import top.mddata.console.dto.system.CopyFilesDto;
 import top.mddata.console.dto.system.RelateFilesToBizDto;
-import top.mddata.console.system.facade.FileFacade;
+import top.mddata.console.facade.system.FileFacade;
 import top.mddata.open.admin.dto.AppApplyDto;
 import top.mddata.open.admin.dto.AppApplyReviewDto;
 import top.mddata.open.admin.entity.App;

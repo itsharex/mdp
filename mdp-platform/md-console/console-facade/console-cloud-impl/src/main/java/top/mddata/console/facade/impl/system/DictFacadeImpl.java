@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.mddata.common.constant.EchoApi;
 import top.mddata.console.facade.api.system.DictApi;
-import top.mddata.console.system.facade.DictFacade;
+import top.mddata.console.facade.system.DictFacade;
 
 import java.io.Serializable;
 import java.util.Map;

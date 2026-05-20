@@ -3,7 +3,7 @@ package top.mddata.console.facade.impl.organization;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.mddata.console.facade.api.organization.OrgApi;
-import top.mddata.console.organization.facade.OrgFacade;
+import top.mddata.console.facade.organization.OrgFacade;
 
 import java.io.Serializable;
 import java.util.Map;
