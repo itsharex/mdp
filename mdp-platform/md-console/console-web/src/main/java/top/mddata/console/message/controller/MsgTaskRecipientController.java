@@ -16,10 +16,10 @@ import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.console.message.entity.MsgTaskRecipient;
-import top.mddata.console.message.query.MsgTaskRecipientQuery;
+import top.mddata.console.entity.message.MsgTaskRecipient;
+import top.mddata.console.query.message.MsgTaskRecipientQuery;
 import top.mddata.console.message.service.MsgTaskRecipientService;
-import top.mddata.console.message.vo.MsgTaskRecipientVo;
+import top.mddata.console.vo.message.MsgTaskRecipientVo;
 
 /**
  * 任务接收人 控制层。

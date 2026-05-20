@@ -18,7 +18,7 @@ import java.io.Serializable;
  */
 @Accessors(chain = true)
 @Data
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 @Schema(description = "组织修改")
 public class OrgUpdateDto extends OrgSaveDto implements Serializable {
 

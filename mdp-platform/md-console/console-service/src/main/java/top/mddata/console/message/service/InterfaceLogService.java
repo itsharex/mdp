@@ -1,7 +1,7 @@
 package top.mddata.console.message.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.message.entity.InterfaceLog;
+import top.mddata.console.entity.message.InterfaceLog;
 
 /**
  * 接口执行日志记录 服务层。

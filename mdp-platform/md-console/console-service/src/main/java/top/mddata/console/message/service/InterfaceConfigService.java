@@ -1,8 +1,8 @@
 package top.mddata.console.message.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.message.dto.InterfaceConfigSettingDto;
-import top.mddata.console.message.entity.InterfaceConfig;
+import top.mddata.console.dto.message.InterfaceConfigSettingDto;
+import top.mddata.console.entity.message.InterfaceConfig;
 
 /**
  * 接口 服务层。

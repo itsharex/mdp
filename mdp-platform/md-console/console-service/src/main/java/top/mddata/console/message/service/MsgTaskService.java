@@ -1,9 +1,9 @@
 package top.mddata.console.message.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.message.dto.MsgSendDto;
-import top.mddata.console.message.dto.MsgTaskDto;
-import top.mddata.console.message.entity.MsgTask;
+import top.mddata.console.dto.message.MsgSendDto;
+import top.mddata.console.dto.message.MsgTaskDto;
+import top.mddata.console.entity.message.MsgTask;
 
 /**
  * 消息任务 服务层。

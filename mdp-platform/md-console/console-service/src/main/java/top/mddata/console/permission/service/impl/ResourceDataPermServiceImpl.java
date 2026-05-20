@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.console.permission.entity.ResourceDataPerm;
+import top.mddata.console.entity.permission.ResourceDataPerm;
 import top.mddata.console.permission.mapper.ResourceDataPermMapper;
 import top.mddata.console.permission.service.ResourceDataPermService;
 

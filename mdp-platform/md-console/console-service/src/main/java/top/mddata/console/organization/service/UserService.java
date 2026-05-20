@@ -4,9 +4,9 @@ import com.mybatisflex.core.paginate.Page;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.service.SuperService;
 import top.mddata.common.entity.User;
-import top.mddata.console.organization.dto.UserResetPasswordDto;
-import top.mddata.console.organization.query.UserQuery;
-import top.mddata.console.organization.vo.UserVo;
+import top.mddata.console.dto.organization.UserResetPasswordDto;
+import top.mddata.console.query.organization.UserQuery;
+import top.mddata.console.vo.organization.UserVo;
 
 import java.util.List;
 

@@ -21,13 +21,13 @@ import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.common.vo.Option;
-import top.mddata.console.message.dto.InterfaceConfigDto;
-import top.mddata.console.message.dto.InterfaceConfigSettingDto;
-import top.mddata.console.message.entity.InterfaceConfig;
-import top.mddata.console.message.query.InterfaceConfigQuery;
+import top.mddata.console.dto.message.InterfaceConfigDto;
+import top.mddata.console.dto.message.InterfaceConfigSettingDto;
+import top.mddata.console.entity.message.InterfaceConfig;
+import top.mddata.console.query.message.InterfaceConfigQuery;
 import top.mddata.console.message.service.InterfaceConfigService;
 import top.mddata.console.message.strategy.MsgTaskStrategy;
-import top.mddata.console.message.vo.InterfaceConfigVo;
+import top.mddata.console.vo.message.InterfaceConfigVo;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -32,9 +32,9 @@ import org.dromara.sms4j.yixintong.config.YiXintongConfig;
 import org.dromara.sms4j.yunpian.config.YunpianConfig;
 import org.dromara.sms4j.zhutong.config.ZhutongConfig;
 import org.springframework.stereotype.Component;
-import top.mddata.console.message.dto.InterfaceConfigJsonDto;
-import top.mddata.console.message.entity.InterfaceConfig;
-import top.mddata.console.message.enumeration.MsgTypeEnum;
+import top.mddata.console.dto.message.InterfaceConfigJsonDto;
+import top.mddata.console.entity.message.InterfaceConfig;
+import top.mddata.console.enumeration.message.MsgTypeEnum;
 import top.mddata.console.message.mapper.InterfaceConfigMapper;
 
 import java.util.ArrayList;

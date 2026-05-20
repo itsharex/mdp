@@ -23,12 +23,12 @@ import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.common.entity.User;
 import top.mddata.common.entity.UserRoleRel;
-import top.mddata.console.organization.dto.UserDto;
-import top.mddata.console.organization.dto.UserResetPasswordDto;
-import top.mddata.console.organization.dto.UserUpdateDto;
-import top.mddata.console.organization.query.UserQuery;
+import top.mddata.console.dto.organization.UserDto;
+import top.mddata.console.dto.organization.UserResetPasswordDto;
+import top.mddata.console.dto.organization.UserUpdateDto;
+import top.mddata.console.query.organization.UserQuery;
 import top.mddata.console.organization.service.UserService;
-import top.mddata.console.organization.vo.UserVo;
+import top.mddata.console.vo.organization.UserVo;
 
 import java.util.List;
 

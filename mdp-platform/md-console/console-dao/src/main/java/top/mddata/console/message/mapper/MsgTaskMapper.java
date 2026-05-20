@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import top.mddata.base.mvcflex.mapper.SuperMapper;
-import top.mddata.console.message.entity.MsgTask;
+import top.mddata.console.entity.message.MsgTask;
 
 import java.util.List;
 

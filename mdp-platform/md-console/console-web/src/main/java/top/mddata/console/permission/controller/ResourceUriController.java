@@ -19,11 +19,11 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.console.permission.dto.ResourceUriDto;
-import top.mddata.console.permission.entity.ResourceUri;
-import top.mddata.console.permission.query.ResourceUriQuery;
+import top.mddata.console.dto.permission.ResourceUriDto;
+import top.mddata.console.entity.permission.ResourceUri;
+import top.mddata.console.query.permission.ResourceUriQuery;
 import top.mddata.console.permission.service.ResourceUriService;
-import top.mddata.console.permission.vo.ResourceUriVo;
+import top.mddata.console.vo.permission.ResourceUriVo;
 
 import java.util.List;
 

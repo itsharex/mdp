@@ -18,12 +18,12 @@ import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.console.system.dto.RequestLogDto;
-import top.mddata.console.system.entity.RequestLogDetail;
-import top.mddata.console.system.query.RequestLogQuery;
+import top.mddata.console.dto.system.RequestLogDto;
+import top.mddata.console.entity.system.RequestLogDetail;
+import top.mddata.console.query.system.RequestLogQuery;
 import top.mddata.console.system.service.RequestLogDetailService;
 import top.mddata.console.system.service.RequestLogService;
-import top.mddata.console.system.vo.RequestLogVo;
+import top.mddata.console.vo.system.RequestLogVo;
 
 import java.util.List;
 
@@ -38,7 +38,7 @@ import java.util.List;
 @Tag(name = "请求日志")
 @RequestMapping("/system/requestLog")
 @RequiredArgsConstructor
-public class RequestLogController extends SuperController<RequestLogService, top.mddata.console.system.entity.RequestLog> {
+public class RequestLogController extends SuperController<RequestLogService, top.mddata.console.entity.system.RequestLog> {
     private final RequestLogDetailService requestLogDetailService;
     /**
      * 添加请求日志。
@@ -75,7 +75,7 @@ public class RequestLogController extends SuperController<RequestLogService, top
     @GetMapping("/getById")
     @Operation(summary = "单体查询", description = "根据主键获取请求日志")
     public R<RequestLogVo> get(@RequestParam Long id) {
-        top.mddata.console.system.entity.RequestLog entity = superService.getById(id);
+        top.mddata.console.entity.system.RequestLog entity = superService.getById(id);
         RequestLogVo vo = BeanUtil.toBean(entity, RequestLogVo.class);
         RequestLogDetail detail = requestLogDetailService.getById(id);
         BeanUtil.copyProperties(detail, vo);
@@ -92,7 +92,7 @@ public class RequestLogController extends SuperController<RequestLogService, top
     @Operation(summary = "分页列表查询", description = "分页查询请求日志")
     public R<Page<RequestLogVo>> page(@RequestBody @Validated PageParams<RequestLogQuery> params) {
         Page<RequestLogVo> page = Page.of(params.getCurrent(), params.getSize());
-        top.mddata.console.system.entity.RequestLog entity = BeanUtil.toBean(params.getModel(), top.mddata.console.system.entity.RequestLog.class);
+        top.mddata.console.entity.system.RequestLog entity = BeanUtil.toBean(params.getModel(), top.mddata.console.entity.system.RequestLog.class);
         QueryWrapper wrapper = QueryWrapper.create(entity, WrapperUtil.buildOperators(entity.getClass()));
         WrapperUtil.buildWrapperByExtra(wrapper, params.getModel(), entity.getClass());
         WrapperUtil.buildWrapperByOrder(wrapper, params, entity.getClass());

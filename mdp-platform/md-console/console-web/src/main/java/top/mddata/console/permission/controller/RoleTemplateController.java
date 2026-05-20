@@ -19,11 +19,11 @@ import top.mddata.base.interfaces.echo.EchoService;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.common.enumeration.permission.RoleCategoryEnum;
-import top.mddata.console.permission.dto.RoleTemploateDto;
-import top.mddata.console.permission.entity.Role;
-import top.mddata.console.permission.query.RoleQuery;
+import top.mddata.console.dto.permission.RoleTemploateDto;
+import top.mddata.console.entity.permission.Role;
+import top.mddata.console.query.permission.RoleQuery;
 import top.mddata.console.permission.service.RoleTemplateService;
-import top.mddata.console.permission.vo.RoleVo;
+import top.mddata.console.vo.permission.RoleVo;
 
 import java.util.List;
 

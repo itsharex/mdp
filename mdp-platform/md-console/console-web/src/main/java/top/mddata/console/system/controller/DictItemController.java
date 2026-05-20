@@ -20,13 +20,13 @@ import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.base.utils.MyTreeUtil;
-import top.mddata.console.system.dto.DictItemDto;
-import top.mddata.console.system.entity.Dict;
-import top.mddata.console.system.entity.DictItem;
-import top.mddata.console.system.query.DictItemQuery;
+import top.mddata.console.dto.system.DictItemDto;
+import top.mddata.console.entity.system.Dict;
+import top.mddata.console.entity.system.DictItem;
+import top.mddata.console.query.system.DictItemQuery;
 import top.mddata.console.system.service.DictItemService;
 import top.mddata.console.system.service.DictService;
-import top.mddata.console.system.vo.DictItemVo;
+import top.mddata.console.vo.system.DictItemVo;
 
 import java.io.Serializable;
 import java.util.List;

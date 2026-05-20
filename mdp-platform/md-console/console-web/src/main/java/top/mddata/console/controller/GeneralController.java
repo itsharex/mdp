@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.base.R;
 import top.mddata.console.system.service.ConfigService;
 import top.mddata.console.system.service.DictItemService;
-import top.mddata.console.system.vo.ConfigVo;
-import top.mddata.console.system.vo.DictItemVo;
+import top.mddata.console.vo.system.ConfigVo;
+import top.mddata.console.vo.system.DictItemVo;
 
 import java.util.List;
 import java.util.Map;

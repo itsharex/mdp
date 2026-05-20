@@ -8,11 +8,11 @@ import top.mddata.api.open.MsgOpenService;
 import top.mddata.api.open.dto.SendMailDto;
 import top.mddata.api.open.dto.SendNoticeDto;
 import top.mddata.api.open.dto.SendSmsDto;
-import top.mddata.console.message.dto.MsgSendMailDto;
-import top.mddata.console.message.dto.MsgSendNoticeDto;
-import top.mddata.console.message.dto.MsgSendSmsDto;
-import top.mddata.console.message.enumeration.MsgChannelEnum;
-import top.mddata.console.message.enumeration.MsgRecipientScopeEnum;
+import top.mddata.console.dto.message.MsgSendMailDto;
+import top.mddata.console.dto.message.MsgSendNoticeDto;
+import top.mddata.console.dto.message.MsgSendSmsDto;
+import top.mddata.console.enumeration.message.MsgChannelEnum;
+import top.mddata.console.enumeration.message.MsgRecipientScopeEnum;
 import top.mddata.console.message.facade.MsgFacade;
 
 /**

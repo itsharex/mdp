@@ -1,9 +1,9 @@
 package top.mddata.console.system.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.system.entity.Dict;
-import top.mddata.console.system.entity.DictItem;
-import top.mddata.console.system.vo.DictItemVo;
+import top.mddata.console.entity.system.Dict;
+import top.mddata.console.entity.system.DictItem;
+import top.mddata.console.vo.system.DictItemVo;
 
 import java.io.Serializable;
 import java.util.Collection;

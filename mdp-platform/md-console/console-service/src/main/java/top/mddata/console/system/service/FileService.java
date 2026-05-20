@@ -2,11 +2,11 @@ package top.mddata.console.system.service;
 
 import org.springframework.web.multipart.MultipartFile;
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.system.dto.CopyFilesDto;
-import top.mddata.console.system.dto.FileUploadDto;
-import top.mddata.console.system.dto.RelateFilesToBizDto;
-import top.mddata.console.system.entity.File;
-import top.mddata.console.system.vo.FileVo;
+import top.mddata.console.dto.system.CopyFilesDto;
+import top.mddata.console.dto.system.FileUploadDto;
+import top.mddata.console.dto.system.RelateFilesToBizDto;
+import top.mddata.console.entity.system.File;
+import top.mddata.console.vo.system.FileVo;
 
 import java.util.List;
 import java.util.Map;

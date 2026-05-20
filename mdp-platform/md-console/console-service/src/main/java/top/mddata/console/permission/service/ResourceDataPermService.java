@@ -1,7 +1,7 @@
 package top.mddata.console.permission.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.permission.entity.ResourceDataPerm;
+import top.mddata.console.entity.permission.ResourceDataPerm;
 
 /**
  * 数据权限 服务层。

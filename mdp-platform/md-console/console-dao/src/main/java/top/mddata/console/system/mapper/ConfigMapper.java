@@ -2,7 +2,7 @@ package top.mddata.console.system.mapper;
 
 import org.springframework.stereotype.Repository;
 import top.mddata.base.mvcflex.mapper.SuperMapper;
-import top.mddata.console.system.entity.Config;
+import top.mddata.console.entity.system.Config;
 
 /**
  * 系统配置 映射层。

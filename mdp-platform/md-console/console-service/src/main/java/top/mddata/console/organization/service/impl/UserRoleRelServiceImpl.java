@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.common.entity.UserRoleRel;
 import top.mddata.common.mapper.UserRoleRelMapper;
-import top.mddata.console.organization.dto.UserRoleRelDto;
+import top.mddata.console.dto.organization.UserRoleRelDto;
 import top.mddata.console.organization.service.UserRoleRelService;
 
 import java.io.Serializable;

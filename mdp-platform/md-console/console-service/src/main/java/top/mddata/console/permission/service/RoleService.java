@@ -1,7 +1,7 @@
 package top.mddata.console.permission.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.permission.entity.Role;
+import top.mddata.console.entity.permission.Role;
 
 import java.util.List;
 

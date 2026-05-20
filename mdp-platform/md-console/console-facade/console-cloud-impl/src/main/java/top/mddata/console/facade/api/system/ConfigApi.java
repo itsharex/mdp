@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import top.mddata.base.base.R;
 import top.mddata.common.constant.AppConstants;
 import top.mddata.console.facade.api.system.fallback.ConfigApiFallback;
-import top.mddata.console.system.vo.ConfigVo;
+import top.mddata.console.vo.system.ConfigVo;
 
 /**
  *

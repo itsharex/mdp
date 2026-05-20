@@ -19,10 +19,10 @@ import top.mddata.base.util.ContextUtil;
 import top.mddata.common.cache.console.system.ConfigCacheKeyBuilder;
 import top.mddata.common.cache.console.system.ConfigUniqKeyCacheKeyBuilder;
 import top.mddata.common.enumeration.system.DataTypeEnum;
-import top.mddata.console.system.entity.Config;
+import top.mddata.console.entity.system.Config;
 import top.mddata.console.system.mapper.ConfigMapper;
 import top.mddata.console.system.service.ConfigService;
-import top.mddata.console.system.vo.ConfigVo;
+import top.mddata.console.vo.system.ConfigVo;
 
 import java.io.Serializable;
 import java.util.Collection;

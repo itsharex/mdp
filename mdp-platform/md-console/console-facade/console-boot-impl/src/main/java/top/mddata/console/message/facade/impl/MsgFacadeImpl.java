@@ -2,7 +2,7 @@ package top.mddata.console.message.facade.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import top.mddata.console.message.dto.MsgSendDto;
+import top.mddata.console.dto.message.MsgSendDto;
 import top.mddata.console.message.facade.MsgFacade;
 import top.mddata.console.message.service.MsgTaskService;
 

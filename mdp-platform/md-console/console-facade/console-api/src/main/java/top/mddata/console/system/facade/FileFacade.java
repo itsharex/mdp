@@ -1,7 +1,7 @@
 package top.mddata.console.system.facade;
 
-import top.mddata.console.system.dto.CopyFilesDto;
-import top.mddata.console.system.dto.RelateFilesToBizDto;
+import top.mddata.console.dto.system.CopyFilesDto;
+import top.mddata.console.dto.system.RelateFilesToBizDto;
 
 /**
  * 业务文件接口

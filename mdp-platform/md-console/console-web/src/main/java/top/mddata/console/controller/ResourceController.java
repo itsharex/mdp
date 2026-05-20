@@ -16,9 +16,9 @@ import top.mddata.common.properties.IgnoreProperties;
 import top.mddata.console.organization.service.UserService;
 import top.mddata.console.permission.service.ResourceMenuService;
 import top.mddata.console.permission.service.RoleService;
-import top.mddata.console.permission.vo.ResourceMenuVo;
-import top.mddata.console.permission.vo.UserAccessInfoVo;
-import top.mddata.console.permission.vo.UserinfoVo;
+import top.mddata.console.vo.permission.ResourceMenuVo;
+import top.mddata.console.vo.permission.UserAccessInfoVo;
+import top.mddata.console.vo.permission.UserinfoVo;
 
 import java.util.List;
 

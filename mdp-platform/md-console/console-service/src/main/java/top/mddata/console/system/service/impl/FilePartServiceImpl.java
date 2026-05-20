@@ -7,7 +7,7 @@ import org.dromara.x.file.storage.core.upload.FilePartInfo;
 import org.springframework.stereotype.Service;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.JsonUtil;
-import top.mddata.console.system.entity.FilePart;
+import top.mddata.console.entity.system.FilePart;
 import top.mddata.console.system.mapper.FilePartMapper;
 import top.mddata.console.system.service.FilePartService;
 

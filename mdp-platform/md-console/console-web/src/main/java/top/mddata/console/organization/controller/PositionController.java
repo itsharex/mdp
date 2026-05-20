@@ -22,10 +22,10 @@ import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.common.entity.Position;
-import top.mddata.console.organization.dto.PositionDto;
-import top.mddata.console.organization.query.PositionQuery;
+import top.mddata.console.dto.organization.PositionDto;
+import top.mddata.console.query.organization.PositionQuery;
 import top.mddata.console.organization.service.PositionService;
-import top.mddata.console.organization.vo.PositionVo;
+import top.mddata.console.vo.organization.PositionVo;
 
 import java.io.Serializable;
 import java.util.List;

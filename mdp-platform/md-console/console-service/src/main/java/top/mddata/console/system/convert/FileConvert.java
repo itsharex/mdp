@@ -7,8 +7,8 @@ import org.mapstruct.MappingConstants;
 import org.mapstruct.Qualifier;
 import org.mapstruct.factory.Mappers;
 import top.mddata.base.mapstruct.MapStructMethod;
-import top.mddata.console.system.entity.File;
-import top.mddata.console.system.enumeration.FileTypeEnum;
+import top.mddata.console.entity.system.File;
+import top.mddata.console.enumeration.system.FileTypeEnum;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

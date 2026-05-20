@@ -19,11 +19,11 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.console.system.dto.ConfigDto;
-import top.mddata.console.system.entity.Config;
-import top.mddata.console.system.query.ConfigQuery;
+import top.mddata.console.dto.system.ConfigDto;
+import top.mddata.console.entity.system.Config;
+import top.mddata.console.query.system.ConfigQuery;
 import top.mddata.console.system.service.ConfigService;
-import top.mddata.console.system.vo.ConfigVo;
+import top.mddata.console.vo.system.ConfigVo;
 
 import java.util.List;
 

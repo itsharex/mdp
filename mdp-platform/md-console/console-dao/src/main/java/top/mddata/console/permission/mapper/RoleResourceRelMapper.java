@@ -2,7 +2,7 @@ package top.mddata.console.permission.mapper;
 
 import org.springframework.stereotype.Repository;
 import top.mddata.base.mvcflex.mapper.SuperMapper;
-import top.mddata.console.permission.entity.RoleResourceRel;
+import top.mddata.console.entity.permission.RoleResourceRel;
 
 /**
  * 角色资源关联 映射层。

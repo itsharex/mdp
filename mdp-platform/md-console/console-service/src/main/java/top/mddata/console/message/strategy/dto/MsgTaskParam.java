@@ -5,10 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.Accessors;
-import top.mddata.console.message.entity.InterfaceConfig;
-import top.mddata.console.message.entity.MsgTask;
-import top.mddata.console.message.entity.MsgTaskRecipient;
-import top.mddata.console.message.entity.MsgTemplate;
+import top.mddata.console.entity.message.InterfaceConfig;
+import top.mddata.console.entity.message.MsgTask;
+import top.mddata.console.entity.message.MsgTaskRecipient;
+import top.mddata.console.entity.message.MsgTemplate;
 
 import java.util.List;
 import java.util.Map;

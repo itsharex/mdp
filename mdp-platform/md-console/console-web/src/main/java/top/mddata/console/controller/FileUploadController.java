@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
-import top.mddata.console.system.dto.CopyFilesDto;
-import top.mddata.console.system.dto.FileUploadDto;
-import top.mddata.console.system.dto.RelateFilesToBizDto;
+import top.mddata.console.dto.system.CopyFilesDto;
+import top.mddata.console.dto.system.FileUploadDto;
+import top.mddata.console.dto.system.RelateFilesToBizDto;
 import top.mddata.console.system.service.FileService;
-import top.mddata.console.system.vo.FileVo;
+import top.mddata.console.vo.system.FileVo;
 
 import java.util.List;
 import java.util.Map;

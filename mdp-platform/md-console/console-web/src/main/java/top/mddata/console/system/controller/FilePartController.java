@@ -19,11 +19,11 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.console.system.dto.FilePartDto;
-import top.mddata.console.system.entity.FilePart;
-import top.mddata.console.system.query.FilePartQuery;
+import top.mddata.console.dto.system.FilePartDto;
+import top.mddata.console.entity.system.FilePart;
+import top.mddata.console.query.system.FilePartQuery;
 import top.mddata.console.system.service.FilePartService;
-import top.mddata.console.system.vo.FilePartVo;
+import top.mddata.console.vo.system.FilePartVo;
 
 import java.util.List;
 

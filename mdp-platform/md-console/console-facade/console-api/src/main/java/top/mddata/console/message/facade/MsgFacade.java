@@ -1,6 +1,6 @@
 package top.mddata.console.message.facade;
 
-import top.mddata.console.message.dto.MsgSendDto;
+import top.mddata.console.dto.message.MsgSendDto;
 
 /**
  * 消息发送服务

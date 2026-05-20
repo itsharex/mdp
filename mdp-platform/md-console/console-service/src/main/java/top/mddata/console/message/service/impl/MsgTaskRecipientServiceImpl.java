@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
-import top.mddata.console.message.entity.MsgTaskRecipient;
+import top.mddata.console.entity.message.MsgTaskRecipient;
 import top.mddata.console.message.mapper.MsgTaskRecipientMapper;
 import top.mddata.console.message.service.MsgTaskRecipientService;
 

@@ -3,7 +3,7 @@ package top.mddata.console.facade.impl.message;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import top.mddata.console.facade.api.message.MsgApi;
-import top.mddata.console.message.dto.MsgSendDto;
+import top.mddata.console.dto.message.MsgSendDto;
 import top.mddata.console.message.facade.MsgFacade;
 
 /**

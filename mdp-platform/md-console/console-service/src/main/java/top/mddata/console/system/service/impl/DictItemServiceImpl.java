@@ -28,13 +28,13 @@ import top.mddata.base.utils.CollHelper;
 import top.mddata.base.utils.MyTreeUtil;
 import top.mddata.common.cache.console.system.DictItemHashCacheKeyBuilder;
 import top.mddata.common.constant.DefValConstants;
-import top.mddata.console.system.entity.Dict;
-import top.mddata.console.system.entity.DictItem;
-import top.mddata.console.system.enumeration.DictTypeEnum;
+import top.mddata.console.entity.system.Dict;
+import top.mddata.console.entity.system.DictItem;
+import top.mddata.console.enumeration.system.DictTypeEnum;
 import top.mddata.console.system.mapper.DictItemMapper;
 import top.mddata.console.system.mapper.DictMapper;
 import top.mddata.console.system.service.DictItemService;
-import top.mddata.console.system.vo.DictItemVo;
+import top.mddata.console.vo.system.DictItemVo;
 
 import java.io.Serializable;
 import java.util.Collection;

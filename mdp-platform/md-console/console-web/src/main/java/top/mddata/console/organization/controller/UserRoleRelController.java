@@ -12,7 +12,7 @@ import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.common.entity.UserRoleRel;
-import top.mddata.console.organization.dto.UserRoleRelDto;
+import top.mddata.console.dto.organization.UserRoleRelDto;
 import top.mddata.console.organization.service.UserRoleRelService;
 
 /**

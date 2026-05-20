@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
-import top.mddata.console.permission.dto.RoleAppRelDto;
-import top.mddata.console.permission.entity.RoleAppRel;
+import top.mddata.console.dto.permission.RoleAppRelDto;
+import top.mddata.console.entity.permission.RoleAppRel;
 import top.mddata.console.permission.service.RoleAppRelService;
 
 /**

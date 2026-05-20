@@ -1,6 +1,6 @@
 package top.mddata.console.system.facade;
 
-import top.mddata.console.system.vo.ConfigVo;
+import top.mddata.console.vo.system.ConfigVo;
 
 /**
  * 系统参数

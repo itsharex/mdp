@@ -1,7 +1,7 @@
 package top.mddata.console.message.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.message.entity.InterfaceStat;
+import top.mddata.console.entity.message.InterfaceStat;
 
 /**
  * 接口统计 服务层。

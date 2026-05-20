@@ -23,7 +23,7 @@ import top.mddata.common.entity.OrgNature;
 import top.mddata.common.enumeration.organization.OrgNatureEnum;
 import top.mddata.common.enumeration.organization.OrgTypeEnum;
 import top.mddata.common.mapper.OrgMapper;
-import top.mddata.console.organization.dto.OrgDto;
+import top.mddata.console.dto.organization.OrgDto;
 import top.mddata.console.organization.service.OrgNatureService;
 import top.mddata.console.organization.service.OrgService;
 import top.mddata.console.organization.service.UserOrgRelService;

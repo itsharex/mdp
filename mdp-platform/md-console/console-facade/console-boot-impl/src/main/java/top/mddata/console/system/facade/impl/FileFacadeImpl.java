@@ -2,8 +2,8 @@ package top.mddata.console.system.facade.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import top.mddata.console.system.dto.CopyFilesDto;
-import top.mddata.console.system.dto.RelateFilesToBizDto;
+import top.mddata.console.dto.system.CopyFilesDto;
+import top.mddata.console.dto.system.RelateFilesToBizDto;
 import top.mddata.console.system.facade.FileFacade;
 import top.mddata.console.system.service.FileService;
 

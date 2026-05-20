@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import top.mddata.base.constant.Constants;
 import top.mddata.base.log.event.SysLogListener;
-import top.mddata.console.system.dto.RequestLogDto;
+import top.mddata.console.dto.system.RequestLogDto;
 import top.mddata.console.system.service.RequestLogService;
 
 /**

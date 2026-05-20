@@ -1,6 +1,6 @@
 package top.mddata.console.system.facade;
 
-import top.mddata.console.system.dto.RequestLogDto;
+import top.mddata.console.dto.system.RequestLogDto;
 
 /**
  * 操作日志

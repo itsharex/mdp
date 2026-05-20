@@ -24,13 +24,13 @@ import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.base.util.ContextUtil;
 import top.mddata.common.enumeration.permission.RoleCategoryEnum;
-import top.mddata.console.permission.dto.RoleDto;
-import top.mddata.console.permission.dto.RoleResourceRelDto;
-import top.mddata.console.permission.entity.Role;
-import top.mddata.console.permission.query.RoleQuery;
+import top.mddata.console.dto.permission.RoleDto;
+import top.mddata.console.dto.permission.RoleResourceRelDto;
+import top.mddata.console.entity.permission.Role;
+import top.mddata.console.query.permission.RoleQuery;
 import top.mddata.console.permission.service.RoleResourceRelService;
 import top.mddata.console.permission.service.RoleService;
-import top.mddata.console.permission.vo.RoleVo;
+import top.mddata.console.vo.permission.RoleVo;
 
 import java.util.Collection;
 import java.util.List;

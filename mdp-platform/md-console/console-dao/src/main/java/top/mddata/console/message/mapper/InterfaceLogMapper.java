@@ -2,7 +2,7 @@ package top.mddata.console.message.mapper;
 
 import org.springframework.stereotype.Repository;
 import top.mddata.base.mvcflex.mapper.SuperMapper;
-import top.mddata.console.message.entity.InterfaceLog;
+import top.mddata.console.entity.message.InterfaceLog;
 
 /**
  * 接口执行日志记录 映射层。

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.console.system.entity.LoginLog;
+import top.mddata.console.entity.system.LoginLog;
 import top.mddata.console.system.mapper.MdcLoginLogMapper;
 import top.mddata.console.system.service.MdcLoginLogService;
 

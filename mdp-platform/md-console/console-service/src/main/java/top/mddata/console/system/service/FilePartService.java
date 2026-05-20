@@ -2,7 +2,7 @@ package top.mddata.console.system.service;
 
 import org.dromara.x.file.storage.core.upload.FilePartInfo;
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.system.entity.FilePart;
+import top.mddata.console.entity.system.FilePart;
 
 /**
  * 文件分片

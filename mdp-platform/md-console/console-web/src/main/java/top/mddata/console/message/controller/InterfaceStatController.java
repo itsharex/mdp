@@ -18,10 +18,10 @@ import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.console.message.entity.InterfaceStat;
-import top.mddata.console.message.query.InterfaceStatQuery;
+import top.mddata.console.entity.message.InterfaceStat;
+import top.mddata.console.query.message.InterfaceStatQuery;
 import top.mddata.console.message.service.InterfaceStatService;
-import top.mddata.console.message.vo.InterfaceStatVo;
+import top.mddata.console.vo.message.InterfaceStatVo;
 
 import java.util.List;
 

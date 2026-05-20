@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.console.permission.entity.ResourceButton;
+import top.mddata.console.entity.permission.ResourceButton;
 import top.mddata.console.permission.mapper.ResourceButtonMapper;
 import top.mddata.console.permission.service.ResourceButtonService;
 

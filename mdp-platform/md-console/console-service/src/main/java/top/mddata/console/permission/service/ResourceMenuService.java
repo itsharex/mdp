@@ -1,8 +1,8 @@
 package top.mddata.console.permission.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.permission.entity.ResourceMenu;
-import top.mddata.console.permission.vo.ResourceMenuVo;
+import top.mddata.console.entity.permission.ResourceMenu;
+import top.mddata.console.vo.permission.ResourceMenuVo;
 
 import java.util.List;
 

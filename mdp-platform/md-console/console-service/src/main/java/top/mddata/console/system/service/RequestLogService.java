@@ -1,7 +1,7 @@
 package top.mddata.console.system.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.system.entity.RequestLog;
+import top.mddata.console.entity.system.RequestLog;
 
 /**
  * 请求日志 服务层。

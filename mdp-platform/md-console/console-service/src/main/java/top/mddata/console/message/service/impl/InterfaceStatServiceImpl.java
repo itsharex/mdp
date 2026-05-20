@@ -6,8 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.console.message.entity.InterfaceStat;
-import top.mddata.console.message.entity.table.InterfaceStatTableDef;
+import top.mddata.console.entity.message.InterfaceStat;
+import top.mddata.console.entity.message.table.InterfaceStatTableDef;
 import top.mddata.console.message.mapper.InterfaceStatMapper;
 import top.mddata.console.message.service.InterfaceStatService;
 

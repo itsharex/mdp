@@ -2,7 +2,7 @@ package top.mddata.console.organization.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
 import top.mddata.common.entity.UserRoleRel;
-import top.mddata.console.organization.dto.UserRoleRelDto;
+import top.mddata.console.dto.organization.UserRoleRelDto;
 
 import java.io.Serializable;
 import java.util.Collection;

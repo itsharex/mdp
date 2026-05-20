@@ -19,10 +19,10 @@ import top.mddata.base.exception.BizException;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.console.message.entity.InterfaceLog;
-import top.mddata.console.message.query.InterfaceLogQuery;
+import top.mddata.console.entity.message.InterfaceLog;
+import top.mddata.console.query.message.InterfaceLogQuery;
 import top.mddata.console.message.service.InterfaceLogService;
-import top.mddata.console.message.vo.InterfaceLogVo;
+import top.mddata.console.vo.message.InterfaceLogVo;
 
 import java.util.List;
 

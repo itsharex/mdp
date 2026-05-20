@@ -13,8 +13,8 @@ import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.CollHelper;
 import top.mddata.common.cache.console.permission.RoleResourceCacheKeyBuilder;
-import top.mddata.console.permission.dto.RoleResourceRelDto;
-import top.mddata.console.permission.entity.RoleResourceRel;
+import top.mddata.console.dto.permission.RoleResourceRelDto;
+import top.mddata.console.entity.permission.RoleResourceRel;
 import top.mddata.console.permission.mapper.RoleResourceRelMapper;
 import top.mddata.console.permission.service.RoleResourceRelService;
 

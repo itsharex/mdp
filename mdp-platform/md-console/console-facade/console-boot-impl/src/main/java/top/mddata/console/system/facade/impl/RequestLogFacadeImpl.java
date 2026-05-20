@@ -2,7 +2,7 @@ package top.mddata.console.system.facade.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import top.mddata.console.system.dto.RequestLogDto;
+import top.mddata.console.dto.system.RequestLogDto;
 import top.mddata.console.system.facade.RequestLogFacade;
 import top.mddata.console.system.service.RequestLogService;
 

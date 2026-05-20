@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import top.mddata.base.base.R;
 import top.mddata.common.constant.AppConstants;
 import top.mddata.console.facade.api.system.fallback.FileApiFallback;
-import top.mddata.console.system.dto.CopyFilesDto;
-import top.mddata.console.system.dto.RelateFilesToBizDto;
+import top.mddata.console.dto.system.CopyFilesDto;
+import top.mddata.console.dto.system.RelateFilesToBizDto;
 
 /**
  *

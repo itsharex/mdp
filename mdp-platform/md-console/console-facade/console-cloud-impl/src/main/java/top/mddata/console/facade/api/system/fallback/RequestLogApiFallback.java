@@ -3,7 +3,7 @@ package top.mddata.console.facade.api.system.fallback;
 import org.springframework.stereotype.Component;
 import top.mddata.base.base.R;
 import top.mddata.console.facade.api.system.RequestLogApi;
-import top.mddata.console.system.dto.RequestLogDto;
+import top.mddata.console.dto.system.RequestLogDto;
 
 /**
  *

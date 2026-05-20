@@ -1,8 +1,8 @@
 package top.mddata.console.permission.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.permission.dto.RoleAppRelDto;
-import top.mddata.console.permission.entity.RoleAppRel;
+import top.mddata.console.dto.permission.RoleAppRelDto;
+import top.mddata.console.entity.permission.RoleAppRel;
 
 import java.io.Serializable;
 import java.util.Collection;

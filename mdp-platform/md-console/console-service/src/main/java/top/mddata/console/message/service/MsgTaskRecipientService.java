@@ -1,7 +1,7 @@
 package top.mddata.console.message.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.message.entity.MsgTaskRecipient;
+import top.mddata.console.entity.message.MsgTaskRecipient;
 
 import java.util.List;
 

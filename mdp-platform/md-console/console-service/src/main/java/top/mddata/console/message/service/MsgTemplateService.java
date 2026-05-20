@@ -1,7 +1,7 @@
 package top.mddata.console.message.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.message.entity.MsgTemplate;
+import top.mddata.console.entity.message.MsgTemplate;
 
 /**
  * 消息模板 服务层。

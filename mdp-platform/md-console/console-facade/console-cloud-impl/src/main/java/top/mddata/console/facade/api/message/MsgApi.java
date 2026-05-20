@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import top.mddata.base.base.R;
 import top.mddata.common.constant.AppConstants;
 import top.mddata.console.facade.api.message.fallback.MsgApiFallback;
-import top.mddata.console.message.dto.MsgSendDto;
+import top.mddata.console.dto.message.MsgSendDto;
 
 /**
  *

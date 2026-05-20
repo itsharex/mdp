@@ -42,7 +42,7 @@ import top.mddata.common.enumeration.organization.OrgTypeEnum;
 import top.mddata.common.mapper.OrgMapper;
 import top.mddata.common.mapper.OrgNatureMapper;
 import top.mddata.common.mapper.UserMapper;
-import top.mddata.console.system.dto.RelateFilesToBizDto;
+import top.mddata.console.dto.system.RelateFilesToBizDto;
 import top.mddata.console.system.facade.ConfigFacade;
 import top.mddata.console.system.facade.FileFacade;
 import top.mddata.open.admin.dto.EventTriggerDto;

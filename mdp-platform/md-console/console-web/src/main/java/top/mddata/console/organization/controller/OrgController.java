@@ -22,10 +22,10 @@ import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.base.utils.MyTreeUtil;
 import top.mddata.common.entity.Org;
-import top.mddata.console.organization.dto.OrgDto;
-import top.mddata.console.organization.query.OrgQuery;
+import top.mddata.console.dto.organization.OrgDto;
+import top.mddata.console.query.organization.OrgQuery;
 import top.mddata.console.organization.service.OrgService;
-import top.mddata.console.organization.vo.OrgVo;
+import top.mddata.console.vo.organization.OrgVo;
 
 import java.io.Serializable;
 import java.util.List;

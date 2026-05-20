@@ -23,11 +23,11 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.console.system.dto.DictDto;
-import top.mddata.console.system.entity.Dict;
-import top.mddata.console.system.query.DictQuery;
+import top.mddata.console.dto.system.DictDto;
+import top.mddata.console.entity.system.Dict;
+import top.mddata.console.query.system.DictQuery;
 import top.mddata.console.system.service.DictService;
-import top.mddata.console.system.vo.DictVo;
+import top.mddata.console.vo.system.DictVo;
 
 import java.io.Serializable;
 import java.util.List;

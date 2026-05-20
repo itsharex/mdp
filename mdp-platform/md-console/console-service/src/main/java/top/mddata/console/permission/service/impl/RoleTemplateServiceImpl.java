@@ -9,7 +9,7 @@ import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.common.enumeration.permission.RoleCategoryEnum;
 import top.mddata.console.organization.service.UserRoleRelService;
-import top.mddata.console.permission.entity.Role;
+import top.mddata.console.entity.permission.Role;
 import top.mddata.console.permission.mapper.RoleMapper;
 import top.mddata.console.permission.service.RoleAppRelService;
 import top.mddata.console.permission.service.RoleResourceRelService;

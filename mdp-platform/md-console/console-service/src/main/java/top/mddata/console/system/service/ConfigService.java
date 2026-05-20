@@ -1,8 +1,8 @@
 package top.mddata.console.system.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.console.system.entity.Config;
-import top.mddata.console.system.vo.ConfigVo;
+import top.mddata.console.entity.system.Config;
+import top.mddata.console.vo.system.ConfigVo;
 
 import java.util.List;
 import java.util.Map;

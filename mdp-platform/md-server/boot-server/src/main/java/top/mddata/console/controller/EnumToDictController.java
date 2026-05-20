@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.base.R;
 import top.mddata.common.enumeration.EnumService;
 import top.mddata.common.vo.Option;
-import top.mddata.console.system.entity.Dict;
-import top.mddata.console.system.entity.DictItem;
+import top.mddata.console.entity.system.Dict;
+import top.mddata.console.entity.system.DictItem;
 import top.mddata.console.system.service.DictService;
-import top.mddata.console.system.vo.DictItemVo;
-import top.mddata.console.system.vo.DictVo;
+import top.mddata.console.vo.system.DictItemVo;
+import top.mddata.console.vo.system.DictVo;
 
 import java.util.ArrayList;
 import java.util.Collections;
