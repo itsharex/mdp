@@ -1,4 +1,4 @@
-package top.mddata.api.open.dto;
+package top.mddata.api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;

@@ -1,11 +1,11 @@
-package top.mddata.api.open;
+package top.mddata.api;
 
 import com.gitee.sop.support.annotation.Open;
 import com.mybatisflex.core.paginate.Page;
-import top.mddata.api.open.dto.OrgSaveDto;
-import top.mddata.api.open.dto.OrgUpdateDto;
-import top.mddata.api.open.query.OrgQuery;
-import top.mddata.api.open.resp.OrgResp;
+import top.mddata.api.dto.OrgSaveDto;
+import top.mddata.api.dto.OrgUpdateDto;
+import top.mddata.api.query.OrgQuery;
+import top.mddata.api.resp.OrgResp;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.service.SuperService;
 import top.mddata.common.entity.Org;

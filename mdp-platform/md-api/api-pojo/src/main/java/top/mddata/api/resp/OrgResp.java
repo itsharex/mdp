@@ -1,4 +1,4 @@
-package top.mddata.api.open.resp;
+package top.mddata.api.resp;
 
 import cn.hutool.core.map.MapUtil;
 import com.mybatisflex.annotation.Id;

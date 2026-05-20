@@ -1,6 +1,8 @@
-package top.mddata.api.open.resp;
+package top.mddata.api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,10 +11,10 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+
 
 /**
- * 用户返回
+ * 用户新增或修改
  *
  * @author henhen
  * @since 2025-10-19 09:45:12
@@ -22,22 +24,17 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "用户返回")
-public class UserResp implements Serializable {
-
+@Schema(description = "用户新增")
+public class UserSaveDto implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     /**
-     * ID
-     */
-    @Schema(description = "ID")
-    private Long id;
-
-    /**
      * 用户名
      */
+    @NotEmpty(message = "请填写用户名")
+    @Size(max = 64, message = "用户名长度不能超过{max}")
     @Schema(description = "用户名")
     private String username;
 
@@ -45,42 +42,32 @@ public class UserResp implements Serializable {
      * 性别
      * [1-男 2-女]
      */
+    @Size(max = 1, message = "性别长度不能超过{max}")
     @Schema(description = "性别")
     private String sex;
 
     /**
      * 电话号码
      */
+    @Size(max = 20, message = "电话号码长度不能超过{max}")
     @Schema(description = "电话号码")
     private String phone;
 
     /**
      * 姓名
      */
+    @Size(max = 255, message = "姓名长度不能超过{max}")
     @Schema(description = "姓名")
     private String name;
 
     /**
      * 邮箱地址
      */
+    @Size(max = 128, message = "邮箱地址长度不能超过{max}")
     @Schema(description = "邮箱地址")
     private String email;
 
-    /**
-     * 状态
-     * [0-禁用 1-正常]
-     */
-    @Schema(description = "状态")
-    private Boolean state;
-
-
-    /**
-     * 创建时间
-     */
-    @Schema(description = "创建时间")
-    private LocalDateTime createdAt;
-
-
     @Schema(description = "用户来源")
+    @NotEmpty(message = "用户来源不能为空")
     private String userSource;
 }

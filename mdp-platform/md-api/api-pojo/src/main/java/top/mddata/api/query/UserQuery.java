@@ -1,8 +1,6 @@
-package top.mddata.api.open.dto;
+package top.mddata.api.query;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,9 +10,8 @@ import lombok.experimental.Accessors;
 import java.io.Serial;
 import java.io.Serializable;
 
-
 /**
- * 用户新增或修改
+ * 用户查询
  *
  * @author henhen
  * @since 2025-10-19 09:45:12
@@ -24,17 +21,16 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "用户新增")
-public class UserSaveDto implements Serializable {
+@Schema(description = "用户查询")
+public class UserQuery implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
+
     /**
      * 用户名
      */
-    @NotEmpty(message = "请填写用户名")
-    @Size(max = 64, message = "用户名长度不能超过{max}")
     @Schema(description = "用户名")
     private String username;
 
@@ -42,32 +38,25 @@ public class UserSaveDto implements Serializable {
      * 性别
      * [1-男 2-女]
      */
-    @Size(max = 1, message = "性别长度不能超过{max}")
     @Schema(description = "性别")
     private String sex;
 
     /**
      * 电话号码
      */
-    @Size(max = 20, message = "电话号码长度不能超过{max}")
     @Schema(description = "电话号码")
     private String phone;
 
     /**
      * 姓名
      */
-    @Size(max = 255, message = "姓名长度不能超过{max}")
     @Schema(description = "姓名")
     private String name;
 
     /**
      * 邮箱地址
      */
-    @Size(max = 128, message = "邮箱地址长度不能超过{max}")
     @Schema(description = "邮箱地址")
     private String email;
 
-    @Schema(description = "用户来源")
-    @NotEmpty(message = "用户来源不能为空")
-    private String userSource;
 }

@@ -1,4 +1,4 @@
-package top.mddata.api.open.impl;
+package top.mddata.api.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.RandomUtil;
@@ -12,14 +12,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
-import top.mddata.api.open.UserOpenService;
-import top.mddata.api.open.dto.UserBatchSaveDto;
-import top.mddata.api.open.dto.UserSaveDto;
-import top.mddata.api.open.dto.UserUpdateDto;
+import top.mddata.api.UserOpenService;
+import top.mddata.api.dto.UserBatchSaveDto;
+import top.mddata.api.dto.UserSaveDto;
+import top.mddata.api.dto.UserUpdateDto;
 import top.mddata.common.enumeration.StoryMessageEnum;
-import top.mddata.api.open.query.UserQuery;
-import top.mddata.api.open.resp.UserBatchSaveResp;
-import top.mddata.api.open.resp.UserResp;
+import top.mddata.api.query.UserQuery;
+import top.mddata.api.resp.UserBatchSaveResp;
+import top.mddata.api.resp.UserResp;
 import top.mddata.base.model.cache.CacheKey;
 import top.mddata.base.model.cache.CacheKeyBuilder;
 import top.mddata.base.mvcflex.request.PageParams;

@@ -1,4 +1,4 @@
-package top.mddata.api.open.resp;
+package top.mddata.api.resp;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;

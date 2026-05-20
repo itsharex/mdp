@@ -1,4 +1,4 @@
-package top.mddata.api.open.controller;
+package top.mddata.api.controller;
 
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONObject;

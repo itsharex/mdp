@@ -1,9 +1,9 @@
-package top.mddata.api.open;
+package top.mddata.api;
 
 import com.gitee.sop.support.annotation.Open;
-import top.mddata.api.open.dto.SendMailDto;
-import top.mddata.api.open.dto.SendNoticeDto;
-import top.mddata.api.open.dto.SendSmsDto;
+import top.mddata.api.dto.SendMailDto;
+import top.mddata.api.dto.SendNoticeDto;
+import top.mddata.api.dto.SendSmsDto;
 
 /**
  * 消息数据接口

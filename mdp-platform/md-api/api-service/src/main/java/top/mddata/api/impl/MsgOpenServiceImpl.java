@@ -1,13 +1,13 @@
-package top.mddata.api.open.impl;
+package top.mddata.api.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
-import top.mddata.api.open.MsgOpenService;
-import top.mddata.api.open.dto.SendMailDto;
-import top.mddata.api.open.dto.SendNoticeDto;
-import top.mddata.api.open.dto.SendSmsDto;
+import top.mddata.api.MsgOpenService;
+import top.mddata.api.dto.SendMailDto;
+import top.mddata.api.dto.SendNoticeDto;
+import top.mddata.api.dto.SendSmsDto;
 import top.mddata.console.dto.message.MsgSendMailDto;
 import top.mddata.console.dto.message.MsgSendNoticeDto;
 import top.mddata.console.dto.message.MsgSendSmsDto;

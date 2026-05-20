@@ -1,4 +1,4 @@
-package top.mddata.api.open.impl;
+package top.mddata.api.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.baidu.fsg.uid.UidGenerator;
@@ -9,11 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.springframework.stereotype.Service;
-import top.mddata.api.open.OrgOpenService;
-import top.mddata.api.open.dto.OrgSaveDto;
-import top.mddata.api.open.dto.OrgUpdateDto;
-import top.mddata.api.open.query.OrgQuery;
-import top.mddata.api.open.resp.OrgResp;
+import top.mddata.api.OrgOpenService;
+import top.mddata.api.dto.OrgSaveDto;
+import top.mddata.api.dto.OrgUpdateDto;
+import top.mddata.api.query.OrgQuery;
+import top.mddata.api.resp.OrgResp;
 import top.mddata.base.model.cache.CacheKeyBuilder;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;

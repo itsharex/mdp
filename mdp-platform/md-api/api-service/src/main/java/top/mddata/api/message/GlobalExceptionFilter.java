@@ -1,4 +1,4 @@
-package top.mddata.api.open.message;
+package top.mddata.api.message;
 
 import com.gitee.sop.support.exception.OpenException;
 import org.apache.dubbo.common.constants.CommonConstants;

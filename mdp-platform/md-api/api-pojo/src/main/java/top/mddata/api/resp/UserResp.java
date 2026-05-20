@@ -1,4 +1,4 @@
-package top.mddata.api.open.query;
+package top.mddata.api.resp;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -9,9 +9,10 @@ import lombok.experimental.Accessors;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
 /**
- * 用户查询
+ * 用户返回
  *
  * @author henhen
  * @since 2025-10-19 09:45:12
@@ -21,12 +22,18 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "用户查询")
-public class UserQuery implements Serializable {
+@Schema(description = "用户返回")
+public class UserResp implements Serializable {
+
 
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * ID
+     */
+    @Schema(description = "ID")
+    private Long id;
 
     /**
      * 用户名
@@ -59,4 +66,21 @@ public class UserQuery implements Serializable {
     @Schema(description = "邮箱地址")
     private String email;
 
+    /**
+     * 状态
+     * [0-禁用 1-正常]
+     */
+    @Schema(description = "状态")
+    private Boolean state;
+
+
+    /**
+     * 创建时间
+     */
+    @Schema(description = "创建时间")
+    private LocalDateTime createdAt;
+
+
+    @Schema(description = "用户来源")
+    private String userSource;
 }
