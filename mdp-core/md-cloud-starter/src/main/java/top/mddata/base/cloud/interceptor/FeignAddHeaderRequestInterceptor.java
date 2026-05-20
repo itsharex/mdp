@@ -32,7 +32,7 @@ public class FeignAddHeaderRequestInterceptor implements RequestInterceptor {
             ContextConstants.COMPANY_NATURE, ContextConstants.COMPANY_ID,
             ContextConstants.TOP_COMPANY_ID, ContextConstants.TOP_COMPANY_IS_ADMIN,
             ContextConstants.TOP_COMPANY_NATURE, ContextConstants.DEPT_ID,
-            ContextConstants.PATH,
+            ContextConstants.PATH, ContextConstants.LOCALE,
             ContextConstants.GRAY_VERSION,
             ContextConstants.PROCEED,
             ContextConstants.FEIGN,

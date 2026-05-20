@@ -96,6 +96,7 @@ public class TokenContextFilter implements WebFilter, Ordered {
         ServerHttpRequest.Builder mutate = request.mutate();
 
         ContextUtil.setGrayVersion(getHeader(ContextConstants.GRAY_VERSION, request));
+        ContextUtil.setLocale(getHeader(ContextConstants.LOCALE, request));
 
         try {
             // 2,解码 Authorization

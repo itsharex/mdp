@@ -54,7 +54,7 @@ public final class ContextConstants {
     /**
      * 请求头中存放的 前端语言环境
      */
-    public static final String LOCALE = "Locale";
+    public static final String LOCALE = "Accept-Language";
     /**
      * 日志链路追踪id信息头
      */

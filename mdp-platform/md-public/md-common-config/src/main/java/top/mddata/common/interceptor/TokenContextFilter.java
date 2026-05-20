@@ -57,6 +57,7 @@ public class TokenContextFilter extends SaInterceptor {
             return true;
         }
         ContextUtil.setPath(getHeader(ContextConstants.PATH, request));
+        ContextUtil.setLocale(getHeader(ContextConstants.LOCALE, request));
         String traceId = IdUtil.fastSimpleUUID();
         MDC.put(ContextConstants.TRACE, traceId);
         try {
