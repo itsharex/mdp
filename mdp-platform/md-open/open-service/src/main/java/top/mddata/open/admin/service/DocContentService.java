@@ -1,7 +1,7 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.entity.DocContent;
+import top.mddata.open.entity.admin.DocContent;
 
 /**
  * 文档内容 服务层。

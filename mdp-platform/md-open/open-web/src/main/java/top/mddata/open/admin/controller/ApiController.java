@@ -17,12 +17,12 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.open.admin.dto.ApiDto;
-import top.mddata.open.admin.entity.Api;
-import top.mddata.open.admin.entity.GroupApiRel;
-import top.mddata.open.admin.query.ApiQuery;
+import top.mddata.open.dto.admin.ApiDto;
+import top.mddata.open.entity.admin.Api;
+import top.mddata.open.entity.admin.GroupApiRel;
+import top.mddata.open.query.admin.ApiQuery;
 import top.mddata.open.admin.service.ApiService;
-import top.mddata.open.admin.vo.ApiVo;
+import top.mddata.open.vo.admin.ApiVo;
 
 import java.util.List;
 

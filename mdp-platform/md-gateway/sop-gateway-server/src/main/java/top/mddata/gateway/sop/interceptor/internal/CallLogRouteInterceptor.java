@@ -11,8 +11,8 @@ import top.mddata.gateway.sop.common.RouteContext;
 import top.mddata.gateway.sop.interceptor.RouteInterceptor;
 import top.mddata.gateway.sop.interceptor.RouteInterceptorOrders;
 import top.mddata.gateway.sop.request.ApiRequestContext;
-import top.mddata.open.admin.entity.ApiCallLog;
-import top.mddata.open.admin.enumeration.ExecStatusEnum;
+import top.mddata.open.entity.admin.ApiCallLog;
+import top.mddata.open.enumeration.admin.ExecStatusEnum;
 
 import java.time.LocalDateTime;
 

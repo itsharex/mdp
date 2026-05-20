@@ -1,10 +1,10 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.entity.DocGroup;
-import top.mddata.open.admin.entity.DocInfo;
-import top.mddata.open.admin.vo.DocInfoViewVo;
-import top.mddata.open.admin.vo.DocInfoVo;
+import top.mddata.open.entity.admin.DocGroup;
+import top.mddata.open.entity.admin.DocInfo;
+import top.mddata.open.vo.admin.DocInfoViewVo;
+import top.mddata.open.vo.admin.DocInfoVo;
 
 import java.util.List;
 

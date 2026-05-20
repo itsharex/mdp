@@ -1,7 +1,7 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.entity.ApiCallLog;
+import top.mddata.open.entity.admin.ApiCallLog;
 
 /**
  * 调用日志 服务层。

@@ -1,7 +1,7 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.entity.EventPushLog;
+import top.mddata.open.entity.admin.EventPushLog;
 
 /**
  * 事件推送日志 服务层。

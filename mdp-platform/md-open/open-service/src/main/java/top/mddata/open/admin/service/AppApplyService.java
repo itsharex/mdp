@@ -2,9 +2,9 @@ package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
 import top.mddata.common.dto.IdDto;
-import top.mddata.open.admin.dto.AppApplyDto;
-import top.mddata.open.admin.dto.AppApplyReviewDto;
-import top.mddata.open.admin.entity.AppApply;
+import top.mddata.open.dto.admin.AppApplyDto;
+import top.mddata.open.dto.admin.AppApplyReviewDto;
+import top.mddata.open.entity.admin.AppApply;
 
 /**
  * 应用申请 服务层。

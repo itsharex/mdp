@@ -5,8 +5,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
 import top.mddata.base.mapstruct.BaseMapStruct;
-import top.mddata.open.admin.dto.AppApplyDto;
-import top.mddata.open.admin.entity.AppApply;
+import top.mddata.open.dto.admin.AppApplyDto;
+import top.mddata.open.entity.admin.AppApply;
 
 import java.util.List;
 

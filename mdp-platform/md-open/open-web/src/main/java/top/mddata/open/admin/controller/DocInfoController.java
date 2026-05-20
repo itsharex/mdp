@@ -13,9 +13,9 @@ import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.common.dto.IdDto;
-import top.mddata.open.admin.entity.DocInfo;
+import top.mddata.open.entity.admin.DocInfo;
 import top.mddata.open.admin.service.DocInfoService;
-import top.mddata.open.admin.vo.DocInfoVo;
+import top.mddata.open.vo.admin.DocInfoVo;
 
 import java.util.List;
 

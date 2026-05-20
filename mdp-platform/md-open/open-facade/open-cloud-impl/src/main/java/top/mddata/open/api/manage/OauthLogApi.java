@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import top.mddata.common.constant.AppConstants;
-import top.mddata.open.admin.dto.OauthLogDto;
+import top.mddata.open.dto.admin.OauthLogDto;
 
 /**
  * 授权记录

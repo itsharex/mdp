@@ -18,10 +18,10 @@ import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.open.admin.entity.EventPushLog;
-import top.mddata.open.admin.query.EventPushLogQuery;
+import top.mddata.open.entity.admin.EventPushLog;
+import top.mddata.open.query.admin.EventPushLogQuery;
 import top.mddata.open.admin.service.EventPushLogService;
-import top.mddata.open.admin.vo.EventPushLogVo;
+import top.mddata.open.vo.admin.EventPushLogVo;
 
 import java.util.List;
 

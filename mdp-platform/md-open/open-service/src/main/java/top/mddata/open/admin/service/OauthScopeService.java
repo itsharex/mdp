@@ -1,8 +1,8 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.entity.OauthScope;
-import top.mddata.open.admin.vo.OauthScopeVo;
+import top.mddata.open.entity.admin.OauthScope;
+import top.mddata.open.vo.admin.OauthScopeVo;
 
 import java.util.List;
 

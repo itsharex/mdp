@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
-import top.mddata.open.admin.entity.GroupScopeRel;
-import top.mddata.open.admin.entity.OauthScope;
-import top.mddata.open.admin.enumeration.ScopeLevelEnum;
+import top.mddata.open.entity.admin.GroupScopeRel;
+import top.mddata.open.entity.admin.OauthScope;
+import top.mddata.open.enumeration.admin.ScopeLevelEnum;
 import top.mddata.open.admin.mapper.OauthScopeMapper;
 import top.mddata.open.admin.service.GroupScopeRelService;
 import top.mddata.open.admin.service.OauthScopeService;
-import top.mddata.open.admin.vo.OauthScopeVo;
+import top.mddata.open.vo.admin.OauthScopeVo;
 
 import java.io.Serializable;
 import java.util.Collection;

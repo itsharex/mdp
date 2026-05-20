@@ -20,19 +20,19 @@ import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.base.util.ContextUtil;
-import top.mddata.open.admin.dto.AppDto;
-import top.mddata.open.admin.dto.AppGroupRelDto;
-import top.mddata.open.admin.dto.AppKeysDto;
-import top.mddata.open.admin.entity.App;
-import top.mddata.open.admin.entity.AppGroupRel;
-import top.mddata.open.admin.entity.AppKeys;
-import top.mddata.open.admin.query.AppQuery;
+import top.mddata.open.dto.admin.AppDto;
+import top.mddata.open.dto.admin.AppGroupRelDto;
+import top.mddata.open.dto.admin.AppKeysDto;
+import top.mddata.open.entity.admin.App;
+import top.mddata.open.entity.admin.AppGroupRel;
+import top.mddata.open.entity.admin.AppKeys;
+import top.mddata.open.query.admin.AppQuery;
 import top.mddata.open.admin.service.AppGroupRelService;
 import top.mddata.open.admin.service.AppKeysService;
 import top.mddata.open.admin.service.AppService;
 import top.mddata.open.admin.utils.RsaTool;
-import top.mddata.open.admin.vo.AppKeysVo;
-import top.mddata.open.admin.vo.AppVo;
+import top.mddata.open.vo.admin.AppKeysVo;
+import top.mddata.open.vo.admin.AppVo;
 
 import java.util.List;
 

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import top.mddata.base.base.R;
 import top.mddata.open.admin.service.AppService;
 import top.mddata.open.admin.service.OauthScopeService;
-import top.mddata.open.admin.vo.AppVo;
+import top.mddata.open.vo.admin.AppVo;
 import top.mddata.open.manage.facade.AppFacade;
 
 import java.util.List;

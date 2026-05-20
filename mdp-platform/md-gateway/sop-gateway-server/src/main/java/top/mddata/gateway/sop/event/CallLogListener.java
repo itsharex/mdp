@@ -3,7 +3,7 @@ package top.mddata.gateway.sop.event;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-import top.mddata.open.admin.entity.ApiCallLog;
+import top.mddata.open.entity.admin.ApiCallLog;
 import top.mddata.open.admin.mapper.ApiCallLogMapper;
 
 /**

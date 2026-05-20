@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
-import top.mddata.open.admin.dto.EventTypeDto;
-import top.mddata.open.admin.entity.EventType;
+import top.mddata.open.dto.admin.EventTypeDto;
+import top.mddata.open.entity.admin.EventType;
 import top.mddata.open.admin.mapper.EventTypeMapper;
 import top.mddata.open.admin.service.EventTypeService;
 

@@ -5,8 +5,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import top.mddata.base.base.R;
 import top.mddata.common.constant.AppConstants;
-import top.mddata.open.admin.dto.EventTriggerDto;
-import top.mddata.open.admin.entity.EventTrigger;
+import top.mddata.open.dto.admin.EventTriggerDto;
+import top.mddata.open.entity.admin.EventTrigger;
 
 /**
  *

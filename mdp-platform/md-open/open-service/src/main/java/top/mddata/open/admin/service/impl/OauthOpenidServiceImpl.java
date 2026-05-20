@@ -8,12 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.open.admin.entity.OauthOpenid;
+import top.mddata.open.entity.admin.OauthOpenid;
 import top.mddata.open.admin.mapper.OauthOpenidMapper;
 import top.mddata.open.admin.service.AppService;
 import top.mddata.open.admin.service.OauthOpenidService;
-import top.mddata.open.admin.vo.AppVo;
-import top.mddata.open.admin.vo.OauthOpenidVo;
+import top.mddata.open.vo.admin.AppVo;
+import top.mddata.open.vo.admin.OauthOpenidVo;
 
 /**
  * openid 服务层实现。

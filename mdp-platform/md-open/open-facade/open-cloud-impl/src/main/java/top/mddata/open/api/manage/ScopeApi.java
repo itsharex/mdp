@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.mddata.base.base.R;
 import top.mddata.common.constant.AppConstants;
-import top.mddata.open.admin.vo.OauthScopeVo;
+import top.mddata.open.vo.admin.OauthScopeVo;
 
 import java.util.List;
 

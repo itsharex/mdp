@@ -1,8 +1,8 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.entity.OauthUnionid;
-import top.mddata.open.admin.vo.OauthUnionidVo;
+import top.mddata.open.entity.admin.OauthUnionid;
+import top.mddata.open.vo.admin.OauthUnionidVo;
 
 /**
  * unionid 服务层。

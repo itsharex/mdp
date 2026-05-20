@@ -18,10 +18,10 @@ import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.open.admin.entity.NotifyInfoLog;
-import top.mddata.open.admin.query.NotifyInfoLogQuery;
+import top.mddata.open.entity.admin.NotifyInfoLog;
+import top.mddata.open.query.admin.NotifyInfoLogQuery;
 import top.mddata.open.admin.service.NotifyInfoLogService;
-import top.mddata.open.admin.vo.NotifyInfoLogVo;
+import top.mddata.open.vo.admin.NotifyInfoLogVo;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.entity.EventSubscription;
+import top.mddata.open.entity.admin.EventSubscription;
 
 import java.util.List;
 

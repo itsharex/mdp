@@ -15,15 +15,15 @@ import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
 import top.mddata.base.utils.MyTreeUtil;
 import top.mddata.common.enumeration.BooleanEnum;
-import top.mddata.open.admin.entity.DocGroup;
-import top.mddata.open.admin.entity.HelpDoc;
+import top.mddata.open.entity.admin.DocGroup;
+import top.mddata.open.entity.admin.HelpDoc;
 import top.mddata.open.admin.service.DocGroupService;
 import top.mddata.open.admin.service.DocInfoService;
 import top.mddata.open.admin.service.HelpDocService;
-import top.mddata.open.admin.vo.DocGroupVo;
-import top.mddata.open.admin.vo.DocInfoViewVo;
-import top.mddata.open.admin.vo.DocInfoVo;
-import top.mddata.open.admin.vo.HelpDocVo;
+import top.mddata.open.vo.admin.DocGroupVo;
+import top.mddata.open.vo.admin.DocInfoViewVo;
+import top.mddata.open.vo.admin.DocInfoVo;
+import top.mddata.open.vo.admin.HelpDocVo;
 
 import java.util.List;
 

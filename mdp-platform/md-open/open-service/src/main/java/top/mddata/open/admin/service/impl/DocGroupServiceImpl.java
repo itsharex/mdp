@@ -7,14 +7,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.common.enumeration.BooleanEnum;
-import top.mddata.open.admin.entity.DocContent;
-import top.mddata.open.admin.entity.DocGroup;
-import top.mddata.open.admin.entity.DocInfo;
+import top.mddata.open.entity.admin.DocContent;
+import top.mddata.open.entity.admin.DocGroup;
+import top.mddata.open.entity.admin.DocInfo;
 import top.mddata.open.admin.mapper.DocGroupMapper;
 import top.mddata.open.admin.service.DocContentService;
 import top.mddata.open.admin.service.DocGroupService;
 import top.mddata.open.admin.service.DocInfoService;
-import top.mddata.open.admin.vo.TornaModuleVo;
+import top.mddata.open.vo.admin.TornaModuleVo;
 
 import java.io.Serializable;
 import java.util.Collection;

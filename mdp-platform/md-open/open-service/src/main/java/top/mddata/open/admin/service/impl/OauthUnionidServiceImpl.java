@@ -8,10 +8,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.open.admin.entity.OauthUnionid;
+import top.mddata.open.entity.admin.OauthUnionid;
 import top.mddata.open.admin.mapper.OauthUnionidMapper;
 import top.mddata.open.admin.service.OauthUnionidService;
-import top.mddata.open.admin.vo.OauthUnionidVo;
+import top.mddata.open.vo.admin.OauthUnionidVo;
 
 /**
  * unionid 服务层实现。

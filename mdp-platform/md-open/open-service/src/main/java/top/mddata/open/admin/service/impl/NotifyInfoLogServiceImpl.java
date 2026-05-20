@@ -1,7 +1,7 @@
 package top.mddata.open.admin.service.impl;
 
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.open.admin.entity.NotifyInfoLog;
+import top.mddata.open.entity.admin.NotifyInfoLog;
 import top.mddata.open.admin.mapper.NotifyInfoLogMapper;
 import top.mddata.open.admin.service.NotifyInfoLogService;
 import org.springframework.stereotype.Service;

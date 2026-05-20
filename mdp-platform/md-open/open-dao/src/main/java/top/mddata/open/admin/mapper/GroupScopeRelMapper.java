@@ -2,7 +2,7 @@ package top.mddata.open.admin.mapper;
 
 import org.springframework.stereotype.Repository;
 import top.mddata.base.mvcflex.mapper.SuperMapper;
-import top.mddata.open.admin.entity.GroupScopeRel;
+import top.mddata.open.entity.admin.GroupScopeRel;
 
 /**
  * 分组拥有的oauth2权限 映射层。

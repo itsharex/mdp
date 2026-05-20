@@ -28,7 +28,7 @@ import top.mddata.common.enumeration.organization.OrgNatureEnum;
 import top.mddata.common.enumeration.organization.OrgTypeEnum;
 import top.mddata.common.mapper.OrgMapper;
 import top.mddata.common.mapper.OrgNatureMapper;
-import top.mddata.open.admin.dto.NotifyInfoDto;
+import top.mddata.open.dto.admin.NotifyInfoDto;
 import top.mddata.open.manage.facade.NotifyAndEventPushFacade;
 
 import java.util.HashMap;

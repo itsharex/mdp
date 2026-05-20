@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import top.mddata.gateway.sop.request.ApiRequestContext;
-import top.mddata.open.admin.entity.ApiCallLog;
+import top.mddata.open.entity.admin.ApiCallLog;
 
 /**
  * @author 六如

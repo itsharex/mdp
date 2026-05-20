@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.open.admin.entity.DocContent;
+import top.mddata.open.entity.admin.DocContent;
 import top.mddata.open.admin.mapper.DocContentMapper;
 import top.mddata.open.admin.service.DocContentService;
 

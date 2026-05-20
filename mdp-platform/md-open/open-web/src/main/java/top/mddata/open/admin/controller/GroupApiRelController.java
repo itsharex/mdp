@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
-import top.mddata.open.admin.dto.GroupApiRelDto;
-import top.mddata.open.admin.entity.GroupApiRel;
+import top.mddata.open.dto.admin.GroupApiRelDto;
+import top.mddata.open.entity.admin.GroupApiRel;
 import top.mddata.open.admin.service.GroupApiRelService;
 
 /**

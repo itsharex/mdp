@@ -1,8 +1,8 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.entity.OauthOpenid;
-import top.mddata.open.admin.vo.OauthOpenidVo;
+import top.mddata.open.entity.admin.OauthOpenid;
+import top.mddata.open.vo.admin.OauthOpenidVo;
 
 /**
  * openid 服务层。

@@ -8,8 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
-import top.mddata.open.admin.dto.GroupScopeRelDto;
-import top.mddata.open.admin.entity.GroupScopeRel;
+import top.mddata.open.dto.admin.GroupScopeRelDto;
+import top.mddata.open.entity.admin.GroupScopeRel;
 import top.mddata.open.admin.mapper.GroupScopeRelMapper;
 import top.mddata.open.admin.service.GroupScopeRelService;
 

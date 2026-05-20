@@ -108,7 +108,7 @@
             <include refid="pageByRoleIdWhere"/>
         </where>
     </select>
-    <select id="pageByRoleId" resultType="top.mddata.open.admin.entity.App">
+    <select id="pageByRoleId" resultType="top.mddata.open.entity.admin.App">
         select
         <include refid="Base_Column_List"/>
         from mdo_app

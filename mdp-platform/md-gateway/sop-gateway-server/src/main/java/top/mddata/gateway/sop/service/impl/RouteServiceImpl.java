@@ -42,8 +42,8 @@ import top.mddata.gateway.sop.service.Serde;
 import top.mddata.gateway.sop.service.validate.SopValidator;
 import top.mddata.gateway.sop.service.validate.ValidateReturn;
 import top.mddata.gateway.sop.util.ClassUtil;
-import top.mddata.open.admin.entity.ApiCallLog;
-import top.mddata.open.admin.enumeration.ExecStatusEnum;
+import top.mddata.open.entity.admin.ApiCallLog;
+import top.mddata.open.enumeration.admin.ExecStatusEnum;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

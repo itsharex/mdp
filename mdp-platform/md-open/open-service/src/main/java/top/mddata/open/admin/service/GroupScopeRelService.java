@@ -1,7 +1,7 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.entity.GroupScopeRel;
+import top.mddata.open.entity.admin.GroupScopeRel;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package top.mddata.gateway.sop.event;
 
 import org.springframework.context.ApplicationEvent;
-import top.mddata.open.admin.entity.ApiCallLog;
+import top.mddata.open.entity.admin.ApiCallLog;
 
 /**
  * 调用日志

@@ -19,12 +19,12 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.open.admin.dto.OauthScopeDto;
-import top.mddata.open.admin.entity.GroupScopeRel;
-import top.mddata.open.admin.entity.OauthScope;
-import top.mddata.open.admin.query.OauthScopeQuery;
+import top.mddata.open.dto.admin.OauthScopeDto;
+import top.mddata.open.entity.admin.GroupScopeRel;
+import top.mddata.open.entity.admin.OauthScope;
+import top.mddata.open.query.admin.OauthScopeQuery;
 import top.mddata.open.admin.service.OauthScopeService;
-import top.mddata.open.admin.vo.OauthScopeVo;
+import top.mddata.open.vo.admin.OauthScopeVo;
 
 import java.util.List;
 

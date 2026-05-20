@@ -15,19 +15,19 @@ import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.util.StrPool;
 import top.mddata.common.cache.open.AppKeysCkBuilder;
-import top.mddata.open.admin.dto.AppKeysDto;
-import top.mddata.open.admin.entity.App;
-import top.mddata.open.admin.entity.AppKeys;
-import top.mddata.open.admin.entity.EventSubscription;
-import top.mddata.open.admin.entity.EventType;
+import top.mddata.open.dto.admin.AppKeysDto;
+import top.mddata.open.entity.admin.App;
+import top.mddata.open.entity.admin.AppKeys;
+import top.mddata.open.entity.admin.EventSubscription;
+import top.mddata.open.entity.admin.EventType;
 import top.mddata.open.admin.mapper.AppKeysMapper;
 import top.mddata.open.admin.service.AppKeysService;
 import top.mddata.open.admin.service.AppService;
 import top.mddata.open.admin.service.EventSubscriptionService;
 import top.mddata.open.admin.utils.RsaTool;
-import top.mddata.open.admin.vo.AppKeysVo;
-import top.mddata.open.client.dto.AppEventSubscriptionDto;
-import top.mddata.open.client.dto.AppKeysUpdateDto;
+import top.mddata.open.vo.admin.AppKeysVo;
+import top.mddata.open.dto.client.AppEventSubscriptionDto;
+import top.mddata.open.dto.client.AppKeysUpdateDto;
 
 import java.util.List;
 

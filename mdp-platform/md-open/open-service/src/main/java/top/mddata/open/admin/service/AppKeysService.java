@@ -1,12 +1,12 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.dto.AppKeysDto;
-import top.mddata.open.admin.entity.AppKeys;
+import top.mddata.open.dto.admin.AppKeysDto;
+import top.mddata.open.entity.admin.AppKeys;
 import top.mddata.open.admin.utils.RsaTool;
-import top.mddata.open.admin.vo.AppKeysVo;
-import top.mddata.open.client.dto.AppEventSubscriptionDto;
-import top.mddata.open.client.dto.AppKeysUpdateDto;
+import top.mddata.open.vo.admin.AppKeysVo;
+import top.mddata.open.dto.client.AppEventSubscriptionDto;
+import top.mddata.open.dto.client.AppKeysUpdateDto;
 
 import java.util.List;
 

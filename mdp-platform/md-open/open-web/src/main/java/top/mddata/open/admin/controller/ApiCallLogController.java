@@ -18,10 +18,10 @@ import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.open.admin.entity.ApiCallLog;
-import top.mddata.open.admin.query.ApiCallLogQuery;
+import top.mddata.open.entity.admin.ApiCallLog;
+import top.mddata.open.query.admin.ApiCallLogQuery;
 import top.mddata.open.admin.service.ApiCallLogService;
-import top.mddata.open.admin.vo.ApiCallLogVo;
+import top.mddata.open.vo.admin.ApiCallLogVo;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package top.mddata.open.facade.impl.manage;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import top.mddata.open.admin.dto.OauthLogDto;
+import top.mddata.open.dto.admin.OauthLogDto;
 import top.mddata.open.api.manage.OauthLogApi;
 import top.mddata.open.manage.facade.OauthLogFacade;
 

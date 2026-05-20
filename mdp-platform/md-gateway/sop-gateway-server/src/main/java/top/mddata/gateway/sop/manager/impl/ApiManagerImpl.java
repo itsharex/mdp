@@ -12,7 +12,7 @@ import top.mddata.common.cache.open.ApiByMethodVersionCkBuilder;
 import top.mddata.common.cache.open.ApiCkBuilder;
 import top.mddata.gateway.sop.common.ApiDto;
 import top.mddata.gateway.sop.manager.ApiManager;
-import top.mddata.open.admin.entity.Api;
+import top.mddata.open.entity.admin.Api;
 import top.mddata.open.admin.mapper.ApiMapper;
 
 /**

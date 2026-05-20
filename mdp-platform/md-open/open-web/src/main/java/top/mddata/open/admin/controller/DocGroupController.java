@@ -14,11 +14,11 @@ import top.mddata.base.annotation.log.RequestLog;
 import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.open.admin.dto.DocGroupDto;
-import top.mddata.open.admin.entity.DocGroup;
-import top.mddata.open.admin.query.DocGroupQuery;
+import top.mddata.open.dto.admin.DocGroupDto;
+import top.mddata.open.entity.admin.DocGroup;
+import top.mddata.open.query.admin.DocGroupQuery;
 import top.mddata.open.admin.service.DocGroupService;
-import top.mddata.open.admin.vo.DocGroupVo;
+import top.mddata.open.vo.admin.DocGroupVo;
 
 import java.util.List;
 

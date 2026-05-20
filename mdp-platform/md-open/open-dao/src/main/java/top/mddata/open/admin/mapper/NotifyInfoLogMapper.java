@@ -2,7 +2,7 @@ package top.mddata.open.admin.mapper;
 
 import org.springframework.stereotype.Repository;
 import top.mddata.base.mvcflex.mapper.SuperMapper;
-import top.mddata.open.admin.entity.NotifyInfoLog;
+import top.mddata.open.entity.admin.NotifyInfoLog;
 
 /**
  * 回调任务日志 映射层。

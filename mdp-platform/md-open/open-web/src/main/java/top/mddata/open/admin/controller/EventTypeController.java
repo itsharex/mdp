@@ -19,11 +19,11 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.open.admin.dto.EventTypeDto;
-import top.mddata.open.admin.entity.EventType;
-import top.mddata.open.admin.query.EventTypeQuery;
+import top.mddata.open.dto.admin.EventTypeDto;
+import top.mddata.open.entity.admin.EventType;
+import top.mddata.open.query.admin.EventTypeQuery;
 import top.mddata.open.admin.service.EventTypeService;
-import top.mddata.open.admin.vo.EventTypeVo;
+import top.mddata.open.vo.admin.EventTypeVo;
 
 import java.util.List;
 

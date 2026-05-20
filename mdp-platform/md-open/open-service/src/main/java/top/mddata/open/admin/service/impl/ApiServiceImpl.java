@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import top.mddata.base.model.cache.CacheKeyBuilder;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.common.cache.open.ApiCkBuilder;
-import top.mddata.open.admin.entity.Api;
+import top.mddata.open.entity.admin.Api;
 import top.mddata.open.admin.mapper.ApiMapper;
 import top.mddata.open.admin.service.ApiService;
 

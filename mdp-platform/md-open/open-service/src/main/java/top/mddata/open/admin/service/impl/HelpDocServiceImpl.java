@@ -12,8 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.MyTreeUtil;
-import top.mddata.open.admin.dto.HelpDocDto;
-import top.mddata.open.admin.entity.HelpDoc;
+import top.mddata.open.dto.admin.HelpDocDto;
+import top.mddata.open.entity.admin.HelpDoc;
 import top.mddata.open.admin.mapper.HelpDocMapper;
 import top.mddata.open.admin.service.HelpDocService;
 

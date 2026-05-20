@@ -2,8 +2,8 @@ package top.mddata.open.admin.service;
 
 import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.dto.NotifyInfoDto;
-import top.mddata.open.admin.entity.NotifyInfo;
+import top.mddata.open.dto.admin.NotifyInfoDto;
+import top.mddata.open.entity.admin.NotifyInfo;
 
 import java.time.LocalDateTime;
 

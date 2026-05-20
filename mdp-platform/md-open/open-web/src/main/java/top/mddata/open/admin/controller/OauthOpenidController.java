@@ -19,11 +19,11 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.open.admin.dto.OauthOpenidDto;
-import top.mddata.open.admin.entity.OauthOpenid;
-import top.mddata.open.admin.query.OauthOpenidQuery;
+import top.mddata.open.dto.admin.OauthOpenidDto;
+import top.mddata.open.entity.admin.OauthOpenid;
+import top.mddata.open.query.admin.OauthOpenidQuery;
 import top.mddata.open.admin.service.OauthOpenidService;
-import top.mddata.open.admin.vo.OauthOpenidVo;
+import top.mddata.open.vo.admin.OauthOpenidVo;
 
 import java.util.List;
 

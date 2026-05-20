@@ -2,7 +2,7 @@ package top.mddata.open.admin.mapper;
 
 import org.springframework.stereotype.Repository;
 import top.mddata.base.mvcflex.mapper.SuperMapper;
-import top.mddata.open.admin.entity.AppApply;
+import top.mddata.open.entity.admin.AppApply;
 
 /**
  * 应用申请 映射层。

@@ -2,11 +2,11 @@ package top.mddata.open.admin.service;
 
 import com.mybatisflex.core.paginate.Page;
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.entity.App;
-import top.mddata.open.admin.query.AppQuery;
-import top.mddata.open.admin.vo.AppVo;
-import top.mddata.open.client.dto.AppDevInfoDto;
-import top.mddata.open.client.dto.AppInfoUpdateDto;
+import top.mddata.open.entity.admin.App;
+import top.mddata.open.query.admin.AppQuery;
+import top.mddata.open.vo.admin.AppVo;
+import top.mddata.open.dto.client.AppDevInfoDto;
+import top.mddata.open.dto.client.AppInfoUpdateDto;
 
 import java.util.List;
 

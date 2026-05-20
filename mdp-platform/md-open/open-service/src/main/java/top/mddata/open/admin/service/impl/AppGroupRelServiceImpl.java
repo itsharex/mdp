@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.common.cache.open.AppApiCkBuilder;
-import top.mddata.open.admin.dto.AppGroupRelDto;
-import top.mddata.open.admin.entity.AppGroupRel;
+import top.mddata.open.dto.admin.AppGroupRelDto;
+import top.mddata.open.entity.admin.AppGroupRel;
 import top.mddata.open.admin.mapper.AppGroupRelMapper;
 import top.mddata.open.admin.service.AppGroupRelService;
 

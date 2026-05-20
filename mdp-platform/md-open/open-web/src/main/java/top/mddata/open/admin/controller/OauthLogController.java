@@ -18,11 +18,11 @@ import top.mddata.base.base.R;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
-import top.mddata.open.admin.dto.OauthLogDto;
-import top.mddata.open.admin.entity.OauthLog;
-import top.mddata.open.admin.query.OauthLogQuery;
+import top.mddata.open.dto.admin.OauthLogDto;
+import top.mddata.open.entity.admin.OauthLog;
+import top.mddata.open.query.admin.OauthLogQuery;
 import top.mddata.open.admin.service.OauthLogService;
-import top.mddata.open.admin.vo.OauthLogVo;
+import top.mddata.open.vo.admin.OauthLogVo;
 
 import java.util.List;
 

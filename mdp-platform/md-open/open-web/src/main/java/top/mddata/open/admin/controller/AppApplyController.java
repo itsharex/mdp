@@ -19,11 +19,11 @@ import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.common.enumeration.AuditStatusEnum;
-import top.mddata.open.admin.dto.AppApplyReviewDto;
-import top.mddata.open.admin.entity.AppApply;
-import top.mddata.open.admin.query.AppApplyQuery;
+import top.mddata.open.dto.admin.AppApplyReviewDto;
+import top.mddata.open.entity.admin.AppApply;
+import top.mddata.open.query.admin.AppApplyQuery;
 import top.mddata.open.admin.service.AppApplyService;
-import top.mddata.open.admin.vo.AppApplyVo;
+import top.mddata.open.vo.admin.AppApplyVo;
 
 import java.util.Arrays;
 import java.util.List;

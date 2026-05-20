@@ -1,9 +1,9 @@
 package top.mddata.open.manage.facade;
 
 import top.mddata.base.base.R;
-import top.mddata.open.admin.dto.EventTriggerDto;
-import top.mddata.open.admin.dto.NotifyInfoDto;
-import top.mddata.open.admin.entity.EventTrigger;
+import top.mddata.open.dto.admin.EventTriggerDto;
+import top.mddata.open.dto.admin.NotifyInfoDto;
+import top.mddata.open.entity.admin.EventTrigger;
 
 /**
  * 回调任务 接口

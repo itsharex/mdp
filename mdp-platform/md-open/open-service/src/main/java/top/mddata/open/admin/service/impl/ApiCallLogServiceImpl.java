@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.open.admin.entity.ApiCallLog;
+import top.mddata.open.entity.admin.ApiCallLog;
 import top.mddata.open.admin.mapper.ApiCallLogMapper;
 import top.mddata.open.admin.service.ApiCallLogService;
 

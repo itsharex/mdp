@@ -2,7 +2,7 @@ package top.mddata.open.admin.mapper;
 
 import org.springframework.stereotype.Repository;
 import top.mddata.base.mvcflex.mapper.SuperMapper;
-import top.mddata.open.admin.entity.EventType;
+import top.mddata.open.entity.admin.EventType;
 
 /**
  * 事件类型 映射层。

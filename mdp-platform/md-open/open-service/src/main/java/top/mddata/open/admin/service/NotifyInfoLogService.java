@@ -1,7 +1,7 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.entity.NotifyInfoLog;
+import top.mddata.open.entity.admin.NotifyInfoLog;
 
 /**
  * 回调任务日志 服务层。

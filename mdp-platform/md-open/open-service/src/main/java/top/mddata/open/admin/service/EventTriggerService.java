@@ -1,8 +1,8 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.dto.EventTriggerDto;
-import top.mddata.open.admin.entity.EventTrigger;
+import top.mddata.open.dto.admin.EventTriggerDto;
+import top.mddata.open.entity.admin.EventTrigger;
 
 /**
  * 事件触发 服务层。

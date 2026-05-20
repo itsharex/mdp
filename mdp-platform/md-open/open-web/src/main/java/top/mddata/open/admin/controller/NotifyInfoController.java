@@ -19,11 +19,11 @@ import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.common.dto.IdDto;
-import top.mddata.open.admin.dto.NotifyInfoDto;
-import top.mddata.open.admin.entity.NotifyInfo;
-import top.mddata.open.admin.query.NotifyInfoQuery;
+import top.mddata.open.dto.admin.NotifyInfoDto;
+import top.mddata.open.entity.admin.NotifyInfo;
+import top.mddata.open.query.admin.NotifyInfoQuery;
 import top.mddata.open.admin.service.NotifyInfoService;
-import top.mddata.open.admin.vo.NotifyInfoVo;
+import top.mddata.open.vo.admin.NotifyInfoVo;
 
 import java.util.List;
 

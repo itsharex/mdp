@@ -2,7 +2,7 @@ package top.mddata.open.admin.mapper;
 
 import org.springframework.stereotype.Repository;
 import top.mddata.base.mvcflex.mapper.SuperMapper;
-import top.mddata.open.admin.entity.OauthLog;
+import top.mddata.open.entity.admin.OauthLog;
 
 /**
  * 授权记录 映射层。

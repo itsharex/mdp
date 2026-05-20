@@ -18,11 +18,11 @@ import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.base.utils.MyTreeUtil;
-import top.mddata.open.admin.dto.HelpDocDto;
-import top.mddata.open.admin.entity.HelpDoc;
-import top.mddata.open.admin.query.HelpDocQuery;
+import top.mddata.open.dto.admin.HelpDocDto;
+import top.mddata.open.entity.admin.HelpDoc;
+import top.mddata.open.query.admin.HelpDocQuery;
 import top.mddata.open.admin.service.HelpDocService;
-import top.mddata.open.admin.vo.HelpDocVo;
+import top.mddata.open.vo.admin.HelpDocVo;
 
 import java.util.List;
 

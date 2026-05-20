@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.mddata.base.base.R;
 import top.mddata.common.constant.AppConstants;
-import top.mddata.open.admin.vo.OauthOpenidVo;
+import top.mddata.open.vo.admin.OauthOpenidVo;
 
 /**
  *

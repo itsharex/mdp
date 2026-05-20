@@ -1,7 +1,7 @@
 package top.mddata.open.admin.service;
 
 import top.mddata.base.mvcflex.service.SuperService;
-import top.mddata.open.admin.entity.Api;
+import top.mddata.open.entity.admin.Api;
 
 /**
  * 开放接口 服务层。

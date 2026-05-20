@@ -56,7 +56,7 @@ import top.mddata.console.entity.system.DictItem;
 import top.mddata.console.service.system.ConfigService;
 import top.mddata.console.service.system.DictItemService;
 import top.mddata.console.service.system.FileService;
-import top.mddata.open.admin.dto.EventTriggerDto;
+import top.mddata.open.dto.admin.EventTriggerDto;
 import top.mddata.open.manage.facade.NotifyAndEventPushFacade;
 
 import java.io.Serializable;

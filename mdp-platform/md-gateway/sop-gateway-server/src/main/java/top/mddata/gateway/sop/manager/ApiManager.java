@@ -1,7 +1,7 @@
 package top.mddata.gateway.sop.manager;
 
 import top.mddata.gateway.sop.common.ApiDto;
-import top.mddata.open.admin.entity.Api;
+import top.mddata.open.entity.admin.Api;
 
 /**
  *

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.open.admin.entity.OauthLog;
+import top.mddata.open.entity.admin.OauthLog;
 import top.mddata.open.admin.mapper.OauthLogMapper;
 import top.mddata.open.admin.service.OauthLogService;
 
