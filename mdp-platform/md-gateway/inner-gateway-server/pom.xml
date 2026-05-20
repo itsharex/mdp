@@ -16,10 +16,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>top.mddata.base</groupId>
-            <artifactId>md-log-starter</artifactId>
-        </dependency>
-        <dependency>
             <groupId>top.mddata.common</groupId>
             <artifactId>md-cache-key</artifactId>
             <version>${revision}</version>
@@ -53,12 +49,6 @@
                     <groupId>com.zaxxer</groupId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>top.mddata.common</groupId>
-            <artifactId>md-common-pojo</artifactId>
-            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>top.mddata.base</groupId>
