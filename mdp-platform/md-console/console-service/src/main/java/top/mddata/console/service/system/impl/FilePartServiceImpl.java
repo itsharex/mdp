@@ -1,12 +1,12 @@
 package top.mddata.console.service.system.impl;
 
+import com.alibaba.fastjson2.JSON;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.x.file.storage.core.upload.FilePartInfo;
 import org.springframework.stereotype.Service;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
-import top.mddata.base.utils.JsonUtil;
 import top.mddata.console.entity.system.FilePart;
 import top.mddata.console.mapper.system.FilePartMapper;
 import top.mddata.console.service.system.FilePartService;
@@ -47,7 +47,7 @@ public class FilePartServiceImpl extends SuperServiceImpl<FilePartMapper, FilePa
         detail.setETag(info.getETag());
         detail.setPartNumber(info.getPartNumber());
         detail.setPartSize(info.getPartSize());
-        detail.setHashInfo(JsonUtil.toJson(info.getHashInfo()));
+        detail.setHashInfo(JSON.toJSONString(info.getHashInfo()));
         return detail;
     }
 }

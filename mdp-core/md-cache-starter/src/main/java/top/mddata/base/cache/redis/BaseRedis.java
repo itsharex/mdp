@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson2.JSON;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -24,10 +25,9 @@ import org.springframework.lang.Nullable;
 import top.mddata.base.exception.BizException;
 import top.mddata.base.model.cache.CacheHashKey;
 import top.mddata.base.model.cache.CacheKey;
+import top.mddata.base.util.StrPool;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.CollHelper;
-import top.mddata.base.utils.JsonUtil;
-import top.mddata.base.util.StrPool;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -157,7 +157,7 @@ public abstract class BaseRedis {
         for (List<String> list : partitionKeys) {
             Long delete = redisTemplate.delete(list);
             count += delete != null ? delete : 0L;
-            log.info("已淘汰缓存: {}", JsonUtil.toJson(list));
+            log.info("已淘汰缓存: {}", JSON.toJSONString(list));
         }
         return count;
     }

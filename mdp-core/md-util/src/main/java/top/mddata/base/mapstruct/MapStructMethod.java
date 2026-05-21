@@ -1,10 +1,10 @@
 package top.mddata.base.mapstruct;
 
 import cn.hutool.core.util.StrUtil;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.TypeReference;
 import org.mapstruct.Qualifier;
 import top.mddata.base.utils.ClassUtils;
-import top.mddata.base.utils.JsonUtil;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -43,7 +43,7 @@ public interface MapStructMethod {
         if (StrUtil.isBlank(str)) {
             return null;
         }
-        return JsonUtil.parse(str, clazz);
+        return JSON.parseObject(str, clazz);
     }
 
     /**
@@ -54,7 +54,7 @@ public interface MapStructMethod {
      */
     @ToJson
     default String toJsonString(Object obj) {
-        return JsonUtil.toJson(obj);
+        return JSON.toJSONString(obj);
     }
 
     /**
@@ -65,7 +65,7 @@ public interface MapStructMethod {
      */
     @ParseMap
     default Map<String, String> parseMap(String str) {
-        return JsonUtil.parse(str, new TypeReference<>() {
+        return JSON.parseObject(str, new TypeReference<>() {
         });
     }
 

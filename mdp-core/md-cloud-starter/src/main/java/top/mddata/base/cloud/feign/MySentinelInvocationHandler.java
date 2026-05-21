@@ -7,6 +7,7 @@ import com.alibaba.csp.sentinel.SphU;
 import com.alibaba.csp.sentinel.Tracer;
 import com.alibaba.csp.sentinel.context.ContextUtil;
 import com.alibaba.csp.sentinel.slots.block.BlockException;
+import com.alibaba.fastjson2.JSON;
 import feign.Feign;
 import feign.FeignException;
 import feign.InvocationHandlerFactory;
@@ -15,7 +16,6 @@ import feign.Target;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.openfeign.FallbackFactory;
 import top.mddata.base.base.R;
-import top.mddata.base.utils.JsonUtil;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
@@ -124,7 +124,7 @@ public class MySentinelInvocationHandler implements InvocationHandler {
                                 log.error("feign 内部服务调用异常", ex);
                                 if (ex instanceof FeignException fex) {
                                     String responseBody = fex.contentUTF8();
-                                    return JsonUtil.parse(responseBody, R.class);
+                                    return JSON.parseObject(responseBody, R.class);
                                 }
                                 return R.fail(ex.getLocalizedMessage());
                             } else {

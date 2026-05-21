@@ -5,6 +5,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.io.file.FileNameUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
+import com.alibaba.fastjson2.JSON;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,16 +21,15 @@ import top.mddata.base.exception.BizException;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.CollHelper;
-import top.mddata.base.utils.JsonUtil;
-import top.mddata.console.service.system.convert.FileConvert;
 import top.mddata.console.dto.system.CopyFilesDto;
 import top.mddata.console.dto.system.FileUploadDto;
 import top.mddata.console.dto.system.RelateFilesToBizDto;
 import top.mddata.console.entity.system.File;
 import top.mddata.console.enumeration.system.FileTypeEnum;
 import top.mddata.console.mapper.system.FileMapper;
-import top.mddata.console.service.system.properties.FileProperties;
 import top.mddata.console.service.system.FileService;
+import top.mddata.console.service.system.convert.FileConvert;
+import top.mddata.console.service.system.properties.FileProperties;
 import top.mddata.console.vo.system.FileVo;
 
 import java.time.LocalDate;
@@ -125,14 +125,14 @@ public class FileServiceImpl extends SuperServiceImpl<FileMapper, File> implemen
         detail.setFileType(FileTypeEnum.getByExtension(info.getExt()).getCode());
         detail.setFileSize(info.getSize());
         // 这里手动获 元数据 并转成 json 字符串，方便存储在数据库中
-        detail.setMetadata(JsonUtil.toJson(info.getMetadata()));
-        detail.setUserMetadata(JsonUtil.toJson(info.getUserMetadata()));
-        detail.setThMetadata(JsonUtil.toJson(info.getThMetadata()));
-        detail.setThUserMetadata(JsonUtil.toJson(info.getThUserMetadata()));
+        detail.setMetadata(JSON.toJSONString(info.getMetadata()));
+        detail.setUserMetadata(JSON.toJSONString(info.getUserMetadata()));
+        detail.setThMetadata(JSON.toJSONString(info.getThMetadata()));
+        detail.setThUserMetadata(JSON.toJSONString(info.getThUserMetadata()));
         // 这里手动获 取附加属性字典 并转成 json 字符串，方便存储在数据库中
-        detail.setAttr(JsonUtil.toJson(info.getAttr()));
+        detail.setAttr(JSON.toJSONString(info.getAttr()));
         // 这里手动获 哈希信息 并转成 json 字符串，方便存储在数据库中
-        detail.setHashInfo(JsonUtil.toJson(info.getHashInfo()));
+        detail.setHashInfo(JSON.toJSONString(info.getHashInfo()));
         return detail;
     }
 
