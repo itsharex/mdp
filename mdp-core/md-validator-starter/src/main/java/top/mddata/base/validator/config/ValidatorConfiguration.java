@@ -26,12 +26,13 @@ public class ValidatorConfiguration {
 
     @Bean
     public Validator getValidator() {
-        ValidatorFactory validatorFactory = ValidatorUtils.warp(Validation.byProvider(HibernateValidator.class)
+        try (ValidatorFactory validatorFactory = ValidatorUtils.warp(Validation.byProvider(HibernateValidator.class)
                         .configure()
                         //快速失败返回模式
                         .addProperty(BaseHibernateValidatorConfiguration.FAIL_FAST, Boolean.TRUE.toString()))
-                .buildValidatorFactory();
-        return validatorFactory.getValidator();
+                .buildValidatorFactory()) {
+            return validatorFactory.getValidator();
+        }
     }
 
     /**
