@@ -1,12 +1,12 @@
 package top.mddata.base.cache.utils;
 
+import cn.hutool.extra.spring.SpringUtil;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
-import top.mddata.base.utils.JsonUtil;
 
 /**
  * 此时定义的序列化操作表示可以序列化所有类的对象，当然，这个对象所在的类一定要实现序列化接口
@@ -20,7 +20,10 @@ public class RedisObjectSerializer extends Jackson2JsonRedisSerializer<Object> {
     }
 
     private static ObjectMapper buildObjectMapper() {
-        ObjectMapper objectMapper = JsonUtil.newInstance();
+        // 获取全局 ObjectMapper 并创建副本，避免修改全局配置
+        ObjectMapper globalMapper = SpringUtil.getBean(ObjectMapper.class);
+        ObjectMapper objectMapper = globalMapper.copy();
+
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         objectMapper.activateDefaultTyping(LaissezFaireSubTypeValidator.instance,
                 ObjectMapper.DefaultTyping.NON_FINAL,

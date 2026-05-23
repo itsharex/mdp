@@ -25,6 +25,10 @@
         </dependency>
         <dependency>
             <groupId>top.mddata.base</groupId>
+            <artifactId>md-json-starter</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>top.mddata.base</groupId>
             <artifactId>md-util</artifactId>
         </dependency>
         <dependency>

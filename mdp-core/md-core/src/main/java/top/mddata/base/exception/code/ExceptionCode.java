@@ -66,7 +66,6 @@ public enum ExceptionCode implements BaseExceptionCode {
      * 非法参数异常
      */
     ILLEGAL_ARGUMENT_EX(-6, "无效参数异常"),
-    
     /**
      * 媒体类型异常
      */

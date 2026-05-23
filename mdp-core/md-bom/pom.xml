@@ -60,6 +60,11 @@
             </dependency>
             <dependency>
                 <groupId>top.mddata.base</groupId>
+                <artifactId>md-json-starter</artifactId>
+                <version>${revision}</version>
+            </dependency>
+            <dependency>
+                <groupId>top.mddata.base</groupId>
                 <artifactId>md-db</artifactId>
                 <version>${revision}</version>
             </dependency>

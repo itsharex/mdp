@@ -25,6 +25,7 @@
         <module>md-annotation</module>
         <module>md-codegen</module>
         <module>md-core</module>
+        <module>md-json-starter</module>
         <module>md-boot</module>
         <module>md-cloud-starter</module>
         <module>md-util</module>

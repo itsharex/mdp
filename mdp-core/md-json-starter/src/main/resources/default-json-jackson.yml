@@ -1,0 +1,36 @@
+--- ### Spring 配置
+spring:
+  jackson:
+    bigNumberSerializeMode: TO_STRING
+    # 地区
+    locale: zh_CN
+    # 时区（使用系统默认时区）
+    time-zone: GMT+8
+    # 全局日期时间格式
+    date-format: yyyy-MM-dd HH:mm:ss
+    # 序列化配置
+    serialization:
+      # 关闭日期转时间戳
+      write-dates-as-timestamps: false
+      # 关闭空bean失败
+      fail-on-empty-beans: false
+    # 反序列化配置
+    deserialization:
+      # 忽略未知属性
+      fail-on-unknown-properties: false
+    # 解析器特性
+    parser:
+      # 允许单引号
+      allow-single-quotes: true
+      # 允许反斜杠转义任意字符
+      allow-backslash-escaping-any-character: true
+  # Spring Boot 3 原生支持 Java8 时间格式化（替代你的自定义模块）
+  web:
+    locale: zh_CN
+  mvc:
+    format:
+      date: yyyy-MM-dd
+      time: HH:mm:ss
+      date-time: yyyy-MM-dd HH:mm:ss
+      time-zone: GMT+8
+
