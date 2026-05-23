@@ -3,6 +3,7 @@ package top.mddata.base.validator.config;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
+import org.hibernate.validator.BaseHibernateValidatorConfiguration;
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication;
 import org.springframework.context.annotation.Bean;
@@ -28,11 +29,10 @@ public class ValidatorConfiguration {
         ValidatorFactory validatorFactory = ValidatorUtils.warp(Validation.byProvider(HibernateValidator.class)
                         .configure()
                         //快速失败返回模式
-                        .addProperty("hibernate.validator.fail_fast", "true"))
+                        .addProperty(BaseHibernateValidatorConfiguration.FAIL_FAST, Boolean.TRUE.toString()))
                 .buildValidatorFactory();
         return validatorFactory.getValidator();
     }
-
 
     /**
      * Method:  开启快速返回
