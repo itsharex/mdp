@@ -37,3 +37,13 @@ third-party/nacos/data/
 third-party/nacos/work/
 
 .flattened-pom.xml
+
+### Claude code ###
+
+# Claude Code AI缓存文件
+.claude/sessions/
+.claude/cache/
+claude-logs/
+*.claude.tmp
+*.local.md
+*.local.json
