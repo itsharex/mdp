@@ -8,6 +8,7 @@ import com.mybatisflex.core.audit.ConsoleMessageCollector;
 import com.mybatisflex.core.audit.CountableMessageCollector;
 import com.mybatisflex.core.audit.ScheduledMessageCollector;
 import com.mybatisflex.core.dialect.DbType;
+import com.mybatisflex.core.dialect.DialectFactory;
 import com.mybatisflex.core.keygen.KeyGeneratorFactory;
 import com.mybatisflex.core.logicdelete.LogicDeleteManager;
 import com.mybatisflex.core.logicdelete.impl.BooleanLogicDeleteProcessor;
@@ -17,6 +18,8 @@ import com.mybatisflex.core.logicdelete.impl.PrimaryKeyLogicDeleteProcessor;
 import com.mybatisflex.core.logicdelete.impl.TimeStampLogicDeleteProcessor;
 import com.mybatisflex.spring.boot.MyBatisFlexCustomizer;
 import com.mybatisflex.spring.boot.MybatisFlexProperties;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.mapping.DatabaseIdProvider;
 import org.apache.ibatis.mapping.VendorDatabaseIdProvider;
@@ -24,6 +27,8 @@ import org.springframework.context.annotation.Bean;
 import top.mddata.base.base.entity.BaseEntity;
 import top.mddata.base.db.config.DbConfiguration;
 import top.mddata.base.db.properties.DatabaseProperties;
+import top.mddata.base.mybatisflex.datapermission.DataPermissionDialect;
+import top.mddata.base.mybatisflex.datapermission.DataPermissionFilter;
 import top.mddata.base.mybatisflex.keygen.UidKeyGenerator;
 import top.mddata.base.mybatisflex.listener.DefaultInsertListener;
 import top.mddata.base.mybatisflex.listener.DefaultUpdateListener;
@@ -89,6 +94,16 @@ public abstract class MyMybatisFlexConfiguration extends DbConfiguration impleme
 //        globalConfig.registerSetListener(new FieldPermissionsOnSetListener(), BaseEntity.class);
 //        DialectFactory.registerDialect(DbType.MYSQL, new AuthDialectImpl());
     }
+
+    @Resource
+    private DataPermissionFilter dataPermissionFilter;
+
+    @PostConstruct
+    public void postConstruct() {
+        log.debug("MyBatis Flex 自动配置初始化完成");
+        DialectFactory.registerDialect(DbType.MYSQL, new DataPermissionDialect(dataPermissionFilter));
+    }
+
 
     /** 逻辑删除处理器 */
     public void logicDelete() {

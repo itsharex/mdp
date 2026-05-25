@@ -21,6 +21,7 @@ import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.console.dto.system.ConfigDto;
 import top.mddata.console.entity.system.Config;
+import top.mddata.console.mapper.system.ConfigMapper;
 import top.mddata.console.query.system.ConfigQuery;
 import top.mddata.console.service.system.ConfigService;
 import top.mddata.console.vo.system.ConfigVo;
@@ -39,6 +40,16 @@ import java.util.List;
 @RequestMapping("/system/config")
 @RequiredArgsConstructor
 public class ConfigController extends SuperController<ConfigService, Config> {
+    private final ConfigService configService;
+
+    @GetMapping("/listtest")
+    public R<List<Config>> listtest(String name) {
+        QueryWrapper queryWrapper = QueryWrapper.create();
+        queryWrapper.like(Config::getName, name);
+        return R.success(configService.listWithPermission(queryWrapper));
+    }
+
+
     /**
      * 添加系统配置。
      *

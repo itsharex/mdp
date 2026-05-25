@@ -13,6 +13,7 @@ import top.mddata.base.cache.redis.CacheResult;
 import top.mddata.base.model.cache.CacheKey;
 import top.mddata.base.model.cache.CacheKeyBuilder;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
+import top.mddata.base.mybatisflex.datapermission.DataPermission;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.base.utils.CollHelper;
 import top.mddata.base.util.ContextUtil;
@@ -207,5 +208,27 @@ public class ConfigServiceImpl extends SuperServiceImpl<ConfigMapper, Config> im
         List<ConfigVo> sysParamVos = super.listAs(QueryWrapper.create().in(Config::getUniqKey, uniqKeys).isNull(Config::getOrgId).eq(Config::getState, true), ConfigVo.class);
 
         return CollHelper.buildMap(sysParamVos, ConfigVo::getUniqKey, item -> item);
+    }
+
+    /**
+     * 带数据权限的查询配置列表
+     * <p>
+     * 此方法标注了 @DataPermission 注解，Spring AOP 会自动拦截并应用数据权限过滤。
+     * 当调用此方法时，DataPermissionAspect 会在方法执行前将注解信息存入 ThreadLocal，
+     * 然后 MyBatis-Flex 的 DataPermissionDialect 在生成 SQL 时会从 ThreadLocal 获取注解，
+     * 并自动添加数据权限过滤条件。
+     * </p>
+     *
+     * @param queryWrapper 查询条件
+     * @return 配置列表（已根据当前用户的数据权限过滤）
+     */
+    @Override
+    @DataPermission  // Spring AOP 拦截点：在此处设置数据权限注解到 ThreadLocal
+    @Transactional(readOnly = true)
+    public List<Config> listWithPermission(QueryWrapper queryWrapper) {
+        // 调用 Mapper 的 selectListByQuery 方法
+        // 此时 ThreadLocal 中已有 @DataPermission 注解
+        // DataPermissionDialect.forSelectByQuery 会自动从 ThreadLocal 获取注解并修改 SQL
+        return getMapper().selectListByQuery(queryWrapper);
     }
 }

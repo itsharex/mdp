@@ -1,5 +1,6 @@
 package top.mddata.console.service.system;
 
+import com.mybatisflex.core.query.QueryWrapper;
 import top.mddata.base.mvcflex.service.SuperService;
 import top.mddata.console.entity.system.Config;
 import top.mddata.console.vo.system.ConfigVo;
@@ -83,4 +84,15 @@ public interface ConfigService extends SuperService<Config> {
      * @return 参数
      */
     Map<String, ConfigVo> findConfigByUniqKey(List<String> uniqKeys);
+
+    /**
+     * 带数据权限的查询配置列表
+     * <p>
+     * 此方法标注了 @DataPermission 注解，Spring AOP 会自动拦截并应用数据权限过滤
+     * </p>
+     *
+     * @param queryWrapper 查询条件
+     * @return 配置列表（已根据当前用户的数据权限过滤）
+     */
+    List<Config> listWithPermission(QueryWrapper queryWrapper);
 }
