@@ -28,7 +28,7 @@
         <!-- 核心工具类 -->
         <module>mdp-base</module>
         <!-- 后端业务代码 -->
-        <module>mdp-platform</module>
+        <module>mdp-apps</module>
         <!-- 提供给第三方的sdk -->
         <module>mdp-sdk</module>
     </modules>

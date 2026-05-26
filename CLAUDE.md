@@ -8,10 +8,10 @@ MDP (Master Data Platform) 是一个基于 Java 17、SpringBoot、Vue3 的中后
 - **开发者平台** (md-open): 第三方开发者接入中心
 - **接口服务** (md-api): 对外提供接口供第三方通过SDK调用
 
-MDP 是一个Monorepo项目，包含三个主要模块，分别位于mdp-base、mdp-platform、mdp-sdk目录下。
+MDP 是一个Monorepo项目，包含三个主要模块，分别位于mdp-base、mdp-apps、mdp-sdk目录下。
 - mdp-base: 核心工具库 和 starter，封装业务无关的功能或工具
-- mdp-platform: 业务模块
-- mdp-sdk: 提供给第三方的SDK，所有的接口均来自 @mdp-platform/md-api/api-service 模块
+- mdp-apps: 业务模块
+- mdp-sdk: 提供给第三方的SDK，所有的接口均来自 @mdp-apps/md-api/api-service 模块
 
 ## 核心架构
 
@@ -24,7 +24,7 @@ mdp/
 │   ├── md-db/        # 数据库相关
 │   ├── md-mvc-flex/  # MyBatis-Flex 整合
 │   └── ...           # 各种starter模块
-├── mdp-platform/     # 业务模块
+├── mdp-apps/     # 业务模块
 │   ├── md-server/    # 启动服务
 │   │   ├── boot-server/     # 单体启动类
 │   │   └── worker-server/   # 任务执行服务
@@ -73,7 +73,7 @@ mvn clean install
 
 #### 构建单个模块
 ```bash
-cd mdp-platform/md-workbench
+cd mdp-apps/md-workbench
 mvn clean install
 ```
 
@@ -90,7 +90,7 @@ mvn test
 ## 数据库配置
 
 ### 配置文件
-主配置文件位于 `mdp-platform/md-server/boot-server/src/main/resources/application.yml`
+主配置文件位于 `mdp-apps/md-server/boot-server/src/main/resources/application.yml`
 
 ### 数据库要求
 - MySQL 8.0+ 或 达梦数据库
