@@ -68,7 +68,7 @@ mvn test -Dtest=ClassName
 - `md-cache-starter`: 缓存管理starter
 
 ### Maven 构建配置
-- 使用 `md-parent` 作为父POM，统一管理版本
+- 使用 `mdp-parent` 作为父POM，统一管理版本
 - 支持多环境配置：dev、test、prod
 - 使用 checkstyle 进行代码规范检查
 - 自动生成源码包和Javadoc

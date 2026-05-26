@@ -8,7 +8,7 @@
         <relativePath/>
     </parent>
     <groupId>top.mddata.base</groupId>
-    <artifactId>md-parent</artifactId>
+    <artifactId>mdp-parent</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
 

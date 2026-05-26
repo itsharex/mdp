@@ -5,9 +5,9 @@
 
     <parent>
         <groupId>top.mddata.base</groupId>
-        <artifactId>md-parent</artifactId>
+        <artifactId>mdp-parent</artifactId>
         <version>${revision}</version>
-        <relativePath>md-parent/pom.xml</relativePath>
+        <relativePath>../mdp-parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>mdp-core</artifactId>
@@ -20,7 +20,6 @@
     <description>工具类</description>
 
     <modules>
-        <module>md-parent</module>
         <module>md-bom</module>
         <module>md-annotation</module>
         <module>md-codegen</module>

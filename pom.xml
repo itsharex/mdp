@@ -5,7 +5,7 @@
 
     <groupId>top.mddata.mdp</groupId>
     <artifactId>mdp</artifactId>
-    <version>1.2.0</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
 
@@ -13,8 +13,17 @@
     <description>主数据平台</description>
     <url>https://github.com/henhen6/mdp</url>
 
+    <properties>
+        <revision>1.2.0</revision>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    </properties>
+
     <!-- 以下每个模块都可以独立拆分成为一个独立项目 -->
     <modules>
+        <module>mdp-parent</module>
         <!-- 核心工具类 -->
         <module>mdp-core</module>
         <!-- 后端业务代码 -->
@@ -22,5 +31,36 @@
         <!-- 提供给第三方的sdk -->
         <module>mdp-sdk</module>
     </modules>
+
+    <build>
+        <plugins>
+            <!-- 支持 ${revision} 占位符 -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.2.7</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>
