@@ -3,7 +3,7 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <groupId>top.mddata.mdp</groupId>
+    <groupId>top.mddata</groupId>
     <artifactId>mdp</artifactId>
     <version>${revision}</version>
     <packaging>pom</packaging>
