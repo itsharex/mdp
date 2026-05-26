@@ -244,6 +244,10 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 你的启动类全类名 -->
+                    <mainClass>top.mddata.BootServerApplication</mainClass>
+                </configuration>
                 <executions>
                     <execution>
                         <goals>
