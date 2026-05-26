@@ -8,8 +8,8 @@ MDP (Master Data Platform) 是一个基于 Java 17、SpringBoot、Vue3 的中后
 - **开发者平台** (md-open): 第三方开发者接入中心
 - **接口服务** (md-api): 对外提供接口供第三方通过SDK调用
 
-MDP 是一个Monorepo项目，包含三个主要模块，分别位于mdp-core、mdp-platform、mdp-sdk目录下。
-- mdp-core: 核心工具库 和 starter，封装业务无关的功能或工具
+MDP 是一个Monorepo项目，包含三个主要模块，分别位于mdp-base、mdp-platform、mdp-sdk目录下。
+- mdp-base: 核心工具库 和 starter，封装业务无关的功能或工具
 - mdp-platform: 业务模块
 - mdp-sdk: 提供给第三方的SDK，所有的接口均来自 @mdp-platform/md-api/api-service 模块
 
@@ -18,7 +18,7 @@ MDP 是一个Monorepo项目，包含三个主要模块，分别位于mdp-core、
 ### 模块结构
 ```
 mdp/
-├── mdp-core/          # 核心工具库和 starter
+├── mdp-base/          # 核心工具库和 starter
 │   ├── md-core/      # 核心工具类
 │   ├── md-boot/      # Spring Boot 增强器
 │   ├── md-db/        # 数据库相关

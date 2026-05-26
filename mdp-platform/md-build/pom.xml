@@ -21,14 +21,14 @@
 
     <properties>
         <revision>1.2.0</revision>
-        <mdp-core.version>1.2.0-SNAPSHOT</mdp-core.version>
+        <mdp-base.version>1.2.0-SNAPSHOT</mdp-base.version>
     </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>top.mddata.base</groupId>
                 <artifactId>md-bom</artifactId>
-                <version>${mdp-core.version}</version>
+                <version>${mdp-base.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>

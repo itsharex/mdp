@@ -140,9 +140,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git@github.com:henhen6/mdp-core.git</connection>
-        <developerConnection>scm:git@github.com:henhen6/mdp-core.git</developerConnection>
-        <url>git@github.com:henhen6/mdp-core.git</url>
+        <connection>scm:git@github.com:henhen6/mdp-base.git</connection>
+        <developerConnection>scm:git@github.com:henhen6/mdp-base.git</developerConnection>
+        <url>git@github.com:henhen6/mdp-base.git</url>
     </scm>
 
     <distributionManagement>

@@ -41,7 +41,7 @@
                     <dependency>
                         <groupId>top.mddata.base</groupId>
                         <artifactId>sop-service-support</artifactId>
-                        <version>${mdp-core.version}</version>
+                        <version>${mdp-base.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
