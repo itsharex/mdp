@@ -9,7 +9,7 @@
         <relativePath>../../mdp-parent/pom.xml</relativePath>
     </parent>
 
-    <groupId>top.mddata.mdp</groupId>
+    <groupId>top.mddata.apps</groupId>
     <artifactId>md-build</artifactId>
     <version>${revision}</version>
 

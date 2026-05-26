@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>top.mddata.open</groupId>
+        <groupId>top.mddata.apps</groupId>
         <artifactId>md-open</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
@@ -15,7 +15,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>top.mddata.open</groupId>
+            <groupId>top.mddata.apps</groupId>
             <artifactId>open-dao</artifactId>
             <version>${revision}</version>
         </dependency>
@@ -25,7 +25,7 @@
         </dependency>
 
         <dependency>
-            <groupId>top.mddata.console</groupId>
+            <groupId>top.mddata.apps</groupId>
             <artifactId>console-api</artifactId>
             <version>${revision}</version>
         </dependency>
@@ -35,7 +35,7 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>top.mddata.common</groupId>
+            <groupId>top.mddata.apps</groupId>
             <artifactId>md-cache-key</artifactId>
             <version>${revision}</version>
         </dependency>

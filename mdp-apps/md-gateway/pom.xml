@@ -3,13 +3,12 @@
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <groupId>top.mddata.mdp</groupId>
+        <groupId>top.mddata.apps</groupId>
         <artifactId>md-build</artifactId>
         <version>${revision}</version>
         <relativePath>../md-build/pom.xml</relativePath>
     </parent>
 
-    <groupId>top.mddata.gateway</groupId>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>md-gateway</artifactId>
     <packaging>pom</packaging>

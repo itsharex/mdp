@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>top.mddata.console</groupId>
+        <groupId>top.mddata.apps</groupId>
         <artifactId>md-console</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
@@ -16,31 +16,31 @@
     <dependencies>
         <!-- 项目业务控制层 -->
         <dependency>
-            <groupId>top.mddata.console</groupId>
+            <groupId>top.mddata.apps</groupId>
             <artifactId>console-web</artifactId>
             <version>${revision}</version>
         </dependency>
         <!-- 适配层 微服务版实现类 -->
         <dependency>
-            <groupId>top.mddata.open</groupId>
+            <groupId>top.mddata.apps</groupId>
             <artifactId>open-cloud-impl</artifactId>
             <version>${revision}</version>
         </dependency>
         <dependency>
-            <groupId>top.mddata.workbench</groupId>
+            <groupId>top.mddata.apps</groupId>
             <artifactId>workbench-cloud-impl</artifactId>
             <version>${revision}</version>
         </dependency>
 
         <!-- 启动配置 -->
         <dependency>
-            <groupId>top.mddata.common</groupId>
+            <groupId>top.mddata.apps</groupId>
             <artifactId>md-common-config</artifactId>
             <version>${revision}</version>
         </dependency>
         <!-- 业务枚举扫描层 -->
         <dependency>
-            <groupId>top.mddata.common</groupId>
+            <groupId>top.mddata.apps</groupId>
             <artifactId>md-enumeration-scanning</artifactId>
             <version>${revision}</version>
         </dependency>

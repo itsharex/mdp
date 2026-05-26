@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>top.mddata.console</groupId>
+        <groupId>top.mddata.apps</groupId>
         <artifactId>md-console</artifactId>
         <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
@@ -19,7 +19,7 @@
             <artifactId>md-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>top.mddata.common</groupId>
+            <groupId>top.mddata.apps</groupId>
             <artifactId>md-common-pojo</artifactId>
             <version>${revision}</version>
         </dependency>
