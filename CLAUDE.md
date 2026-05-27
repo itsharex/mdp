@@ -13,36 +13,6 @@ MDP 是一个Monorepo项目，包含三个主要模块，分别位于mdp-base、
 - mdp-apps: 业务模块
 - mdp-sdk: 提供给第三方的SDK，所有的接口均来自 @mdp-apps/md-api/api-service 模块
 
-## 核心架构
-
-### 模块结构
-```
-mdp/
-├── mdp-base/          # 核心工具库和 starter
-│   ├── md-core/      # 核心工具类
-│   ├── md-boot/      # Spring Boot 增强器
-│   ├── md-db/        # 数据库相关
-│   ├── md-mvc-flex/  # MyBatis-Flex 整合
-│   └── ...           # 各种starter模块
-├── mdp-apps/     # 业务模块
-│   ├── md-server/    # 启动服务
-│   │   ├── boot-server/     # 单体启动类
-│   │   └── worker-server/   # 任务执行服务
-│   ├── md-api/       # API服务层
-│   ├── md-workbench/ # 工作台业务
-│   ├── md-console/   # 控制台业务
-│   ├── md-open/      # 开发者平台
-│   ├── md-gateway/   # 网关服务
-│   └── md-public/    # 公共模块
-└── mdp-sdk/          # 提供给第三方的SDK
-```
-
-### 技术栈
-- **后端**: Java 17, SpringBoot, MyBatis-Flex, Sa-Token, Redis
-- **前端**: Vue3, Ant Design Vue, Vite, TypeScript
-- **数据库**: MySQL 8.0+, 达梦数据库
-- **文件存储**: 支持本地存储、阿里云OSS、MinIO等
-
 ### 核心特性
 1. **权限管理**: 应用权限、菜单权限、按钮权限、数据权限、字段权限
 2. **单点登录**: 支持SSO、OAuth2等多种协议
@@ -50,42 +20,12 @@ mdp/
 4. **代码生成**: 自主开发的代码生成器
 5. **监控集成**: Druid监控、日志记录、操作审计
 
-## 开发指南
+## 核心架构
 
-### 启动应用
+@docs/architecture.md
+@docs/api-standards.md
+@docs/database-schema.md
 
-#### 单体模式启动
-使用 IDE 直接运行 BootServerApplication
-
-应用启动在 `http://localhost:23455`，默认端口 23455
-
-#### 测试环境账号
-- 运维管理员: ops_admin/admin
-- 开发者管理员: open_admin/admin  
-- 企业管理员: admin/admin
-
-### 构建和测试
-
-#### 构建整个项目
-```bash
-mvn clean install
-```
-
-#### 构建单个模块
-```bash
-cd mdp-apps/md-workbench
-mvn clean install
-```
-
-#### 运行测试
-```bash
-mvn test
-```
-
-### API文档
-启动应用后访问：
-- http://localhost:23455/doc.html - 统一API文档
-- http://localhost:23455/druid - 数据库监控
 
 ## 数据库配置
 
@@ -95,16 +35,29 @@ mvn test
 ### 数据库要求
 - MySQL 8.0+ 或 达梦数据库
 - Redis (端口 16379)
-- 修改 `application.yml` 中的数据库连接信息：
-  - `spring.datasource.druid.url`
-  - `spring.datasource.druid.username`
-  - `spring.datasource.druid.password`
-  - `spring.data.redis`
 
 ## 开发规范
 
 ### 代码风格
 - 使用 Lombok 减少样板代码
 - 遵循 Spring Boot 最佳实践
-- 使用 Sa-Token 进行权限管理
 - 集成 MyBatis-Flex 进行数据库操作
+- 最大行长度：100 字符
+
+### 命名规范
+- **文件**：kebab-case（`user-controller.ta`）
+- **类**：PascalCase（`UserService`）
+- **函数 / 变量**：camelCase（`getUserById`）
+- **常量**：UPPER_SNAKE_CASE（`API_BASE_URL`）
+- **数据库表**：snake_case（`user_accounts`）
+
+### Git 工作流
+- 禁止任何提交和推送
+
+### 测试要求
+- 最低 80% 代码覆盖率
+- 所有关键路径都必须有测试
+- 单元测试使用 org.junit.jupiter.api.Test
+
+## 已知问题与解决方案
+- PostgreSQL 连接池在高峰期限制为 20
