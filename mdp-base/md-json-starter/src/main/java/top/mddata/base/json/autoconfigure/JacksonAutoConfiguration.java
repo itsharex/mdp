@@ -1,11 +1,19 @@
 package top.mddata.base.json.autoconfigure;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.util.TimeZone;
-
+import cn.hutool.core.date.DatePattern;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.fasterxml.jackson.datatype.jsr310.deser.DurationDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.InstantDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.DurationSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -13,20 +21,18 @@ import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilde
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
-
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.*;
-import com.fasterxml.jackson.datatype.jsr310.ser.*;
-
-import cn.hutool.core.date.DatePattern;
 import top.mddata.base.boot.handler.GeneralPropertySourceFactory;
-import top.mddata.base.interfaces.BaseEnum;
-import top.mddata.base.json.serializer.BaseEnumDeserializer;
-import top.mddata.base.json.serializer.BaseEnumSerializer;
 import top.mddata.base.json.serializer.BigNumberSerializer;
-import top.mddata.base.json.serializer.SimpleDeserializersWrapper;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.TimeZone;
 
 /**
  * Jackson 自动配置
@@ -50,12 +56,11 @@ public class JacksonAutoConfiguration {
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
         return builder -> {
             JavaTimeModule javaTimeModule = this.javaTimeModule();
-            SimpleModule baseEnumModule = this.baseEnumModule();
             SimpleModule bigNumberModule = this.bigNumberModule();
 
             builder.timeZone(TimeZone.getDefault());
-            builder.modules(javaTimeModule, baseEnumModule, bigNumberModule);
-            log.debug("[ContiNew Starter] - Auto Configuration 'Jackson' completed initialization.");
+            builder.modules(javaTimeModule, bigNumberModule);
+            log.debug("自动配置“Jackson”已完成初始化。");
         };
     }
 
@@ -89,21 +94,6 @@ public class JacksonAutoConfiguration {
     }
 
     /**
-     * 枚举序列化及反序列化配置
-     *
-     * @return SimpleModule /
-     * @since 2.4.0
-     */
-    private SimpleModule baseEnumModule() {
-        SimpleModule simpleModule = new SimpleModule();
-        simpleModule.addSerializer(BaseEnum.class, BaseEnumSerializer.SERIALIZER_INSTANCE);
-        SimpleDeserializersWrapper deserializers = new SimpleDeserializersWrapper();
-        deserializers.addDeserializer(BaseEnum.class, new BaseEnumDeserializer());
-        simpleModule.setDeserializers(deserializers);
-        return simpleModule;
-    }
-
-    /**
      * 大数值序列化及反序列化配置
      *
      * @return SimpleModule /
@@ -125,7 +115,8 @@ public class JacksonAutoConfiguration {
                 // 针对大数
                 bigNumberModule.addSerializer(BigDecimal.class, ToStringSerializer.instance);
             }
-            default -> log.warn("[ContiNew Starter] - Jackson 大数值序列化模式：NO_OPERATE，超过 JS 范围的数值会损失精度");
+            default ->
+                    log.warn("Jackson 大数值序列化模式：NO_OPERATE，超过 JS 范围的数值会损失精度");
         }
         return bigNumberModule;
     }
