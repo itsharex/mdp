@@ -94,6 +94,13 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
     @Override
     protected User saveBefore(Object save) {
         UserDto dto = (UserDto) save;
+        ArgumentAssert.isFalse(checkUsername(dto.getUsername(), null), "用户名[{}]， 重复", dto.getUsername());
+        if (StrUtil.isNotEmpty(dto.getEmail())) {
+            ArgumentAssert.isFalse(checkEmail(dto.getEmail(), null), "邮箱[{}]， 重复", dto.getEmail());
+        }
+        if (StrUtil.isNotEmpty(dto.getPhone())) {
+            ArgumentAssert.isFalse(checkPhone(dto.getPhone(), null), "手机号[{}]， 重复", dto.getPhone());
+        }
         User entity = BeanUtil.toBean(save, getEntityClass());
         entity.setId(uidGenerator.getUid());
 
@@ -118,14 +125,6 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
     @Override
     protected void saveAfter(Object save, User entity) {
         UserDto dto = (UserDto) save;
-        ArgumentAssert.isFalse(checkUsername(dto.getUsername(), null), "用户名[{}]， 重复", dto.getUsername());
-        if (StrUtil.isNotEmpty(dto.getEmail())) {
-            ArgumentAssert.isFalse(checkEmail(dto.getEmail(), null), "邮箱[{}]， 重复", dto.getEmail());
-        }
-        if (StrUtil.isNotEmpty(dto.getPhone())) {
-            ArgumentAssert.isFalse(checkPhone(dto.getPhone(), null), "手机号[{}]， 重复", dto.getPhone());
-        }
-
         List<Long> orgIdList = dto.getOrgIdList();
         saveOrg(entity, orgIdList);
 
