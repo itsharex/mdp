@@ -76,7 +76,7 @@ public class UserUpdateDto implements Serializable {
      * 前端传递的必须是文件表的id， 存储到数据库时，需要设置为对象id
      */
     @Schema(description = "头像")
-    private Long avatar;
+    private Long avatarFileId;
 
     /**
      * 姓名

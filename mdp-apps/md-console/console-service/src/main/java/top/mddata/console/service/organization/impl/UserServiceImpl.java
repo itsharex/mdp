@@ -117,6 +117,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
         String expireTime = configService.getString(ConfigKey.Workbench.PASSWORD_EXPIRE_TIME, "3M");
         entity.setPwExpireTime(DateUtils.conversionDateTime(LocalDateTime.now(), expireTime));
         entity.setUserSource(UserSourceEnum.PLATFORM.getCode());
+        // 头像的对象id，可以重新生成一个唯一ID，也可以直接用当前用户ID
         entity.setAvatar(entity.getId());
 
         return entity;
@@ -132,8 +133,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
         fileService.relateFilesToBiz(RelateFilesToBizDto.builder()
                 .objectId(entity.getAvatar())
                 .objectType(FileObjectType.Console.USER_AVATAR)
-                .build().setKeepFileIds(dto.getAvatar()));
-
+                .build().setKeepFileIds(dto.getAvatarFileId()));
 
         EventTriggerDto request = new EventTriggerDto();
         request.setEventCode(EventTypeCode.Console.USER_ADD)
@@ -177,6 +177,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
         if (StrUtil.isNotEmpty(sysUser.getPhone())) {
             ArgumentAssert.isFalse(checkPhone(sysUser.getPhone(), sysUser.getId()), "手机号[{}]， 重复", sysUser.getPhone());
         }
+        // dto.getAvatarFileId() 是file表的id， sysUser.setAvatar 是对象id
         // 注意：前端传递的avatar是文件id，存入数据库时，需要设置为唯一的对象id（通常为了节约雪花id，可以复用entity.getId(), 也可生成新的唯一id）
         sysUser.setAvatar(sysUser.getId());
 
@@ -197,7 +198,7 @@ public class UserServiceImpl extends SuperServiceImpl<UserMapper, User> implemen
         fileService.relateFilesToBiz(RelateFilesToBizDto.builder()
                 .objectId(entity.getAvatar())
                 .objectType(FileObjectType.Console.USER_AVATAR)
-                .build().setKeepFileIds(dto.getAvatar()));
+                .build().setKeepFileIds(dto.getAvatarFileId()));
 
         EventTriggerDto request = new EventTriggerDto();
         request.setEventCode(EventTypeCode.Console.USER_EDIT)
