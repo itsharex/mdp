@@ -66,6 +66,8 @@ public class DatabaseProperties {
     public static class Flex {
         /** 启用SQL审计 */
         private Boolean audit = false;
+        /** 启用数据权限 */
+        private Boolean dataScope = false;
         /** SQL审计收集器 */
         private AuditCollector auditCollector = AuditCollector.DEFAULTS;
         /** 逻辑删除处理器 */

@@ -1,9 +1,18 @@
 package top.mddata.base.mybatisflex.config;
 
+import com.mybatisflex.core.dialect.DbType;
+import com.mybatisflex.core.dialect.DialectFactory;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import top.mddata.base.db.properties.DatabaseProperties;
 import top.mddata.base.mybatisflex.datapermission.DataPermissionAspect;
+import top.mddata.base.mybatisflex.datapermission.DataPermissionDialect;
+import top.mddata.base.mybatisflex.datapermission.DataPermissionFilter;
 
 /**
  * 数据权限自动配置
@@ -16,6 +25,8 @@ import top.mddata.base.mybatisflex.datapermission.DataPermissionAspect;
  */
 @AutoConfiguration
 @EnableAspectJAutoProxy
+@Slf4j
+@ConditionalOnProperty(prefix = DatabaseProperties.PREFIX + ".flex", name = "dataScope", havingValue = "true", matchIfMissing = false)
 public class DataPermissionAutoConfiguration {
 
     /**
@@ -30,4 +41,14 @@ public class DataPermissionAutoConfiguration {
     public DataPermissionAspect dataPermissionAspect() {
         return new DataPermissionAspect();
     }
+
+    @Resource
+    private DataPermissionFilter dataPermissionFilter;
+
+    @PostConstruct
+    public void postConstruct() {
+        log.debug("MyBatis Flex 自动配置初始化完成");
+        DialectFactory.registerDialect(DbType.MYSQL, new DataPermissionDialect(dataPermissionFilter));
+    }
+
 }
