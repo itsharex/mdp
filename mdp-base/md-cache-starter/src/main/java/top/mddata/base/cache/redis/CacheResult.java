@@ -130,8 +130,8 @@ public class CacheResult<T> {
         if (isNil || isObj || isEmpty) {
             return null;
         }
-        if (rawValue instanceof Long lo) {
-            return lo;
+        if (rawValue instanceof Number num) {
+            return num.longValue();
         } else if (rawValue instanceof String str) {
             return Long.parseLong(str);
         } else {

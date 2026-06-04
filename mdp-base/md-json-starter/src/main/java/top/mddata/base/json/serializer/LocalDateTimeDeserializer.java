@@ -1,4 +1,4 @@
-package top.mddata.base.converter;
+package top.mddata.base.json.serializer;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.core.JsonParser;

@@ -93,6 +93,10 @@
             <groupId>top.mddata.base</groupId>
             <artifactId>md-mvc-flex</artifactId>
         </dependency>
+        <dependency>
+            <groupId>top.mddata.base</groupId>
+            <artifactId>md-json-starter</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>

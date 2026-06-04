@@ -1,38 +1,32 @@
 package top.mddata.base.json.autoconfigure;
 
-import cn.hutool.core.date.DatePattern;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.json.JsonReadFeature;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.fasterxml.jackson.datatype.jsr310.deser.DurationDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.InstantDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalTimeDeserializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.DurationSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.InstantSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import top.mddata.base.boot.handler.GeneralPropertySourceFactory;
-import top.mddata.base.json.serializer.BigNumberSerializer;
+import top.mddata.base.json.module.DateJacksonModule;
+import top.mddata.base.json.module.NumberJacksonModule;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.time.Duration;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.util.Locale;
 import java.util.TimeZone;
+
+import static top.mddata.base.utils.DateUtils.DEFAULT_DATE_TIME_FORMAT;
 
 /**
  * Jackson 自动配置
@@ -40,7 +34,7 @@ import java.util.TimeZone;
  * @author henhen
  * @since 1.0.0
  */
-@AutoConfiguration
+@AutoConfigureBefore(org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration.class)
 @EnableConfigurationProperties(JacksonExtensionProperties.class)
 @PropertySource(value = "classpath:default-json-jackson.yml", factory = GeneralPropertySourceFactory.class)
 public class JacksonAutoConfiguration {
@@ -55,8 +49,8 @@ public class JacksonAutoConfiguration {
     @Bean
     public Jackson2ObjectMapperBuilderCustomizer jackson2ObjectMapperBuilderCustomizer() {
         return builder -> {
-            JavaTimeModule javaTimeModule = this.javaTimeModule();
-            SimpleModule bigNumberModule = this.bigNumberModule();
+            DateJacksonModule javaTimeModule = new DateJacksonModule();
+            SimpleModule bigNumberModule = new NumberJacksonModule();
 
             builder.timeZone(TimeZone.getDefault());
             builder.modules(javaTimeModule, bigNumberModule);
@@ -64,60 +58,34 @@ public class JacksonAutoConfiguration {
         };
     }
 
-    /**
-     * 日期时间序列化及反序列化配置
-     *
-     * @return {@link JavaTimeModule}
-     * @since 1.0.0
-     */
-    private JavaTimeModule javaTimeModule() {
-        JavaTimeModule javaTimeModule = new JavaTimeModule();
-        // 针对时间类型：LocalDateTime 的序列化和反序列化处理
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(DatePattern.NORM_DATETIME_PATTERN);
-        javaTimeModule.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(dateTimeFormatter));
-        javaTimeModule.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(dateTimeFormatter));
-        // 针对时间类型：LocalDate 的序列化和反序列化处理
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DatePattern.NORM_DATE_PATTERN);
-        javaTimeModule.addSerializer(LocalDate.class, new LocalDateSerializer(dateFormatter));
-        javaTimeModule.addDeserializer(LocalDate.class, new LocalDateDeserializer(dateFormatter));
-        // 针对时间类型：LocalTime 的序列化和反序列化处理
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern(DatePattern.NORM_TIME_PATTERN);
-        javaTimeModule.addSerializer(LocalTime.class, new LocalTimeSerializer(timeFormatter));
-        javaTimeModule.addDeserializer(LocalTime.class, new LocalTimeDeserializer(timeFormatter));
-        // 针对时间类型：Instant 的序列化和反序列化处理
-        javaTimeModule.addSerializer(Instant.class, InstantSerializer.INSTANCE);
-        javaTimeModule.addDeserializer(Instant.class, InstantDeserializer.INSTANT);
-        // 针对时间类型：Duration 的序列化和反序列化处理
-        javaTimeModule.addSerializer(Duration.class, DurationSerializer.INSTANCE);
-        javaTimeModule.addDeserializer(Duration.class, DurationDeserializer.INSTANCE);
-        return javaTimeModule;
-    }
+//    @Bean
+//    @Primary
+//    @ConditionalOnClass(ObjectMapper.class)
+//    @ConditionalOnMissingBean
+//    public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
+//        ObjectMapper objectMapper = builder.createXmlMapper(false).build();
+//        objectMapper
+//                .setLocale(Locale.CHINA)
+//                //去掉默认的时间戳格式
+//                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+//                // 时区
+//                .setTimeZone(TimeZone.getTimeZone(ZoneId.systemDefault()))
+//                //Date参数日期格式
+//                .setDateFormat(new SimpleDateFormat(DEFAULT_DATE_TIME_FORMAT, Locale.CHINA))
+//
+//                //该特性决定parser是否允许JSON字符串包含非引号控制字符（值小于32的ASCII字符，包含制表符和换行符）。 如果该属性关闭，则如果遇到这些字符，则会抛出异常。JSON标准说明书要求所有控制符必须使用引号，因此这是一个非标准的特性
+//                .configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true)
+//                // 忽略不能转义的字符
+//                .configure(JsonReadFeature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER.mappedFeature(), true)
+//                //在使用spring boot + jpa/hibernate，如果实体字段上加有FetchType.LAZY，并使用jackson序列化为json串时，会遇到SerializationFeature.FAIL_ON_EMPTY_BEANS异常
+//                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+//                //忽略未知字段
+//                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+//                //单引号处理
+//                .configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+//        // 注册自定义模块
+//        objectMapper.registerModule(new DateJacksonModule()).registerModule(new NumberJacksonModule()).findAndRegisterModules();
+//        return objectMapper;
+//    }
 
-    /**
-     * 大数值序列化及反序列化配置
-     *
-     * @return SimpleModule /
-     * @since 2.12.1
-     */
-    private SimpleModule bigNumberModule() {
-        SimpleModule bigNumberModule = new SimpleModule();
-        switch (properties.getBigNumberSerializeMode()) {
-            case FLEXIBLE -> {
-                bigNumberModule.addSerializer(Long.class, BigNumberSerializer.SERIALIZER_INSTANCE);
-                bigNumberModule.addSerializer(Long.TYPE, BigNumberSerializer.SERIALIZER_INSTANCE);
-                bigNumberModule.addSerializer(BigInteger.class, BigNumberSerializer.SERIALIZER_INSTANCE);
-                bigNumberModule.addSerializer(BigDecimal.class, BigNumberSerializer.SERIALIZER_INSTANCE);
-            }
-            case TO_STRING -> {
-                bigNumberModule.addSerializer(Long.class, ToStringSerializer.instance);
-                bigNumberModule.addSerializer(Long.TYPE, ToStringSerializer.instance);
-                bigNumberModule.addSerializer(BigInteger.class, ToStringSerializer.instance);
-                // 针对大数
-                bigNumberModule.addSerializer(BigDecimal.class, ToStringSerializer.instance);
-            }
-            default ->
-                    log.warn("Jackson 大数值序列化模式：NO_OPERATE，超过 JS 范围的数值会损失精度");
-        }
-        return bigNumberModule;
-    }
 }
