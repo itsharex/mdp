@@ -22,4 +22,4 @@ dubbo:
 powerjob:
   worker:
     # 需要使用 定时任务 功能时开启
-    enabled: true
+    enabled: false
