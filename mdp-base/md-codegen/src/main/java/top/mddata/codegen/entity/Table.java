@@ -483,7 +483,7 @@ public class Table {
         imports.add("import { onMounted, reactive, ref, unref } from 'vue';");
         imports.add("import { findNodeByKey } from '@vben/plugins/vxe-tree';");
         imports.add(StrUtil.format("import { {}Api } from '#/api/{}/{}/{}/api';", buildEntityClassName(), packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(buildEntityClassName())));
-        imports.add(StrUtil.format("import { {} as permCode } from '#/enums/perm/{}/{}/{}';", StringUtil.firstCharToLowerCase(buildEntityClassName()), packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(buildEntityClassName())));
+        imports.add(StrUtil.format("import { {} as permCode } from '#/constants/perm/{}/{}/{}';", StringUtil.firstCharToLowerCase(buildEntityClassName()), packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(buildEntityClassName())));
         imports.add("import { useMessage } from '@vben/components/hooks';");
         imports.add("import { $t } from '#/locales';");
 
@@ -550,7 +550,7 @@ public class Table {
 
         imports.add(StrUtil.format("import type { {}Type } from '#/api/{}/{}/{}/model';", buildEntityClassName(), packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(buildEntityClassName())));
         imports.add(StrUtil.format("import { {}Api } from '#/api/{}/{}/{}/api';", buildEntityClassName(), packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(buildEntityClassName())));
-        imports.add(StrUtil.format("import { {} as permCode } from '#/enums/perm/{}/{}/{}';", StringUtil.firstCharToLowerCase(buildEntityClassName()), packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(buildEntityClassName())));
+        imports.add(StrUtil.format("import { {} as permCode } from '#/constants/perm/{}/{}/{}';", StringUtil.firstCharToLowerCase(buildEntityClassName()), packageConfig.getSubSystem(), packageConfig.getModule(), StringUtil.firstCharToLowerCase(buildEntityClassName())));
 
         return imports.stream().filter(Objects::nonNull).sorted(Comparator.naturalOrder()).toList();
     }
