@@ -59,7 +59,7 @@ public class CallLogRouteInterceptor implements RouteInterceptor {
         if (apiCallLog != null) {
             apiCallLog.setResponseTime(LocalDateTime.now());
             apiCallLog.setExecStatus(ExecStatusEnum.SUCCESS.getCode());
-            apiCallLog.setResponseData(JSON.toJSONString(result));
+            apiCallLog.setResponseData(result == null ? null : JSON.toJSONString(result));
 
             routeContext.setApiCallLog(apiCallLog);
         }

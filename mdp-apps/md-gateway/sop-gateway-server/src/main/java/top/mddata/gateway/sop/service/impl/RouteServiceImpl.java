@@ -9,6 +9,8 @@ import com.gitee.sop.support.context.OpenContext;
 import com.gitee.sop.support.context.WebContext;
 import com.gitee.sop.support.dto.CommonFileData;
 import com.gitee.sop.support.dto.FileData;
+import com.gitee.sop.support.message.ApiResponse;
+import com.gitee.sop.support.message.Response;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +35,6 @@ import top.mddata.gateway.sop.message.ErrorEnum;
 import top.mddata.gateway.sop.request.ApiRequest;
 import top.mddata.gateway.sop.request.ApiRequestContext;
 import top.mddata.gateway.sop.request.UploadContext;
-import com.gitee.sop.support.message.ApiResponse;
-import com.gitee.sop.support.message.Response;
 import top.mddata.gateway.sop.service.GenericServiceInvoker;
 import top.mddata.gateway.sop.service.ResultWrapper;
 import top.mddata.gateway.sop.service.RouteService;
@@ -117,7 +117,7 @@ public class RouteServiceImpl implements RouteService {
 
             if (apiCallLog != null) {
                 apiCallLog.setExecStatus(ExecStatusEnum.FAIL.getCode());
-                apiCallLog.setResponseData(JSON.toJSONString(apiResponse));
+                apiCallLog.setResponseData(apiResponse == null ? null : JSON.toJSONString(apiResponse));
                 apiCallLog.setResponseTime(LocalDateTime.now());
                 apiCallLog.setErrorMsg(e.getMessage());
             }
