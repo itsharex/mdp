@@ -1,32 +1,18 @@
 package top.mddata.base.json.autoconfigure;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.json.JsonReadFeature;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import top.mddata.base.boot.handler.GeneralPropertySourceFactory;
 import top.mddata.base.json.module.DateJacksonModule;
 import top.mddata.base.json.module.NumberJacksonModule;
 
-import java.text.SimpleDateFormat;
-import java.time.ZoneId;
-import java.util.Locale;
 import java.util.TimeZone;
-
-import static top.mddata.base.utils.DateUtils.DEFAULT_DATE_TIME_FORMAT;
 
 /**
  * Jackson 自动配置
