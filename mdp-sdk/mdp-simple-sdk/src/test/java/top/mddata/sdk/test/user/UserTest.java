@@ -1,6 +1,7 @@
 package top.mddata.sdk.test.user;
 
 import top.mddata.sdk.core.common.Result;
+import top.mddata.sdk.core.param.IdRequest;
 import top.mddata.sdk.core.request.PageParams;
 import top.mddata.sdk.core.response.Page;
 import top.mddata.sdk.simple.api.user.UserBatchSaveApi;
@@ -8,7 +9,6 @@ import top.mddata.sdk.simple.api.user.UserGetByIdApi;
 import top.mddata.sdk.simple.api.user.UserPageApi;
 import top.mddata.sdk.simple.api.user.UserUpdateByIdApi;
 import top.mddata.sdk.simple.request.user.UserBatchSaveDto;
-import top.mddata.sdk.simple.request.user.UserGetByIdDto;
 import top.mddata.sdk.simple.request.user.UserQuery;
 import top.mddata.sdk.simple.request.user.UserSaveDto;
 import top.mddata.sdk.simple.request.user.UserUpdateDto;
@@ -31,7 +31,7 @@ public class UserTest extends BaseTest {
 
     public void testGetById() {
         UserGetByIdApi api = new UserGetByIdApi();
-        api.setBizModel(new UserGetByIdDto().setId(680083598598475778L));
+        api.setBizModel(new IdRequest().setId(680083598598475778L));
         Result<UserResp> result = client.execute(api);
         logResult(result);
     }

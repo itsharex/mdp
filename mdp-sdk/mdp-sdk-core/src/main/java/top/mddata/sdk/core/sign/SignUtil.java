@@ -27,27 +27,27 @@ import java.util.Map;
  */
 public class SignUtil {
 
-    private static final String RSA = "RSA";
+    public static final String RSA = "RSA";
 
     /**
      * sha256WithRsa 算法请求类型
      */
-    private static final String RSA2 = "RSA2";
-    private static final String SHA1_WITH_RSA = "SHA1WithRSA";
-    private static final String SHA256_WITH_RSA = "SHA256WithRSA";
+    public static final String RSA2 = "RSA2";
+    public static final String SHA1_WITH_RSA = "SHA1WithRSA";
+    public static final String SHA256_WITH_RSA = "SHA256WithRSA";
     /**
      * GBK字符集
      **/
-    private static final String CHARSET_GBK = "GBK";
+    public static final String CHARSET_GBK = "GBK";
     /**
      * RSA最大加密明文大小
      */
-    private static final int MAX_ENCRYPT_BLOCK = 117;
+    public static final int MAX_ENCRYPT_BLOCK = 117;
 
     /**
      * RSA最大解密密文大小
      */
-    private static final int MAX_DECRYPT_BLOCK = 128;
+    public static final int MAX_DECRYPT_BLOCK = 128;
 
 
     /**

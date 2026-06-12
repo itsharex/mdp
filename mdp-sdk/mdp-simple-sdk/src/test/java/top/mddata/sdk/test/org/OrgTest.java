@@ -1,13 +1,13 @@
 package top.mddata.sdk.test.org;
 
 import top.mddata.sdk.core.common.Result;
+import top.mddata.sdk.core.param.IdRequest;
 import top.mddata.sdk.core.request.PageParams;
 import top.mddata.sdk.core.response.Page;
 import top.mddata.sdk.simple.api.org.OrgGetByIdApi;
 import top.mddata.sdk.simple.api.org.OrgPageApi;
 import top.mddata.sdk.simple.api.org.OrgSaveApi;
 import top.mddata.sdk.simple.api.org.OrgUpdateByIdApi;
-import top.mddata.sdk.simple.request.org.OrgGetByIdDto;
 import top.mddata.sdk.simple.request.org.OrgQuery;
 import top.mddata.sdk.simple.request.org.OrgSaveDto;
 import top.mddata.sdk.simple.request.org.OrgUpdateDto;
@@ -25,7 +25,7 @@ public class OrgTest extends BaseTest {
 
     public void testGetById() {
         OrgGetByIdApi api = new OrgGetByIdApi();
-        api.setBizModel(new OrgGetByIdDto().setId(43373586232915972L));
+        api.setBizModel(new IdRequest().setId(43373586232915972L));
         Result<OrgResp> result = client.execute(api);
         logResult(result);
     }

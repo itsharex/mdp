@@ -72,4 +72,19 @@ public class Result<T> {
         this.solution = solution;
         return this;
     }
+
+    public static <T> Result<T> error(String msg) {
+        Result<T> result = new Result<>();
+        result.setCode("-1");
+        result.setMsg(msg);
+        return result;
+    }
+
+    public static <T> Result<T> success(T data) {
+        Result<T> result = new Result<>();
+        result.setCode("0");
+        result.setData(data);
+        return result;
+    }
+
 }
