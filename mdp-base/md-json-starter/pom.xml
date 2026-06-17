@@ -17,7 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>top.mddata.base</groupId>
-            <artifactId>md-boot</artifactId>
+            <artifactId>md-util</artifactId>
         </dependency>
 
         <!-- Spring Boot JSON 模块 -->

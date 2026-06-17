@@ -17,12 +17,12 @@ import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
-import static top.mddata.base.utils.DateUtils.DEFAULT_DATE_FORMAT;
-import static top.mddata.base.utils.DateUtils.DEFAULT_DATE_FORMAT_EN;
+import static cn.hutool.core.date.DatePattern.CHINESE_DATE_PATTERN;
+import static cn.hutool.core.date.DatePattern.CHINESE_DATE_TIME_PATTERN;
+import static cn.hutool.core.date.DatePattern.NORM_DATETIME_PATTERN;
+import static cn.hutool.core.date.DatePattern.NORM_DATE_PATTERN;
 import static top.mddata.base.utils.DateUtils.DEFAULT_DATE_FORMAT_EN_MATCHES;
 import static top.mddata.base.utils.DateUtils.DEFAULT_DATE_FORMAT_MATCHES;
-import static top.mddata.base.utils.DateUtils.DEFAULT_DATE_TIME_FORMAT;
-import static top.mddata.base.utils.DateUtils.DEFAULT_DATE_TIME_FORMAT_EN;
 import static top.mddata.base.utils.DateUtils.DEFAULT_DATE_TIME_FORMAT_EN_MATCHES;
 import static top.mddata.base.utils.DateUtils.DEFAULT_DATE_TIME_FORMAT_MATCHES;
 import static top.mddata.base.utils.DateUtils.SLASH_DATE_FORMAT;
@@ -51,11 +51,11 @@ public class LocalDateTimeDeserializer extends JSR310DateTimeDeserializerBase<Lo
     /**
      * 以下是支持的6种参数格式
      */
-    private static final DateTimeFormatter DEFAULT_DATE_FORMAT_DTF = DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT);
-    private static final DateTimeFormatter DEFAULT_DATE_FORMAT_EN_DTF = DateTimeFormatter.ofPattern(DEFAULT_DATE_FORMAT_EN);
+    private static final DateTimeFormatter DEFAULT_DATE_FORMAT_DTF = DateTimeFormatter.ofPattern(NORM_DATE_PATTERN);
+    private static final DateTimeFormatter DEFAULT_DATE_FORMAT_EN_DTF = DateTimeFormatter.ofPattern(CHINESE_DATE_PATTERN);
     private static final DateTimeFormatter SLASH_DATE_FORMAT_DTF = DateTimeFormatter.ofPattern(SLASH_DATE_FORMAT);
-    private static final DateTimeFormatter DEFAULT_DATE_TIME_FORMAT_DTF = DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT);
-    private static final DateTimeFormatter DEFAULT_DATE_TIME_FORMAT_EN_DTF = DateTimeFormatter.ofPattern(DEFAULT_DATE_TIME_FORMAT_EN);
+    private static final DateTimeFormatter DEFAULT_DATE_TIME_FORMAT_DTF = DateTimeFormatter.ofPattern(NORM_DATETIME_PATTERN);
+    private static final DateTimeFormatter DEFAULT_DATE_TIME_FORMAT_EN_DTF = DateTimeFormatter.ofPattern(CHINESE_DATE_TIME_PATTERN);
     private static final DateTimeFormatter SLASH_DATE_TIME_FORMAT_DTF = DateTimeFormatter.ofPattern(SLASH_DATE_TIME_FORMAT);
 
     private LocalDateTimeDeserializer() {

@@ -1,4 +1,4 @@
-package top.mddata.base.boot.handler;
+package top.mddata.base.json.autoconfigure;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import org.springframework.boot.env.YamlPropertySourceLoader;

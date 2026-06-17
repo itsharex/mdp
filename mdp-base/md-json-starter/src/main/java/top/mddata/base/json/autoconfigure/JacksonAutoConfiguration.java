@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilde
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
-import top.mddata.base.boot.handler.GeneralPropertySourceFactory;
 import top.mddata.base.json.module.DateJacksonModule;
 import top.mddata.base.json.module.NumberJacksonModule;
 
