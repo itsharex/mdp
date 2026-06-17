@@ -20,8 +20,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.base.R;
-import top.mddata.open.vo.admin.AppVo;
 import top.mddata.open.facade.admin.AppFacade;
+import top.mddata.open.vo.admin.AppVo;
 import top.mddata.workbench.dto.LoginLogDto;
 import top.mddata.workbench.dto.LoginRedirectUrlDto;
 import top.mddata.workbench.event.LoginEvent;
@@ -113,23 +113,6 @@ public class SsoServerController {
     }
 
     /**
-     * 接收单点登录的客户端接口调用，根据传递的 消息类型 决定处理逻辑
-     * 消息类型：校验 ticket
-     * 消息类型：单点注销
-     * 消息类型：单点注销回调
-     */
-    @Operation(summary = "接收单点登录的客户端接口调用", description = "接收单点登录的客户端接口调用，根据传递的 消息类型 决定处理逻辑")
-    @GetMapping("/anyUser/sso/pushS")
-    public Object push() {
-        try {
-            return SaSsoServerProcessor.getInstance().ssoPushS();
-        } catch (Exception e) {
-            log.error("pushS", e);
-            return SaResult.error(e.getMessage());
-        }
-    }
-
-    /**
      * 全局注销登录，通知所有应用退出
      */
     @Operation(summary = "服务端-全端退出", description = "服务端-全端退出")
@@ -148,6 +131,22 @@ public class SsoServerController {
         }
     }
 
+    /**
+     * 接收单点登录的客户端接口调用，根据传递的 消息类型 决定处理逻辑
+     * 消息类型：校验 ticket
+     * 消息类型：单点注销
+     * 消息类型：单点注销回调
+     */
+    @Operation(summary = "接收单点登录的客户端接口调用", description = "接收单点登录的客户端接口调用，根据传递的 消息类型 决定处理逻辑")
+    @GetMapping("/anyUser/sso/pushS")
+    public Object push() {
+        try {
+            return SaSsoServerProcessor.getInstance().ssoPushS();
+        } catch (Exception e) {
+            log.error("pushS", e);
+            return SaResult.error(e.getMessage());
+        }
+    }
 
     /** 退出登录当前应用 */
     @PostMapping("/anyUser/sso/logout")
