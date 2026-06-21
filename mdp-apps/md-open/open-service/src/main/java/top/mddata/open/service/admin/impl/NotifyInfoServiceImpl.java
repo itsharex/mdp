@@ -260,6 +260,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         params.put("biz_content", JSON.toJSONString(bizContent));
         String content = SignUtil.getSignContent(params);
         AppKeys appKeys = appKeysService.getByAppId(request.getAppId());
+        // TODO 待修改 根据配置进行
         if (appKeys != null) {
             String sign = SignUtil.rsa256Sign(content, appKeys.getPrivateKeyPlatform(), request.getCharset());
             params.put("sign", sign);
