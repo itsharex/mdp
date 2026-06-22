@@ -400,6 +400,7 @@ logging:
   pattern:
     dateformat: yyyy-MM-dd HH:mm:ss.SSS
     console: "[${spring.application.name}:%X{UserId}] %d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] ${PID} [%X{trace}] [%t:%r] [%logger{50}.%M:%L] %m%n"
+    file: "[${spring.application.name}:%X{UserId}] %d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] ${PID} [%X{trace}] [%t:%r] [%logger{50}.%M:%L] %m%n"
   logback:
     rollingpolicy:
       max-file-size: 64MB
