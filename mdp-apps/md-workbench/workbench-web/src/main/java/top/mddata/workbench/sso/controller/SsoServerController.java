@@ -8,10 +8,12 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaFoxUtil;
 import cn.dev33.satoken.util.SaResult;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.extra.servlet.JakartaServletUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson2.JSON;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,8 +140,10 @@ public class SsoServerController {
      */
     @Operation(summary = "接收单点登录的客户端接口调用", description = "接收单点登录的客户端接口调用，根据传递的 消息类型 决定处理逻辑")
     @GetMapping("/anyUser/sso/pushS")
-    public Object push() {
+    public Object push(HttpServletRequest request) {
         try {
+            String clientIp = JakartaServletUtil.getClientIP(request);
+            log.info("接收到客户端 [{}] 的请求", clientIp);
             return SaSsoServerProcessor.getInstance().ssoPushS();
         } catch (Exception e) {
             log.error("pushS", e);
