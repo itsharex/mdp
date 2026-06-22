@@ -26,11 +26,13 @@ import top.mddata.common.cache.open.AppCkBuilder;
 import top.mddata.common.constant.FileObjectType;
 import top.mddata.common.entity.UserRoleRel;
 import top.mddata.common.enumeration.permission.RoleCategoryEnum;
+import top.mddata.console.dto.system.RelateFilesToBizDto;
 import top.mddata.console.entity.permission.Role;
 import top.mddata.console.entity.permission.RoleAppRel;
-import top.mddata.console.dto.system.RelateFilesToBizDto;
 import top.mddata.console.facade.system.FileFacade;
 import top.mddata.open.dto.admin.AppDto;
+import top.mddata.open.dto.client.AppDevInfoDto;
+import top.mddata.open.dto.client.AppInfoUpdateDto;
 import top.mddata.open.entity.admin.App;
 import top.mddata.open.entity.admin.AppKeys;
 import top.mddata.open.mapper.admin.AppKeysMapper;
@@ -39,8 +41,6 @@ import top.mddata.open.query.admin.AppQuery;
 import top.mddata.open.service.admin.AppService;
 import top.mddata.open.service.admin.utils.RsaTool;
 import top.mddata.open.vo.admin.AppVo;
-import top.mddata.open.dto.client.AppDevInfoDto;
-import top.mddata.open.dto.client.AppInfoUpdateDto;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -136,9 +136,10 @@ public class AppServiceImpl extends SuperServiceImpl<AppMapper, App> implements 
         return BeanUtil.toBean(apiCache.getValue(), AppVo.class);
     }
 
+
     @Override
     @Transactional(readOnly = true)
-    public List<AppVo> listMyApp(Long userId) {
+    public List<AppVo> listAppByUserId(Long userId) {
         Iterable<QueryColumn> queryColumns = QueryMethods.defaultColumns(App.class);
         // 将过滤条件移到 on 中，可以减少 join 数据量，提高查询效率
         QueryWrapper queryWrapper = QueryWrapper.create().select(queryColumns).from(App.class)
@@ -148,7 +149,29 @@ public class AppServiceImpl extends SuperServiceImpl<AppMapper, App> implements 
                 .where(App::getShow).eq(true)
                 .eq(App::getState, true)
                 .orderBy(App::getWeight, true);
-        List<AppVo> list = listAs(queryWrapper, AppVo.class);
+        return listAs(queryWrapper, AppVo.class);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Boolean checkAppByUserId(Long userId, Long appId) {
+        Iterable<QueryColumn> queryColumns = QueryMethods.defaultColumns(App.class);
+        // 将过滤条件移到 on 中，可以减少 join 数据量，提高查询效率
+        QueryWrapper queryWrapper = QueryWrapper.create().select(queryColumns).from(App.class)
+                .innerJoin(RoleAppRel.class).on(RoleAppRel::getAppId, App::getId)
+                .innerJoin(Role.class).on(RoleAppRel::getRoleId, Role::getId).eq(Role::getState, true)
+                .innerJoin(UserRoleRel.class).on(Role::getId, UserRoleRel::getRoleId).eq(UserRoleRel::getUserId, userId)
+                .where(App::getShow).eq(true)
+                .eq(App::getState, true)
+                .eq(App::getId, appId)
+                .orderBy(App::getWeight, true);
+        return count(queryWrapper) > 0;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AppVo> listMyApp(Long userId) {
+        List<AppVo> list = listAppByUserId(userId);
 
         QueryWrapper wrapper = QueryWrapper.create()
                 .eq(App::getShow, true)
@@ -156,7 +179,6 @@ public class AppServiceImpl extends SuperServiceImpl<AppMapper, App> implements 
                 .eq(App::getIsPublic, true) // 公开应用
                 .orderBy(App::getWeight, true);
         List<AppVo> publicList = listAs(wrapper, AppVo.class);
-
 
         // 根据 id 合并2个list,并根据weight升序排序
         return Stream.concat(list.stream(), publicList.stream())

@@ -2,11 +2,11 @@ package top.mddata.open.service.admin;
 
 import com.mybatisflex.core.paginate.Page;
 import top.mddata.base.mvcflex.service.SuperService;
+import top.mddata.open.dto.client.AppDevInfoDto;
+import top.mddata.open.dto.client.AppInfoUpdateDto;
 import top.mddata.open.entity.admin.App;
 import top.mddata.open.query.admin.AppQuery;
 import top.mddata.open.vo.admin.AppVo;
-import top.mddata.open.dto.client.AppDevInfoDto;
-import top.mddata.open.dto.client.AppInfoUpdateDto;
 
 import java.util.List;
 
@@ -54,6 +54,23 @@ public interface AppService extends SuperService<App> {
      */
     List<AppVo> listMyApp(Long userId);
 
+    /**
+     * 根据用户ID查询拥有的应用
+     *
+     * @param userId 用户ID
+     * @return 应用列表
+     */
+    List<AppVo> listAppByUserId(Long userId);
+
+
+    /**
+     * 校验用户是否拥有该应用
+     *
+     * @param userId 用户ID
+     * @param appId 应用ID
+     * @return 是否拥有该应用
+     */
+    Boolean checkAppByUserId(Long userId, Long appId);
 
     /**
      * 修改应用信息

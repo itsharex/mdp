@@ -26,6 +26,16 @@ public interface AppApi {
     R<List<AppVo>> listNeedPushApp();
 
     /**
+     * 校验用户是否拥有该应用
+     *
+     * @param userId 用户ID
+     * @param appId 应用ID
+     * @return 是否拥有该应用
+     */
+    @GetMapping("/checkAppByUserId")
+    R<Boolean> checkAppByUserId(@RequestParam Long userId, @RequestParam Long appId);
+
+    /**
      * 根据id查询应用
      *
      * @param appKey 应用标识

@@ -72,10 +72,10 @@ public class SsoServerController {
                 return R.fail("当前应用 [" + app.getName() + "] 已被禁用，无法使用");
             }
 
-//             // TODO 检查用户是否拥有此应用
-//            if (!check(loginId, app.getId())) {
-//                return R.fail("当前账号暂无权限登入此应用，请联系管理员授权");
-//            }
+            R<Boolean> checkResult = appFacade.checkAppByUserId(loginId, app.getId());
+            if (checkResult.getIsSuccess() && !checkResult.getData()) {
+                return R.fail("当前账号暂无权限登入此应用，请联系管理员授权");
+            }
         }
 
         // 构建重定向到客户端的地址
@@ -92,7 +92,6 @@ public class SsoServerController {
         }
 
         // 记录登录日志
-
         if (SaFoxUtil.isNotEmpty(redirect) && redirect.contains("?")) {
             int index = redirect.indexOf("?");
             redirect = redirect.substring(0, index);

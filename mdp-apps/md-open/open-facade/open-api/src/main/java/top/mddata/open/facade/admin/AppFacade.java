@@ -20,6 +20,14 @@ public interface AppFacade {
     R<List<AppVo>> listNeedPushApp();
 
 
+    /**
+     * 校验用户是否拥有该应用
+     *
+     * @param userId 用户ID
+     * @param appId 应用ID
+     * @return 是否拥有该应用
+     */
+    R<Boolean> checkAppByUserId(Long userId, Long appId);
 
     /**
      * 根据id查询应用

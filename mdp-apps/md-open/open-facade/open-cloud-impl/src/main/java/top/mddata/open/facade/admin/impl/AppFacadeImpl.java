@@ -26,6 +26,10 @@ public class AppFacadeImpl implements AppFacade {
         return appApi.listNeedPushApp();
     }
 
+    @Override
+    public R<Boolean> checkAppByUserId(Long userId, Long appId) {
+        return appApi.checkAppByUserId(userId, appId);
+    }
 
     @Override
     public R<AppVo> getAppByAppKey(String key) {

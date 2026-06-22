@@ -19,7 +19,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class ApplicationFacadeImpl implements AppFacade {
+public class AppFacadeImpl implements AppFacade {
     private final AppService appService;
     private final OauthScopeService oauthScopeService;
 
@@ -28,7 +28,10 @@ public class ApplicationFacadeImpl implements AppFacade {
         return R.success(appService.listNeedPushApp());
     }
 
-
+    @Override
+    public R<Boolean> checkAppByUserId(Long userId, Long appId) {
+        return R.success(appService.checkAppByUserId(userId, appId));
+    }
 
     @Override
     public R<AppVo> getAppByAppKey(String key) {

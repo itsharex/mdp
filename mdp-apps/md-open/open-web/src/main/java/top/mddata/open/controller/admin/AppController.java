@@ -177,6 +177,21 @@ public class AppController extends SuperController<AppService, App> {
     }
 
     /**
+     * 校验用户是否拥有该应用
+     *
+     * @param userId 用户ID
+     * @param appId 应用ID
+     * @return 是否拥有该应用
+     */
+    @GetMapping("/checkAppByUserId")
+    @Operation(summary = "校验用户是否拥有该应用", description = "校验用户是否拥有该应用")
+    @RequestLog(value = "校验用户是否拥有该应用")
+    public R<Boolean> checkAppByUserId(@RequestParam Long userId, @RequestParam Long appId) {
+        return R.success(superService.checkAppByUserId(userId, appId));
+    }
+
+
+    /**
      * 获取秘钥信息
      *
      * @param appId 应用ID
