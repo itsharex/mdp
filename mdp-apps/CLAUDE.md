@@ -138,7 +138,6 @@ public class XxxController extends SuperController<XxxService, Xxx> { }
 
 ### 通用模式
 - **SSO 配置**: 后端同时作为三个前端应用程序的 SSO 服务器和客户端
-- **多租户支持**: 租户上下文通过请求头（`TenantId`）传播
 - **数据权限**: 通过注解实现细粒度的数据权限过滤
 - **审计日志**: 包含 IP 地理定位的全面操作日志
 - **文件上传**: 使用 @XFile 注解的统一文件存储

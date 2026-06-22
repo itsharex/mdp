@@ -334,7 +334,7 @@ sa-token:
   # token风格
   token-style: uuid
   # 是否输出操作日志
-  is-log: false
+  is-log: true
   sso-server:
     # Ticket有效期 (单位: 秒)，默认五分钟
     ticket-timeout: 300
@@ -407,7 +407,7 @@ logging:
     org.springframework: info
   pattern:
     dateformat: yyyy-MM-dd HH:mm:ss.SSS
-    console: "[${spring.application.name}:%X{TenantId}:%X{UserId}] %d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] ${PID} [%X{trace}] [%t:%r] [%logger{50}.%M:%L] %m%n"
+    console: "[${spring.application.name}:%X{UserId}] %d{yyyy-MM-dd HH:mm:ss.SSS}[%5p] ${PID} [%X{trace}] [%t:%r] [%logger{50}.%M:%L] %m%n"
   logback:
     rollingpolicy:
       max-file-size: 64MB
