@@ -358,7 +358,8 @@ sa-token:
     getDataUrl: '/anyUser/sso/getData'
     #  是否使用模式3
     isHttp: false
-  sso-clients:
+  sso-clients: # 非sa-token官方功能：mdp自己实现的 sa-token-sso-client-starter 增强功能，用于解决一个后端服务对应多个前端应用。
+    # 这里只需要配置3个内置的应用，第三方应用无需配置。 二次开发时若需要新增内置应用，需要追加配置
     web-workbench:
       # app-key
       client: 'web-workbench'
