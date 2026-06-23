@@ -76,6 +76,14 @@ public final class IpUtil {
         return true;
     }
 
+    /** 将IPv6回环地址归一化为IPv4回环地址 */
+    public static String normalizeLoopback(String ip) {
+        if ("0:0:0:0:0:0:0:1".equals(ip) || "::1".equals(ip)) {
+            return "127.0.0.1";
+        }
+        return ip;
+    }
+
     /** IPv4地址转long，格式不合法返回-1 */
     public static long ipToLong(String ip) {
         String[] parts = ip.split("\\.");
