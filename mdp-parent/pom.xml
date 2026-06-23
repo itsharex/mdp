@@ -98,7 +98,7 @@
         <just-auth.version>1.16.5</just-auth.version>
 
         <!-- 线程变量 -->
-        <transmittable-thread-local.version>2.12.2</transmittable-thread-local.version>
+        <transmittable-thread-local.version>2.14.0</transmittable-thread-local.version>
         <!-- Groovy是一种基于JVM（Java虚拟机）的敏捷开发语言 -->
         <groovy.version>4.0.26</groovy.version>
         <!-- 模版引擎（类似Freemarker） -->
@@ -111,7 +111,7 @@
         <commons-beanutils.version>1.11.0</commons-beanutils.version>
         <commons-exec.version>1.5</commons-exec.version>
         <commons-email.version>1.6.0</commons-email.version>
-        <commons-io.version>2.15.0</commons-io.version>
+        <commons-io.version>2.20.0 </commons-io.version>
         <commons-logging.version>1.3.5</commons-logging.version>
         <commons-lang3.version>3.19.0</commons-lang3.version>
         <commons-fileupload.version>1.6.0</commons-fileupload.version>
