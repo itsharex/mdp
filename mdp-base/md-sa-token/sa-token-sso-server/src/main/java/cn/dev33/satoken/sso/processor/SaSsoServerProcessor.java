@@ -245,4 +245,14 @@ public class SaSsoServerProcessor {
         return SaSsoProcessorHelper.ssoLogoutBack(req, res, ssoServerTemplate.getParamName());
     }
 
+    /**
+     * 获取当前请求中的 client 参数
+     */
+    public String getClient() {
+        ParamName paramName = ssoServerTemplate.getParamName();
+
+        // 1、获取参数
+        SaRequest req = SaHolder.getRequest();
+        return req.getParam(paramName.getClient());
+    }
 }

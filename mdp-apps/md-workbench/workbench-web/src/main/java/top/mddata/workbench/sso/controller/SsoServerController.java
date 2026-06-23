@@ -22,11 +22,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.mddata.base.base.R;
+import top.mddata.base.utils.IpUtil;
 import top.mddata.open.facade.admin.AppFacade;
 import top.mddata.open.vo.admin.AppVo;
 import top.mddata.workbench.dto.LoginLogDto;
 import top.mddata.workbench.dto.LoginRedirectUrlDto;
 import top.mddata.workbench.event.LoginEvent;
+
+import java.util.List;
 
 import static top.mddata.base.exception.code.ExceptionCode.JWT_TOKEN_EXPIRED;
 
@@ -142,14 +145,36 @@ public class SsoServerController {
     @GetMapping("/anyUser/sso/pushS")
     public Object push(HttpServletRequest request) {
         try {
+            /*
+            注意：
+            内置应用：部署在同一台服务器，配置为127.0.0.1或者服务器内网ip即可（如 单体版 boot-server 、微服务版 workbench-server ）
+            第三方应用：则配置为服务器外网ip（如：若依sso、 若依oauth2）
+             */
             String clientIp = JakartaServletUtil.getClientIP(request);
-            log.info("接收到客户端 [{}] 的请求", clientIp);
+            String client = SaSsoServerProcessor.getInstance().getClient();
+            log.info("接收到客户端:[{}]， 应用:[{}] 的请求", clientIp, client);
+
+            R<AppVo> appResult = appFacade.getAppByAppKey(client);
+            if (appResult.getIsSuccess() && appResult.getData() != null) {
+                AppVo appVo = appResult.getData();
+                String allowIp = appVo.getAllowIp();
+                List<String> allowIpList = SaFoxUtil.convertStringToList(allowIp);
+                if (SaFoxUtil.isNotEmpty(allowIpList)) {
+                    boolean matched = allowIpList.stream().anyMatch(ip -> IpUtil.matchIp(ip, clientIp));
+                    if (!matched) {
+                        log.warn("客户端IP:[{}]不在白名单中，应用:[{}], 允许IP:[{}]", clientIp, client, allowIp);
+                        return SaResult.error("IP " + clientIp + " 不在允许访问的白名单中");
+                    }
+                }
+            }
+
             return SaSsoServerProcessor.getInstance().ssoPushS();
         } catch (Exception e) {
             log.error("pushS", e);
             return SaResult.error(e.getMessage());
         }
     }
+
 
     /** 退出登录当前应用 */
     @PostMapping("/anyUser/sso/logout")
