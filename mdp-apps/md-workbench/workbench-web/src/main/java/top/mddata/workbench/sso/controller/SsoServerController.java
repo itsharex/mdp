@@ -9,6 +9,7 @@ import cn.dev33.satoken.util.SaFoxUtil;
 import cn.dev33.satoken.util.SaResult;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.servlet.JakartaServletUtil;
 import cn.hutool.extra.spring.SpringUtil;
 import com.alibaba.fastjson2.JSON;
@@ -159,12 +160,14 @@ public class SsoServerController {
             if (appResult.getIsSuccess() && appResult.getData() != null) {
                 AppVo appVo = appResult.getData();
                 String allowIp = appVo.getAllowIp();
-                List<String> allowIpList = SaFoxUtil.convertStringToList(allowIp);
-                if (CollUtil.isNotEmpty(allowIpList)) {
-                    boolean matched = allowIpList.stream().anyMatch(ip -> IpUtil.matchIp(ip, clientIp));
-                    if (!matched) {
-                        log.warn("客户端IP:[{}]不在白名单中，应用:[{}], 允许IP:[{}]", clientIp, client, allowIp);
-                        return SaResult.error("IP " + clientIp + " 不在允许访问的白名单中");
+                if (StrUtil.isNotEmpty(allowIp)) {
+                    List<String> allowIpList = SaFoxUtil.convertStringToList(allowIp);
+                    if (CollUtil.isNotEmpty(allowIpList)) {
+                        boolean matched = allowIpList.stream().anyMatch(ip -> IpUtil.matchIp(ip, clientIp));
+                        if (!matched) {
+                            log.warn("客户端IP:[{}]不在白名单中，应用:[{}], 允许IP:[{}]", clientIp, client, allowIp);
+                            return SaResult.error("IP " + clientIp + " 不在允许访问的白名单中");
+                        }
                     }
                 }
             }
