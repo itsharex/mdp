@@ -100,7 +100,7 @@ public class SsoUserServiceImpl extends SuperServiceImpl<UserMapper, User> imple
         fileFacade.relateFilesToBiz(RelateFilesToBizDto.builder()
                 .objectId(entity.getAvatar())
                 .objectType(FileObjectType.Console.USER_AVATAR)
-                .build().setKeepFileIds(dto.getAvatar()));
+                .build().setKeepFileIds(dto.getAvatarFileId()));
 
         EventTriggerDto request = new EventTriggerDto();
         request.setEventCode(EventTypeCode.Console.USER_EDIT)

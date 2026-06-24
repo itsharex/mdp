@@ -67,7 +67,7 @@ public class AppApplyDto implements Serializable {
      * 图标
      */
     @Schema(description = "图标")
-    private Long logo;
+    private Long logoFileId;
 
     /**
      * 备注
@@ -80,6 +80,6 @@ public class AppApplyDto implements Serializable {
      * 资质文件
      */
     @Schema(description = "资质文件")
-    private List<Long> credentialFile;
+    private List<Long> credentialFileId;
 
 }

@@ -66,6 +66,6 @@ public class AppInfoUpdateDto implements Serializable {
      * 应用图标
      */
     @Schema(description = "应用图标")
-    private Long logo;
+    private Long logoFileId;
 
 }

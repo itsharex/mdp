@@ -237,7 +237,7 @@ public class AppServiceImpl extends SuperServiceImpl<AppMapper, App> implements 
         fileFacade.relateFilesToBiz(RelateFilesToBizDto.builder()
                 .objectId(entity.getId())
                 .objectType(FileObjectType.Open.APP_LOGO)
-                .build().setKeepFileIds(dto.getLogo()));
+                .build().setKeepFileIds(dto.getLogoFileId()));
 
         cacheOps.del(AppByAppKeyCkBuilder.builder(entity.getAppKey()));
     }
@@ -250,7 +250,7 @@ public class AppServiceImpl extends SuperServiceImpl<AppMapper, App> implements 
         fileFacade.relateFilesToBiz(RelateFilesToBizDto.builder()
                 .objectId(entity.getId())
                 .objectType(FileObjectType.Open.APP_LOGO)
-                .build().setKeepFileIds(dto.getLogo()));
+                .build().setKeepFileIds(dto.getLogoFileId()));
 
         cacheOps.del(AppByAppKeyCkBuilder.builder(entity.getAppKey()));
     }
@@ -268,7 +268,7 @@ public class AppServiceImpl extends SuperServiceImpl<AppMapper, App> implements 
         fileFacade.relateFilesToBiz(RelateFilesToBizDto.builder()
                 .objectId(entity.getId())
                 .objectType(FileObjectType.Open.APP_LOGO)
-                .build().setKeepFileIds(dto.getLogo()));
+                .build().setKeepFileIds(dto.getLogoFileId()));
 
         cacheOps.del(AppByAppKeyCkBuilder.builder(entity.getAppKey()));
         return entity.getId();

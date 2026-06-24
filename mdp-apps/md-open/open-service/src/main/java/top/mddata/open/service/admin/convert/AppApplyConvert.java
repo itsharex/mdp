@@ -19,19 +19,19 @@ import java.util.List;
 public interface AppApplyConvert extends BaseMapStruct<AppApply, AppApplyDto> {
 
     @Override
-    @Mapping(target = AppApplyDto.Fields.credentialFile, ignore = true)
+    @Mapping(target = AppApplyDto.Fields.credentialFileId, ignore = true)
     AppApplyDto toTarget(AppApply appApply);
 
     @Override
-    @Mapping(target = AppApplyDto.Fields.credentialFile, ignore = true)
+    @Mapping(target = AppApplyDto.Fields.credentialFileId, ignore = true)
     List<AppApplyDto> toTargetList(List<AppApply> aList);
 
     @Override
-    @Mapping(target = AppApplyDto.Fields.credentialFile, ignore = true)
+    @Mapping(target = AppApplyDto.Fields.credentialFileId, ignore = true)
     void copySourceProperties(AppApply appApply, @MappingTarget AppApplyDto appApplyDto);
 
     @Override
-    @Mapping(target = AppApplyDto.Fields.credentialFile, ignore = true)
+    @Mapping(target = AppApplyDto.Fields.credentialFileId, ignore = true)
     void copySourceProperties(List<AppApply> aList, @MappingTarget List<AppApplyDto> bList);
 
     @Override

@@ -38,12 +38,12 @@ public class ProfileUserDto {
 
 
     /**
-     * 头像
+     * 头像文件ID
      * <p>
      * 前端传递的必须是文件表的id， 存储到数据库时，需要设置为对象id
      */
-    @Schema(description = "头像")
-    private Long avatar;
+    @Schema(description = "头像文件ID")
+    private Long avatarFileId;
 
     /**
      * 姓名

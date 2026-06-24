@@ -27,8 +27,8 @@ import top.mddata.open.mapper.admin.AppApplyMapper;
 import top.mddata.open.service.admin.AppApplyService;
 import top.mddata.open.service.admin.AppKeysService;
 import top.mddata.open.service.admin.AppService;
-import top.mddata.open.service.admin.utils.RsaTool;
 import top.mddata.open.service.admin.convert.AppApplyConvert;
+import top.mddata.open.service.admin.utils.RsaTool;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -79,12 +79,12 @@ public class AppApplyServiceImpl extends SuperServiceImpl<AppApplyMapper, AppApp
         fileFacade.relateFilesToBiz(RelateFilesToBizDto.builder()
                 .objectId(entity.getLogo())
                 .objectType(FileObjectType.Open.APP_APPLY_LOGO)
-                .build().setKeepFileIds(dto.getLogo()));
+                .build().setKeepFileIds(dto.getLogoFileId()));
 
         fileFacade.relateFilesToBiz(RelateFilesToBizDto.builder()
                 .objectId(entity.getCredentialFile())
                 .objectType(FileObjectType.Open.APP_APPLY_CREDENTIAL_FILE)
-                .build().addKeepFileIds(dto.getCredentialFile()));
+                .build().addKeepFileIds(dto.getCredentialFileId()));
         return entity.getId();
     }
 
@@ -116,8 +116,7 @@ public class AppApplyServiceImpl extends SuperServiceImpl<AppApplyMapper, AppApp
             // 复制头像
             CopyFilesDto copyFilesDto = CopyFilesDto.builder()
                     .objectType(FileObjectType.Open.APP_APPLY_LOGO).objectId(applicationApply.getId())
-                    .build();
-            copyFilesDto.addTargetFiles(FileObjectType.Open.APP_LOGO, app.getId());
+                    .build().addTargetFiles(FileObjectType.Open.APP_LOGO, app.getId());
             Boolean copyFlag = fileFacade.copyFile(copyFilesDto);
 
             // 新建应用
@@ -176,11 +175,11 @@ public class AppApplyServiceImpl extends SuperServiceImpl<AppApplyMapper, AppApp
                 .objectId(entity.getLogo())
                 .objectType(FileObjectType.Open.APP_APPLY_LOGO)
                 .build()
-                .setKeepFileIds(dto.getLogo()));
+                .setKeepFileIds(dto.getLogoFileId()));
         fileFacade.relateFilesToBiz(RelateFilesToBizDto.builder()
                 .objectId(entity.getCredentialFile())
                 .objectType(FileObjectType.Open.APP_APPLY_CREDENTIAL_FILE)
-                .build().addKeepFileIds(dto.getCredentialFile()));
+                .build().addKeepFileIds(dto.getCredentialFileId()));
     }
 
     @Override
@@ -203,12 +202,12 @@ public class AppApplyServiceImpl extends SuperServiceImpl<AppApplyMapper, AppApp
                 .objectId(entity.getLogo())
                 .objectType(FileObjectType.Open.APP_APPLY_LOGO)
                 .build()
-                .setKeepFileIds(dto.getLogo())
+                .setKeepFileIds(dto.getLogoFileId())
         );
 
         fileFacade.relateFilesToBiz(RelateFilesToBizDto.builder()
                 .objectId(entity.getCredentialFile())
                 .objectType(FileObjectType.Open.APP_APPLY_CREDENTIAL_FILE)
-                .build().addKeepFileIds(dto.getCredentialFile()));
+                .build().addKeepFileIds(dto.getCredentialFileId()));
     }
 }
