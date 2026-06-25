@@ -122,11 +122,6 @@ public class AppBase extends SuperEntity<Long> implements Serializable {
     private Boolean ssoPush;
 
     /**
-     * 是否接收单点注销推送
-     */
-    private Boolean ssoSlo;
-
-    /**
      * 接收消息推送的地址
      */
     private String ssoPushUrl;

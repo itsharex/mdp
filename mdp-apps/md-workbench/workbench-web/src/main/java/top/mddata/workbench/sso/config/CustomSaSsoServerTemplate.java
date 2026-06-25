@@ -34,7 +34,7 @@ public class CustomSaSsoServerTemplate extends SaSsoServerTemplate {
         model.setAllowUrl(client.getSsoAllowUrl());    // 所有允许的授权地址，多个用逗号隔开
         model.setIsPush(client.getSsoPush());  // 是否接收消息推送
         model.setPushUrl(client.getSsoPushUrl());   // 推送消息地址
-        model.setIsSlo(client.getSsoSlo());   // 是否接收单点注销回调的消息推送
+        model.setIsSlo(client.getSsoPush());   // 是否接收单点注销回调的消息推送
         return model;
     }
 

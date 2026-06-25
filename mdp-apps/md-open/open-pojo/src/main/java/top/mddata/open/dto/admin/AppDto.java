@@ -157,13 +157,6 @@ public class AppDto implements Serializable {
     private Boolean ssoPush;
 
     /**
-     * 是否接收单点注销推送
-     */
-    @NotNull(message = "请填写是否接收单点注销推送")
-    @Schema(description = "是否接收单点注销推送")
-    private Boolean ssoSlo;
-
-    /**
      * 接收消息推送的地址
      */
     @Size(max = 512, message = "接收消息推送的地址长度不能超过{max}")

@@ -148,12 +148,6 @@ public class AppVo implements Serializable {
     private Boolean ssoPush;
 
     /**
-     * 是否接收单点注销推送
-     */
-    @Schema(description = "是否接收单点注销推送")
-    private Boolean ssoSlo;
-
-    /**
      * 接收消息推送的地址
      */
     @Schema(description = "接收消息推送的地址")
