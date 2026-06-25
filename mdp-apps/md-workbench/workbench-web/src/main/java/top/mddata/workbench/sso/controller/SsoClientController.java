@@ -139,7 +139,7 @@ public class SsoClientController {
         try {
             return SaSsoClientProcessor.getInstance().ssoPushC(clientId);
         } catch (Exception e) {
-            log.error("pushS", e);
+            log.error("pushC", e);
             return SaResult.error(e.getMessage());
         }
     }

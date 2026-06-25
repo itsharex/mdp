@@ -141,7 +141,6 @@ public class SsoServerController {
      * 接收单点登录的客户端接口调用，根据传递的 消息类型 决定处理逻辑
      * 消息类型：校验 ticket
      * 消息类型：单点注销
-     * 消息类型：单点注销回调
      */
     @Operation(summary = "接收单点登录的客户端接口调用", description = "接收单点登录的客户端接口调用，根据传递的 消息类型 决定处理逻辑")
     @GetMapping("/anyUser/sso/pushS")
