@@ -229,8 +229,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
             String encrypt = NotifyPushUtil.encrypt(plaintext, notifyInfo.getNotifyEncodingAesKey(), appId);
             String msgSignature = NotifyPushUtil.calcSignature(
                     notifyInfo.getNotifyToken(), timestamp, nonce, encrypt);
-            JSONObject body = NotifyPushUtil.buildCompatibleBody(
-                    plaintext, encrypt, msgSignature, timestamp, nonce);
+            JSONObject body = NotifyPushUtil.buildCompatibleBody(plaintext, encrypt, notifyInfo.getAppKey());
             requestBody = body.toJSONString();
             requestUrl = appendUrlParams(notifyUrl, null, msgSignature, timestamp, nonce, "aes");
 
@@ -239,8 +238,7 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
             String encrypt = NotifyPushUtil.encrypt(plaintext, notifyInfo.getNotifyEncodingAesKey(), appId);
             String msgSignature = NotifyPushUtil.calcSignature(
                     notifyInfo.getNotifyToken(), timestamp, nonce, encrypt);
-            JSONObject body = NotifyPushUtil.buildEncryptedBody(
-                    encrypt, msgSignature, timestamp, nonce);
+            JSONObject body = NotifyPushUtil.buildEncryptedBody(encrypt, notifyInfo.getAppKey());
             requestBody = body.toJSONString();
             requestUrl = appendUrlParams(notifyUrl, null, msgSignature, timestamp, nonce, "aes");
         }

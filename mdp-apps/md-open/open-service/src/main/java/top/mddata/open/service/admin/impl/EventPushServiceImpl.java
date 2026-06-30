@@ -202,8 +202,7 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
             String encrypt = NotifyPushUtil.encrypt(plaintext, eventPush.getNotifyEncodingAesKey(), appKey);
             String msgSignature = NotifyPushUtil.calcSignature(
                     eventPush.getNotifyToken(), timestamp, nonce, encrypt);
-            JSONObject body = NotifyPushUtil.buildCompatibleBody(
-                    plaintext, encrypt, msgSignature, timestamp, nonce);
+            JSONObject body = NotifyPushUtil.buildCompatibleBody(plaintext, encrypt, appKey);
             requestBody = body.toJSONString();
             requestUrl = appendUrlParams(notifyUrl, null, msgSignature, timestamp, nonce, "aes");
 
@@ -212,8 +211,7 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
             String encrypt = NotifyPushUtil.encrypt(plaintext, eventPush.getNotifyEncodingAesKey(), appKey);
             String msgSignature = NotifyPushUtil.calcSignature(
                     eventPush.getNotifyToken(), timestamp, nonce, encrypt);
-            JSONObject body = NotifyPushUtil.buildEncryptedBody(
-                    encrypt, msgSignature, timestamp, nonce);
+            JSONObject body = NotifyPushUtil.buildEncryptedBody(encrypt, appKey);
             requestBody = body.toJSONString();
             requestUrl = appendUrlParams(notifyUrl, null, msgSignature, timestamp, nonce, "aes");
         }

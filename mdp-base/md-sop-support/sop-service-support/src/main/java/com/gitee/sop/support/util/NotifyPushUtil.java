@@ -191,53 +191,49 @@ public final class NotifyPushUtil {
     }
 
     /**
-     * 构建加密模式的请求体（安全模式/兼容模式）
+     * 构建安全模式的请求体（仅密文 + appKey）。
+     * 签名相关字段（msg_signature/timestamp/nonce/encrypt_type）通过 URL 参数传递。
      *
-     * @param encrypt      密文
-     * @param msgSignature 签名
-     * @param timestamp    时间戳
-     * @param nonce        随机数
-     * @return JSON格式的请求体
+     * @param encrypt 密文
+     * @param appKey  应用标识
+     * @return JSON格式的请求体，字段：encrypt / appKey
      */
-    public static JSONObject buildEncryptedBody(String encrypt, String msgSignature,
-                                                String timestamp, String nonce) {
+    public static JSONObject buildEncryptedBody(String encrypt, String appKey) {
         JSONObject body = new JSONObject();
         body.put("encrypt", encrypt);
-        body.put("msgSignature", msgSignature);
-        body.put("timestamp", timestamp);
-        body.put("nonce", nonce);
+        body.put("appKey", appKey);
         return body;
     }
 
     /**
-     * 构建兼容模式的请求体（明文+密文共存）
+     * 构建兼容模式的请求体（明文字段展开 + 密文 + appKey）。
+     * 签名相关字段（msg_signature/timestamp/nonce/encrypt_type）通过 URL 参数传递。
      *
-     * @param plaintext    明文JSON
-     * @param encrypt      密文
-     * @param msgSignature 签名
-     * @param timestamp    时间戳
-     * @param nonce        随机数
+     * @param plaintext 明文JSON字符串（业务字段会展开到顶层）
+     * @param encrypt   密文
+     * @param appKey    应用标识
      * @return JSON格式的请求体
      */
-    public static JSONObject buildCompatibleBody(String plaintext, String encrypt,
-                                                 String msgSignature, String timestamp, String nonce) {
+    public static JSONObject buildCompatibleBody(String plaintext, String encrypt, String appKey) {
         JSONObject body = new JSONObject();
-        // 兼容模式：明文和密文共存
+        // 兼容模式：明文业务字段展开到顶层
         JSONObject plainData = JSON.parseObject(plaintext);
         body.putAll(plainData);
         body.put("encrypt", encrypt);
-        body.put("msgSignature", msgSignature);
-        body.put("timestamp", timestamp);
-        body.put("nonce", nonce);
+        body.put("appKey", appKey);
         return body;
     }
 
     /**
-     * 生成 EncodingAESKey（43字符）
-     * 由平台生成后提供给开发者
+     * 生成 EncodingAESKey（43字符）。
+     * 算法：生成 32 字节随机数据 → Base64 编码（44字符） → 去掉末尾 '=' 填充（43字符）。
+     * 解码时 {@code Base64Decode(encodingAesKey + "=")} 即可还原 32 字节 AESKey。
      */
     public static String generateEncodingAesKey() {
-        return RandomUtil.randomString(43);
+        byte[] bytes = new byte[32];
+        new java.security.SecureRandom().nextBytes(bytes);
+        // Base64 标准编码 32 字节 = 44 字符（含 1 个 '=' 填充），去掉 '=' 得 43 字符
+        return Base64.getEncoder().encodeToString(bytes).replace("=", "");
     }
 
     /**
@@ -250,9 +246,22 @@ public final class NotifyPushUtil {
 
     /**
      * 将 EncodingAESKey 解码为 32字节 AESKey
+     *
+     * @throws IllegalArgumentException encodingAesKey 不是合法 Base64 时抛出
      */
     private static byte[] decodeAesKey(String encodingAesKey) {
-        return Base64.getDecoder().decode(encodingAesKey + "=");
+        try {
+            byte[] decoded = Base64.getDecoder().decode(encodingAesKey + "=");
+            if (decoded.length != 32) {
+                throw new IllegalArgumentException(
+                        "encodingAesKey 解码后应为 32 字节，实际为 " + decoded.length + " 字节");
+            }
+            return decoded;
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException(
+                    "encodingAesKey 不是合法的 Base64 字符串（长度需为 43，仅含 A-Za-z0-9+/）: "
+                            + encodingAesKey, e);
+        }
     }
 
     /**
