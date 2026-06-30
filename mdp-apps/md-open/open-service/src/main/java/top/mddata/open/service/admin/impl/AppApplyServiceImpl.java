@@ -28,7 +28,6 @@ import top.mddata.open.service.admin.AppApplyService;
 import top.mddata.open.service.admin.AppKeysService;
 import top.mddata.open.service.admin.AppService;
 import top.mddata.open.service.admin.convert.AppApplyConvert;
-import top.mddata.open.service.admin.utils.RsaTool;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -131,7 +130,6 @@ public class AppApplyServiceImpl extends SuperServiceImpl<AppApplyMapper, AppApp
 
             AppKeys appKeys = new AppKeys();
             appKeys.setAppId(app.getId());
-            appKeys.setKeyFormat(RsaTool.KeyFormat.PKCS8.getCode());
             appKeysService.save(appKeys);
             cacheOps.del(AppByAppKeyCkBuilder.builder(app.getAppKey()));
 

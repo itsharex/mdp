@@ -32,12 +32,6 @@ public class AppKeysBase extends SuperEntity<Long> implements Serializable {
     private Long appId;
 
     /**
-     * 秘钥格式
-     * [1-PKCS8(JAVA适用) 2-PKCS1(非JAVA适用)]
-     */
-    private Integer keyFormat;
-
-    /**
      * 通知地址
      */
     private String notifyUrl;
@@ -48,34 +42,22 @@ public class AppKeysBase extends SuperEntity<Long> implements Serializable {
     private Boolean notifyState;
 
     /**
-     * 加密类型
-     * [0-不加密 1-aes加密 2-sm4加密]
+     * 加密模式
+     * [0-明文模式 1-兼容模式 2-安全模式]
      */
     private Integer notifyEncryptionType;
 
     /**
-     * 应用公钥
-     * 平台方用来校验开发者推送过来的数据
+     * 签名校验令牌
+     * 平台和开发者共同持有，用于生成和验证 signature / msg_signature
      */
-    private String publicKeyApp;
+    private String notifyToken;
 
     /**
-     * 应用私钥
-     * 一般由开发者自行生成或平台协助生成
-     * 用来开发者签名推送给平台的数据
+     * AES加解密密钥（43字符）
+     * 平台和开发者共同持有，用于消息体的加密和解密
+     * 生成方式：Base64Decode(encodingAesKey + "=") 得到32字节AESKey
      */
-    private String privateKeyApp;
-
-    /**
-     * 平台公钥
-     * 提供给开发者，用来校验平台推送给开发者的数据签名是否正确
-     */
-    private String publicKeyPlatform;
-
-    /**
-     * 平台私钥
-     * 平台使用，用来签名推送给开发者的数据
-     */
-    private String privateKeyPlatform;
+    private String notifyEncodingAesKey;
 
 }

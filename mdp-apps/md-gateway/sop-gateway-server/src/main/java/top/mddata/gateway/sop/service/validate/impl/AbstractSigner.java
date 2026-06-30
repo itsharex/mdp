@@ -36,13 +36,13 @@ public abstract class AbstractSigner implements Signer {
     protected abstract String buildServerSign(ApiRequestContext apiRequestContext, String secret);
 
     @Override
-    public boolean checkSign(ApiRequestContext apiRequestContext, String publicKey) {
+    public boolean checkSign(ApiRequestContext apiRequestContext, String appSecret) {
         ApiRequest apiRequest = apiRequestContext.getApiRequest();
         String clientSign = apiRequest.getSign();
         if (StringUtils.isBlank(clientSign)) {
             throw new ApiException(ErrorEnum.ISV_MISSING_SIGNATURE, apiRequestContext.getLocale());
         }
-        String serverSign = buildServerSign(apiRequestContext, publicKey);
+        String serverSign = buildServerSign(apiRequestContext, appSecret);
         return clientSign.equals(serverSign);
     }
 }

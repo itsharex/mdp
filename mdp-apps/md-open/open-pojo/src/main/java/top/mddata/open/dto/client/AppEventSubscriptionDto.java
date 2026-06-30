@@ -52,11 +52,11 @@ public class AppEventSubscriptionDto implements Serializable {
 
 
     /**
-     * 加密类型
-     * [0-不加密 1-aes加密 2-sm4加密]
+     * 加密模式
+     * [0-明文模式 1-兼容模式 2-安全模式]
      */
-    @NotNull(message = "请填写加密类型")
-    @Schema(description = "加密类型")
+    @NotNull(message = "请填写加密模式")
+    @Schema(description = "加密模式")
     private Integer notifyEncryptionType;
 
     @Schema(description = "订阅的事件")

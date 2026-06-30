@@ -22,10 +22,15 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Objects;
 
 /**
- * RSA加解密工具
+ * RSA加解密工具。
+ * 已废弃：消息加解密已迁移为 Token + EncodingAESKey 对称加密方案，
+ * 请使用 {@link com.gitee.sop.support.util.NotifyPushUtil}。
  *
  * @author henhen6
+ * @deprecated 已迁移至 Token + EncodingAESKey 方案，请使用
+ *     {@link com.gitee.sop.support.util.NotifyPushUtil}
  */
+@Deprecated
 @Accessors(chain = true)
 @Getter
 public class RsaTool {

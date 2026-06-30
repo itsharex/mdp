@@ -1,7 +1,6 @@
 package top.mddata.open.dto.client;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,8 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * 应用秘钥修改
+ * 开发者修改应用通知配置
+ *
  * @author henhen6
  * @since 2025/11/20 20:48
  */
@@ -23,7 +23,7 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "应用秘钥修改")
+@Schema(description = "开发者修改应用通知配置")
 public class AppKeysUpdateDto implements Serializable {
 
     @Serial
@@ -37,20 +37,16 @@ public class AppKeysUpdateDto implements Serializable {
     private Long appId;
 
     /**
-     * 秘钥格式
-     * [1-PKCS8(JAVA适用) 2-PKCS1(非JAVA适用)]
+     * 通知地址
      */
-    @NotNull(message = "请填写秘钥格式")
-    @Schema(description = "秘钥格式")
-    private Integer keyFormat;
+    @Size(max = 255, message = "通知地址长度不能超过{max}")
+    @Schema(description = "通知地址")
+    private String notifyUrl;
 
     /**
-     * 开发者公钥
-     * 平台方用来校验开发者推送过来的数据
+     * 加密模式
+     * [0-明文模式 1-兼容模式 2-安全模式]
      */
-    @NotEmpty(message = "请填写开发者公钥")
-    @Size(max = 16383, message = "开发者公钥长度不能超过{max}")
-    @Schema(description = "开发者公钥")
-    private String publicKeyApp;
-
+    @Schema(description = "加密模式")
+    private Integer notifyEncryptionType;
 }

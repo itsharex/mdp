@@ -6,10 +6,9 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONException;
+import com.alibaba.fastjson2.JSONObject;
 import com.gitee.sop.support.exception.OpenException;
-import com.gitee.sop.support.exception.SignException;
 import com.gitee.sop.support.message.ApiResponse;
-import com.gitee.sop.support.util.SignUtil;
 import com.google.common.collect.Lists;
 import com.mybatisflex.core.query.QueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -26,21 +25,20 @@ import top.mddata.open.dto.admin.NotifyInfoDto;
 import top.mddata.open.entity.admin.AppKeys;
 import top.mddata.open.entity.admin.NotifyInfo;
 import top.mddata.open.entity.admin.NotifyInfoLog;
+import top.mddata.open.enumeration.admin.EventTypeEnum;
 import top.mddata.open.enumeration.admin.ExecStatusEnum;
+import top.mddata.open.enumeration.admin.NotifyEncryptionTypeEnum;
 import top.mddata.open.mapper.admin.NotifyInfoMapper;
 import top.mddata.open.service.admin.properties.NotifyProperties;
 import top.mddata.open.service.admin.AppKeysService;
 import top.mddata.open.service.admin.NotifyInfoLogService;
 import top.mddata.open.service.admin.NotifyInfoService;
 import top.mddata.open.service.admin.processor.MultiThreadTaskProcessor;
+import com.gitee.sop.support.util.NotifyPushUtil;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -82,68 +80,57 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
     public void retry(LocalDateTime now) {
         ArgumentAssert.notNull(now, "当前时间不能为空");
         LocalDateTime nextTime = now.withSecond(0).withNano(0);
-        List<NotifyInfo> tasks = list(QueryWrapper.create().le(NotifyInfo::getNextRequestTime, nextTime).eq(NotifyInfo::getExecStatus, ExecStatusEnum.FAIL.getCode()));
+        List<NotifyInfo> tasks = list(QueryWrapper.create()
+                .le(NotifyInfo::getNextRequestTime, nextTime)
+                .eq(NotifyInfo::getExecStatus, ExecStatusEnum.FAIL.getCode()));
 
         if (CollUtil.isEmpty(tasks)) {
             log.info("[{}]表无重试记录", NotifyInfo.TABLE_NAME);
             return;
         }
 
-        MultiThreadTaskProcessor processor = new MultiThreadTaskProcessor();
-        // 准备数据：创建N*M个任务列表
         List<List<MultiThreadTaskProcessor.Task>> allTasks = new ArrayList<>();
-
-        int numberOfThreads = notifyProperties.getThreads(); // 使用x个线程
-        int tasksPerList = notifyProperties.getThreadTasks(); // 每个list有x个任务
+        int numberOfThreads = notifyProperties.getThreads();
+        int tasksPerList = notifyProperties.getThreadTasks();
         log.info("启用{}线程，每个线程有{}个任务", numberOfThreads, tasksPerList);
 
-        // 每个线程处理 threadTasks 个任务
         List<List<NotifyInfo>> partition = Lists.partition(tasks, tasksPerList);
-        int totalLists = partition.size(); // 总共x个list
+        int totalLists = partition.size();
         log.info("总共{}个重试任务, 拆分为{}, 每个list有{}个任务, 使用{}个线程", tasks.size(), totalLists, tasksPerList, numberOfThreads);
 
-        // 初始化任务数据
         for (List<NotifyInfo> subTasks : partition) {
             List<MultiThreadTaskProcessor.Task> list = new ArrayList<>();
             for (NotifyInfo subTask : subTasks) {
-                list.add(() -> {
-                    retry(subTask);
-                });
+                list.add(() -> retryTask(subTask));
             }
             allTasks.add(list);
         }
 
-        // 执行多线程处理
         processor.processTasksAsync(allTasks, numberOfThreads);
         log.info("任务已提交");
     }
 
-
-    private void retry(NotifyInfo notifyInfo) {
-        String content = notifyInfo.getRequestData();
-        NotifyInfoDto notifyBO = JSON.parseObject(content, NotifyInfoDto.class);
+    private void retryTask(NotifyInfo notifyInfo) {
         try {
-            log.info("[notify]开始重试, notifyId={}", notifyInfo.getId());
+            log.info("[回调] 开始重试, notifyId={}", notifyInfo.getId());
             if (Objects.equals(notifyInfo.getExecStatus(), ExecStatusEnum.RETRY_OVER.getCode())) {
-                log.warn("重试次数已用尽, notifyId={}", notifyInfo.getId());
+                log.warn("[回调] 重试次数已用尽, notifyId={}", notifyInfo.getId());
                 return;
             }
-            // 发送请求
-            doNotify(notifyBO, notifyInfo);
-        } catch (SignException e) {
-            log.error("[notify]重试签名错误，notifyId={}", notifyInfo.getId(), e);
-            throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, "重试失败，签名错误");
+            doNotify(notifyInfo);
+        } catch (Exception e) {
+            log.error("[回调] 重试异常，notifyId={}", notifyInfo.getId(), e);
+            throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, "重试失败：" + e.getMessage());
         }
     }
-
 
     @Override
     public R<Long> notify(NotifyInfoDto request) {
         try {
             NotifyInfo notifyInfo = buildRecord(request);
-            return R.success(doNotify(request, notifyInfo));
-        } catch (SignException e) {
-            log.error("回调异常，服务端签名失败, request={}", request, e);
+            return R.success(doNotify(notifyInfo));
+        } catch (Exception e) {
+            log.error("[回调] 回调异常, request={}", request, e);
             return R.fail(e.getMessage());
         }
     }
@@ -151,14 +138,11 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
     @Override
     public Long notifyImmediately(Long notifyId) {
         NotifyInfo notifyInfo = getById(notifyId);
-        String content = notifyInfo.getRequestData();
-        NotifyInfoDto notifyBO = JSON.parseObject(content, NotifyInfoDto.class);
-        // 发送请求
         try {
-            return doNotify(notifyBO, notifyInfo);
-        } catch (SignException e) {
-            log.error("回调异常，服务端签名失败, notifyId={}", notifyId, e);
-            throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, "回调失败，签名错误");
+            return doNotify(notifyInfo);
+        } catch (Exception e) {
+            log.error("[回调] 立即推送异常, notifyId={}", notifyId, e);
+            throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, "回调失败：" + e.getMessage());
         }
     }
 
@@ -176,61 +160,126 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         notifyInfo.setExecStatus(ExecStatusEnum.WAIT.getCode());
         notifyInfo.setRemark(request.getRemark());
 
+        // 从 AppKeys 冗余加密配置
+        AppKeys appKeys = appKeysService.getByAppId(request.getAppId());
+        if (appKeys != null) {
+            notifyInfo.setNotifyEncryptionType(appKeys.getNotifyEncryptionType());
+            notifyInfo.setNotifyToken(appKeys.getNotifyToken());
+            notifyInfo.setNotifyEncodingAesKey(appKeys.getNotifyEncodingAesKey());
+            // 如果请求中未指定 notifyUrl，使用 AppKeys 中的
+            if (StrUtil.isBlank(notifyInfo.getNotifyUrl())) {
+                notifyInfo.setNotifyUrl(appKeys.getNotifyUrl());
+            }
+        }
+
         return notifyInfo;
     }
 
-    private Long doNotify(NotifyInfoDto request, NotifyInfo notifyInfo) throws SignException {
+    /**
+     * 执行回调推送，根据加密模式构建不同的请求体和签名
+     */
+    private Long doNotify(NotifyInfo notifyInfo) {
         notifyInfo.setRequestCnt(notifyInfo.getRequestCnt() + 1);
         notifyInfo.setLastRequestTime(LocalDateTime.now());
-        notifyInfo.setNotifyUrl(buildNotifyUrl(request, notifyInfo));
 
         NotifyInfoLog notifyLog = new NotifyInfoLog();
-
         String notifyUrl = notifyInfo.getNotifyUrl();
-        // 构建请求参数
-        Map<String, String> params = buildParams(request);
+
         if (StrUtil.isBlank(notifyUrl)) {
             throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, "回调接口不能为空");
         }
 
-        String json = JSON.toJSONString(params);
-        notifyLog.setRequestData(json);
-        log.info("发送回调请求，notifyUrl={}, content={}", notifyUrl, json);
-        notifyLog.setRequestTime(LocalDateTime.now());
-        try (HttpResponse responseResult = HttpRequest.post(notifyUrl).timeout(notifyProperties.getTimeout()).body(json).execute()) {
-            notifyLog.setResponseTime(LocalDateTime.now());
+        // 构建推送数据
+        String timestamp = NotifyPushUtil.generateTimestamp();
+        String nonce = NotifyPushUtil.generateNonce();
+        String appId = String.valueOf(notifyInfo.getAppId());
 
+        // 解析原始请求数据
+        NotifyInfoDto request = JSON.parseObject(notifyInfo.getRequestData(), NotifyInfoDto.class);
+
+        // 业务数据
+        JSONObject bizData = new JSONObject();
+        bizData.put("type", EventTypeEnum.CALLBACK.name());
+        bizData.put("method", notifyInfo.getApiName());
+        bizData.put("app_key", notifyInfo.getAppKey());
+        bizData.put("version", notifyInfo.getApiVersion());
+        bizData.put("timestamp", timestamp);
+        bizData.put("call_log_id", notifyInfo.getCallLogId());
+        bizData.put("biz_content", request != null ? request.getBizParams() : null);
+        String plaintext = bizData.toJSONString();
+
+        // 根据加密模式构建请求体和URL
+        Integer encryptionType = notifyInfo.getNotifyEncryptionType();
+        if (encryptionType == null) {
+            encryptionType = NotifyEncryptionTypeEnum.PLAINTEXT.getCode();
+        }
+
+        String requestUrl;
+        String requestBody;
+
+        if (Objects.equals(encryptionType, NotifyEncryptionTypeEnum.PLAINTEXT.getCode())) {
+            // 明文模式
+            requestBody = plaintext;
+            String signature = NotifyPushUtil.calcSignature(
+                    notifyInfo.getNotifyToken(), timestamp, nonce, StrPool.EMPTY);
+            requestUrl = appendUrlParams(notifyUrl, signature, null, timestamp, nonce, null);
+
+        } else if (Objects.equals(encryptionType, NotifyEncryptionTypeEnum.COMPATIBLE.getCode())) {
+            // 兼容模式：明文+密文共存
+            String encrypt = NotifyPushUtil.encrypt(plaintext, notifyInfo.getNotifyEncodingAesKey(), appId);
+            String msgSignature = NotifyPushUtil.calcSignature(
+                    notifyInfo.getNotifyToken(), timestamp, nonce, encrypt);
+            JSONObject body = NotifyPushUtil.buildCompatibleBody(
+                    plaintext, encrypt, msgSignature, timestamp, nonce);
+            requestBody = body.toJSONString();
+            requestUrl = appendUrlParams(notifyUrl, null, msgSignature, timestamp, nonce, "aes");
+
+        } else {
+            // 安全模式：纯密文
+            String encrypt = NotifyPushUtil.encrypt(plaintext, notifyInfo.getNotifyEncodingAesKey(), appId);
+            String msgSignature = NotifyPushUtil.calcSignature(
+                    notifyInfo.getNotifyToken(), timestamp, nonce, encrypt);
+            JSONObject body = NotifyPushUtil.buildEncryptedBody(
+                    encrypt, msgSignature, timestamp, nonce);
+            requestBody = body.toJSONString();
+            requestUrl = appendUrlParams(notifyUrl, null, msgSignature, timestamp, nonce, "aes");
+        }
+
+        notifyLog.setRequestData(requestBody);
+        log.info("发送回调请求，url={}, content={}", requestUrl, requestBody);
+        notifyLog.setRequestTime(LocalDateTime.now());
+
+        try (HttpResponse responseResult = HttpRequest.post(requestUrl)
+                .timeout(notifyProperties.getTimeout())
+                .body(requestBody)
+                .execute()) {
+            notifyLog.setResponseTime(LocalDateTime.now());
             String resultContent = responseResult.body();
             notifyLog.setResponseData(resultContent);
 
-            // 返回值一定是JSON格式 {code: 0, msg: ""}
             ApiResponse r = JSON.parseObject(resultContent, ApiResponse.class);
             if (ApiResponse.SUCCESS_CODE.equals(r.getCode())) {
-                // 更新状态
                 notifyInfo.setExecStatus(ExecStatusEnum.SUCCESS.getCode());
                 notifyLog.setErrorMsg(StrPool.EMPTY);
             } else {
-                // 回调失败
-                log.error("返回数据格式异常 result={}, code= {},", resultContent, r.getCode());
+                log.error("[回调] 返回数据异常 result={}, code={}", resultContent, r.getCode());
                 throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, resultContent);
             }
         } catch (Exception e) {
             notifyLog.setResponseTime(LocalDateTime.now());
-            log.error("回调请求失败, notifyUrl={}, params={}, request={}", notifyUrl, params, request, e);
+            log.error("[回调] 回调请求失败, notifyUrl={}, notifyId={}", notifyUrl, notifyInfo.getId(), e);
             notifyInfo.setExecStatus(ExecStatusEnum.FAIL.getCode());
             if (e instanceof JSONException) {
-                notifyLog.setErrorMsg("返回值格式错误，无法解析为 ApiResponse.class，请返回正确格式： {\"code\": \"0\", \"msg\": \"\" }");
+                notifyLog.setErrorMsg("返回值格式错误，无法解析为 ApiResponse.class，请返回正确格式：{\"code\": 0, \"msg\": \"\"}");
             } else if (e instanceof OpenException openEx) {
                 notifyLog.setErrorMsg(openEx.getSubMsg());
             } else {
                 notifyLog.setErrorMsg(e.getMessage());
             }
-
             LocalDateTime nextRequestTime = buildNextSendTime(notifyInfo.getRequestCnt());
             notifyInfo.setNextRequestTime(nextRequestTime);
-
             if (nextRequestTime == null) {
-                log.error("回调请求次数达到上线, notifyUrl={}, params={}", notifyUrl, params);
+                log.error("[回调] 回调请求次数达到上限, notifyUrl={}, notifyId={}", notifyUrl, notifyInfo.getId());
                 notifyInfo.setExecStatus(ExecStatusEnum.RETRY_OVER.getCode());
             }
         } finally {
@@ -243,45 +292,26 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         return notifyInfo.getId();
     }
 
-
-    private Map<String, String> buildParams(NotifyInfoDto request) throws SignException {
-        // 公共请求参数
-        Map<String, String> params = new HashMap<>();
-        String appKey = request.getAppKey();
-        params.put("app_key", appKey);
-        params.put("method", request.getApiName());
-        params.put("format", "json");
-        params.put("charset", request.getCharset());
-        params.put("sign_type", "RSA2");
-        params.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        params.put("version", request.getApiVersion());
-        // 业务参数
-        Map<String, Object> bizContent = request.getBizParams();
-        params.put("biz_content", JSON.toJSONString(bizContent));
-        String content = SignUtil.getSignContent(params);
-        AppKeys appKeys = appKeysService.getByAppId(request.getAppId());
-        // TODO 待修改 根据配置进行
-        if (appKeys != null) {
-            String sign = SignUtil.rsa256Sign(content, appKeys.getPrivateKeyPlatform(), request.getCharset());
-            params.put("sign", sign);
+    /**
+     * 拼接URL参数
+     */
+    private String appendUrlParams(String baseUrl, String signature, String msgSignature,
+                                   String timestamp, String nonce, String encryptType) {
+        StringBuilder sb = new StringBuilder(baseUrl);
+        sb.append(baseUrl.contains("?") ? "&" : "?");
+        if (StrUtil.isNotBlank(signature)) {
+            sb.append("signature=").append(signature).append("&");
         }
-
-        return params;
+        if (StrUtil.isNotBlank(msgSignature)) {
+            sb.append("msg_signature=").append(msgSignature).append("&");
+        }
+        sb.append("timestamp=").append(timestamp).append("&");
+        sb.append("nonce=").append(nonce);
+        if (StrUtil.isNotBlank(encryptType)) {
+            sb.append("&encrypt_type=").append(encryptType);
+        }
+        return sb.toString();
     }
-
-    private String buildNotifyUrl(NotifyInfoDto request, NotifyInfo notifyInfo) {
-        String savedUrl = notifyInfo.getNotifyUrl();
-        if (StrUtil.isNotBlank(savedUrl)) {
-            return savedUrl;
-        }
-        String notifyUrl = request.getNotifyUrl();
-        if (StrUtil.isBlank(notifyUrl)) {
-            AppKeys appKeys = appKeysService.getByAppId(request.getAppId());
-            notifyUrl = appKeys != null ? appKeys.getNotifyUrl() : null;
-        }
-        return notifyUrl;
-    }
-
 
     /**
      * 构建下一次重试时间
@@ -294,11 +324,8 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         if (currentSendCnt >= split.length) {
             return null;
         }
-        // 1m
         String exp = split[currentSendCnt - 1];
-        // 秒,毫秒归零
         LocalDateTime time = LocalDateTime.now().withSecond(0).withNano(0);
-        // 最后一个字符，如：m,h,d
         char ch = exp.charAt(exp.length() - 1);
         int value = NumberUtils.toInt(exp.substring(0, exp.length() - 1));
         return switch (String.valueOf(ch).toLowerCase()) {

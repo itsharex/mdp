@@ -25,7 +25,6 @@ import top.mddata.open.entity.admin.AppKeys;
 import top.mddata.open.query.admin.AppQuery;
 import top.mddata.open.service.admin.AppKeysService;
 import top.mddata.open.service.admin.AppService;
-import top.mddata.open.service.admin.utils.RsaTool;
 import top.mddata.open.vo.admin.AppKeysVo;
 import top.mddata.open.vo.admin.AppVo;
 import top.mddata.open.dto.client.AppDevInfoDto;
@@ -90,35 +89,20 @@ public class ClientAppController extends SuperController<AppService, App> {
     @Operation(summary = "获取秘钥信息", description = "获取秘钥信息")
     @RequestLog(value = "获取秘钥信息")
     public R<AppKeysVo> getKeys(@RequestParam Long appId) {
-        return R.success(appKeysService.getKeys(appId, false));
+        return R.success(appKeysService.getKeys(appId));
     }
 
     /**
-     * 修改秘钥
+     * 修改应用通知配置（通知地址、加密模式等）
      *
      * @param param 表单数据
      * @return 返回影响行数
      */
     @PostMapping("/updateKeys")
-    @Operation(summary = "修改应用秘钥信息", description = "修改应用秘钥信息")
-    @RequestLog(value = "修改应用秘钥信息")
+    @Operation(summary = "修改应用通知配置", description = "修改应用通知配置")
+    @RequestLog(value = "修改应用通知配置")
     public R<AppKeys> updateKeys(@Validated @RequestBody AppKeysUpdateDto param) {
         return R.success(appKeysService.updateKeysByClient(param));
-    }
-
-    /**
-     * 重置开发者秘钥
-     *
-     * @param appId 应用ID
-     * @param keyFormat     秘钥格式，1：PKCS8(JAVA适用)，2：PKCS1(非JAVA适用)
-     * @return 秘钥
-     * @throws Exception 异常
-     */
-    @PostMapping("resetAppKeys")
-    @Operation(summary = "重置秘钥", description = "重置秘钥")
-    @RequestLog(value = "重置秘钥")
-    public R<RsaTool.KeyStore> resetAppKeys(@RequestParam Long appId, @RequestParam Integer keyFormat) throws Exception {
-        return R.success(appKeysService.resetAppKeys(appId, keyFormat));
     }
     // 应用秘钥 相关接口 end
 

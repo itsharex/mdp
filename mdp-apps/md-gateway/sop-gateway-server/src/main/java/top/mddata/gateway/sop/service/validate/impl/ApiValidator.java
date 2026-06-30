@@ -281,14 +281,14 @@ public class ApiValidator implements SopValidator {
             throw new ApiException(ErrorEnum.ISV_MISSING_SIGNATURE, apiRequestContext.getLocale(),
                     apiRequest.takeNameVersion(), apiConfig.getSignName());
         }
-        // ISV上传的公钥
-        String publicKey = appManager.getAppPublicKey(appDto.getId());
-        if (ObjectUtils.isEmpty(publicKey)) {
+        // 应用共享密钥（用于 HMAC-SHA256 签名校验）
+        String appSecret = appManager.getAppSecret(appDto.getId());
+        if (ObjectUtils.isEmpty(appSecret)) {
             throw new ApiException(ErrorEnum.ISV_MISSING_SIGNATURE_CONFIG, apiRequestContext.getLocale(),
                     apiRequest.takeNameVersion());
         }
         // 错误的sign
-        if (!signer.checkSign(apiRequestContext, publicKey)) {
+        if (!signer.checkSign(apiRequestContext, appSecret)) {
             throw new ApiException(ErrorEnum.ISV_INVALID_SIGNATURE, apiRequestContext.getLocale(),
                     apiRequest.takeNameVersion());
         }

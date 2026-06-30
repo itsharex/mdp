@@ -13,7 +13,6 @@ import top.mddata.base.cache.redis.CacheResult;
 import top.mddata.base.model.cache.CacheKey;
 import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
-import top.mddata.base.util.StrPool;
 import top.mddata.common.cache.open.AppKeysCkBuilder;
 import top.mddata.open.dto.admin.AppKeysDto;
 import top.mddata.open.entity.admin.App;
@@ -24,8 +23,8 @@ import top.mddata.open.mapper.admin.AppKeysMapper;
 import top.mddata.open.service.admin.AppKeysService;
 import top.mddata.open.service.admin.AppService;
 import top.mddata.open.service.admin.EventSubscriptionService;
-import top.mddata.open.service.admin.utils.RsaTool;
 import top.mddata.open.vo.admin.AppKeysVo;
+import top.mddata.open.vo.admin.AppVo;
 import top.mddata.open.dto.client.AppEventSubscriptionDto;
 import top.mddata.open.dto.client.AppKeysUpdateDto;
 
@@ -54,6 +53,25 @@ public class AppKeysServiceImpl extends SuperServiceImpl<AppKeysMapper, AppKeys>
 
     @Override
     @Transactional(readOnly = true)
+    public AppKeysVo getByAppKey(String appKey) {
+        ArgumentAssert.notEmpty(appKey, "appKey不能为空");
+        AppVo appVo = appService.getAppByAppKey(appKey);
+        if (appVo == null) {
+            return null;
+        }
+        AppKeys appKeys = getByAppId(appVo.getId());
+        if (appKeys == null) {
+            return null;
+        }
+        AppKeysVo vo = BeanUtil.copyProperties(appKeys, AppKeysVo.class);
+        vo.setAppKey(appVo.getAppKey());
+        vo.setAppSecret(appVo.getAppSecret());
+        vo.setAppName(appVo.getName());
+        return vo;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<AppKeysVo> findByEventCode(String eventCode) {
         Iterable<QueryColumn> queryColumns = QueryMethods.allColumns(AppKeys.class);
         QueryColumn appId = QueryMethods.column(App::getId).as("app_id");
@@ -74,7 +92,7 @@ public class AppKeysServiceImpl extends SuperServiceImpl<AppKeysMapper, AppKeys>
     }
 
     @Override
-    public AppKeysVo getKeys(Long appId, Boolean showPrivateKey) {
+    public AppKeysVo getKeys(Long appId) {
         App app = appService.getByIdCache(appId);
         ArgumentAssert.notNull(app, "应用不存在");
         AppKeys appKeys = getByAppId(appId);
@@ -84,13 +102,6 @@ public class AppKeysServiceImpl extends SuperServiceImpl<AppKeysMapper, AppKeys>
             vo = BeanUtil.copyProperties(appKeys, AppKeysVo.class);
         } else {
             vo = new AppKeysVo();
-            vo.setKeyFormat(RsaTool.KeyFormat.PKCS8.getCode());
-        }
-
-        // 私钥不能提供给开发者
-        if (showPrivateKey == null || !showPrivateKey) {
-            vo.setPrivateKeyApp(null);
-            vo.setPrivateKeyPlatform(null);
         }
         vo.setAppId(appId);
         vo.setAppKey(app.getAppKey());
@@ -105,32 +116,6 @@ public class AppKeysServiceImpl extends SuperServiceImpl<AppKeysMapper, AppKeys>
 
 
     @Override
-    public RsaTool.KeyStore createKeys(Integer keyFormat) throws Exception {
-        RsaTool.KeyFormat format = RsaTool.KeyFormat.of(keyFormat);
-        if (format == null) {
-            format = RsaTool.KeyFormat.PKCS8;
-        }
-        RsaTool rsaTool = new RsaTool(format, RsaTool.KeyLength.LENGTH_2048);
-        return rsaTool.createKeys();
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public RsaTool.KeyStore resetAppKeys(Long appId, Integer keyFormat) throws Exception {
-        RsaTool.KeyStore keyStore = createKeys(keyFormat);
-
-        AppKeysDto dto = new AppKeysDto();
-        dto.setKeyFormat(keyFormat);
-        dto.setAppId(appId);
-        dto.setPrivateKeyApp(keyStore.getPrivateKey());
-        dto.setPublicKeyApp(keyStore.getPublicKey());
-        updateAppKeys(dto);
-        delCacheByAppId(appId);
-        return keyStore;
-    }
-
-
-    @Override
     @Transactional(rollbackFor = Exception.class)
     public AppKeys saveDto(Object save) {
         AppKeysDto dto = (AppKeysDto) save;
@@ -141,9 +126,9 @@ public class AppKeysServiceImpl extends SuperServiceImpl<AppKeysMapper, AppKeys>
         }
         BeanUtils.copyProperties(dto, appKeys);
 
-        if (dto.getNotifyState()) {
+        if (Boolean.TRUE.equals(dto.getNotifyState())) {
             ArgumentAssert.notEmpty(dto.getNotifyUrl(), "请填写通知地址");
-            ArgumentAssert.notNull(dto.getNotifyEncryptionType(), "请填写加密类型");
+            ArgumentAssert.notNull(dto.getNotifyEncryptionType(), "请填写加密模式");
 
             eventSubscriptionService.saveEventSubscriptionByAppId(dto.getAppId(), dto.getEventTypeIdList());
         }
@@ -161,8 +146,6 @@ public class AppKeysServiceImpl extends SuperServiceImpl<AppKeysMapper, AppKeys>
         if (appKeys == null) {
             appKeys = new AppKeys();
             appKeys.setAppId(dto.getAppId());
-            appKeys.setPrivateKeyPlatform(StrPool.EMPTY);
-            appKeys.setPublicKeyPlatform(StrPool.EMPTY);
         }
         BeanUtils.copyProperties(dto, appKeys);
         saveOrUpdate(appKeys);
@@ -178,10 +161,7 @@ public class AppKeysServiceImpl extends SuperServiceImpl<AppKeysMapper, AppKeys>
             appKeys = new AppKeys();
             appKeys.setAppId(dto.getAppId());
         }
-        appKeys.setKeyFormat(dto.getKeyFormat());
-        appKeys.setPrivateKeyApp(dto.getPrivateKeyApp());
-        appKeys.setPublicKeyApp(dto.getPublicKeyApp());
-
+        BeanUtils.copyProperties(dto, appKeys);
         saveOrUpdate(appKeys);
         delCacheByAppId(appKeys.getAppId());
         return appKeys;
@@ -194,9 +174,6 @@ public class AppKeysServiceImpl extends SuperServiceImpl<AppKeysMapper, AppKeys>
         if (appKeys == null) {
             appKeys = new AppKeys();
             appKeys.setAppId(param.getAppId());
-            appKeys.setPrivateKeyPlatform(StrPool.EMPTY);
-            appKeys.setPublicKeyPlatform(StrPool.EMPTY);
-            appKeys.setPublicKeyApp(StrPool.EMPTY);
         }
         appKeys.setNotifyUrl(param.getNotifyUrl());
         appKeys.setNotifyEncryptionType(param.getNotifyEncryptionType());

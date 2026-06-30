@@ -53,6 +53,22 @@ public class EventPushBase extends SuperEntity<Long> implements Serializable {
     private String notifyUrl;
 
     /**
+     * 加密模式（冗余自 AppKeys，避免推送时再查库）
+     * [0-明文模式 1-兼容模式 2-安全模式]
+     */
+    private Integer notifyEncryptionType;
+
+    /**
+     * 签名校验令牌（冗余自 AppKeys）
+     */
+    private String notifyToken;
+
+    /**
+     * AES加解密密钥（冗余自 AppKeys）
+     */
+    private String notifyEncodingAesKey;
+
+    /**
      * 请求参数
      */
     private String requestData;

@@ -19,9 +19,9 @@ import java.util.Map;
 
 /**
  * 平台签名验证实现。
+ * 使用 HMAC-SHA256 对称签名，以 appSecret 作为共享密钥。
  *
  * @author 六如
- * @see <a href="https://docs.open.alipay.com/291/106118">平台签名</a>
  */
 @Slf4j
 @Component
@@ -31,20 +31,15 @@ public class PlatformSigner implements Signer {
     private GateApiConfig apiConfig;
 
     @Override
-    public boolean checkSign(ApiRequestContext apiRequestContext, String publicKey) {
+    public boolean checkSign(ApiRequestContext apiRequestContext, String appSecret) {
         ApiRequest apiRequest = apiRequestContext.getApiRequest();
-        // 服务端存的是公钥
         String charset = apiRequest.getCharset();
-        String signType = apiRequest.getSignType();
-        if (signType == null) {
-            throw new ApiException(ErrorEnum.ISV_DECRYPTION_ERROR_MISSING_ENCRYPT_TYPE, apiRequestContext.getLocale());
-        }
         if (charset == null) {
             throw new ApiException(ErrorEnum.ISV_INVALID_CHARSET, apiRequestContext.getLocale());
         }
         Map<String, String> params = buildParams(apiRequest);
         try {
-            return SignUtil.rsaCheckV2(params, publicKey, charset, signType, apiConfig);
+            return SignUtil.hmacSha256Check(params, appSecret, charset, apiConfig);
         } catch (SignException e) {
             ErrorEnum errorEnum = ErrorEnum.getByCode(e.getErrCode(), e.getSubCode());
             log.error("验签错误, code={}, subCode={}, apiRequest={}",

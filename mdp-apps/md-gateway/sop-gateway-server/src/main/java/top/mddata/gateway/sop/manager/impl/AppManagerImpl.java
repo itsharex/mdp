@@ -14,17 +14,14 @@ import top.mddata.base.model.cache.CacheKey;
 import top.mddata.common.cache.open.AppApiCkBuilder;
 import top.mddata.common.cache.open.AppByAppKeyCkBuilder;
 import top.mddata.common.cache.open.AppCkBuilder;
-import top.mddata.common.cache.open.AppKeysCkBuilder;
 import top.mddata.common.enumeration.BooleanEnum;
 import top.mddata.gateway.sop.common.ApiDto;
 import top.mddata.gateway.sop.common.AppDto;
 import top.mddata.gateway.sop.manager.AppManager;
 import top.mddata.open.entity.admin.App;
 import top.mddata.open.entity.admin.AppGroupRel;
-import top.mddata.open.entity.admin.AppKeys;
 import top.mddata.open.entity.admin.GroupApiRel;
 import top.mddata.open.entity.admin.ScopeGroup;
-import top.mddata.open.mapper.admin.AppKeysMapper;
 import top.mddata.open.mapper.admin.AppMapper;
 import top.mddata.open.mapper.admin.GroupApiRelMapper;
 
@@ -39,8 +36,6 @@ import java.util.List;
 public class AppManagerImpl implements AppManager {
     @Resource
     private AppMapper mapper;
-    @Resource
-    private AppKeysMapper appKeysMapper;
     @Resource
     private GroupApiRelMapper groupApiRelMapper;
     @Resource
@@ -91,10 +86,10 @@ public class AppManagerImpl implements AppManager {
     }
 
     @Override
-    public String getAppPublicKey(Long appId) {
-        CacheKey cacheKey = AppKeysCkBuilder.builder(appId);
-        CacheResult<AppKeys> result = cacheOps.get(cacheKey, k -> appKeysMapper.selectOneByQuery(QueryWrapper.create().eq(AppKeys::getAppId, appId)));
-        AppKeys appKeys = result.getValue();
-        return appKeys != null ? appKeys.getPublicKeyApp() : null;
+    public String getAppSecret(Long appId) {
+        CacheKey entityKey = AppCkBuilder.builder(appId);
+        CacheResult<App> result = cacheOps.get(entityKey, k -> mapper.selectOneById(appId));
+        App app = result.getValue();
+        return app != null ? app.getAppSecret() : null;
     }
 }

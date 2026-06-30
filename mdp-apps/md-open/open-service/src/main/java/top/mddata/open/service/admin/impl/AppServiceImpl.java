@@ -39,7 +39,6 @@ import top.mddata.open.mapper.admin.AppKeysMapper;
 import top.mddata.open.mapper.admin.AppMapper;
 import top.mddata.open.query.admin.AppQuery;
 import top.mddata.open.service.admin.AppService;
-import top.mddata.open.service.admin.utils.RsaTool;
 import top.mddata.open.vo.admin.AppVo;
 
 import java.io.Serializable;
@@ -230,7 +229,6 @@ public class AppServiceImpl extends SuperServiceImpl<AppMapper, App> implements 
 
         AppKeys appKeys = new AppKeys();
         appKeys.setAppId(entity.getId());
-        appKeys.setKeyFormat(RsaTool.KeyFormat.PKCS8.getCode());
         appKeysMapper.insert(appKeys);
 
 //        关联LOGO

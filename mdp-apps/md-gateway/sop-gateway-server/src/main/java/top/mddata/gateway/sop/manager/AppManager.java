@@ -27,10 +27,10 @@ public interface AppManager {
     boolean hasPermission(Long id, ApiDto apiDto);
 
     /**
-     * 获取应用公钥
+     * 获取应用共享密钥（用于 HMAC-SHA256 对称签名校验）
      *
      * @param id 应用ID
-     * @return String
+     * @return appSecret
      */
-    String getAppPublicKey(Long id);
+    String getAppSecret(Long id);
 }

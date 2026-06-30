@@ -8,6 +8,8 @@ import com.gitee.sop.support.exception.SignException;
 import org.apache.commons.codec.binary.Base64;
 
 import javax.crypto.Cipher;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -41,6 +43,12 @@ public class SignUtil {
     public static final String RSA2 = "RSA2";
     public static final String SHA1_WITH_RSA = "SHA1WithRSA";
     public static final String SHA256_WITH_RSA = "SHA256WithRSA";
+
+    /**
+     * HMAC-SHA256 签名类型（对称签名，使用 appSecret 作为共享密钥）
+     */
+    public static final String HMAC_SHA256 = "HMAC-SHA256";
+    private static final String HMAC_SHA256_ALGORITHM = "HmacSHA256";
     /**
      * GBK字符集
      **/
@@ -655,6 +663,47 @@ public class SignUtil {
         } catch (Exception e) {
             throw new SignException(INVALID, ISV_INVALID_SIGNATURE, e);
         }
+    }
+
+    // ========== HMAC-SHA256 对称签名 ==========
+
+    /**
+     * HMAC-SHA256 签名
+     *
+     * @param content   待签名内容（按参数名字典序拼接的字符串）
+     * @param appSecret 共享密钥
+     * @param charset   字符集
+     * @return Base64 编码的签名
+     */
+    public static String hmacSha256Sign(String content, String appSecret, String charset) throws SignException {
+        try {
+            String effectiveCharset = StrUtil.isEmpty(charset) ? "UTF-8" : charset;
+            Mac mac = Mac.getInstance(HMAC_SHA256_ALGORITHM);
+            SecretKeySpec keySpec = new SecretKeySpec(
+                    appSecret.getBytes(effectiveCharset), HMAC_SHA256_ALGORITHM);
+            mac.init(keySpec);
+            byte[] rawHmac = mac.doFinal(content.getBytes(effectiveCharset));
+            return Base64.encodeBase64String(rawHmac);
+        } catch (Exception e) {
+            throw new SignException(INVALID, ISV_INVALID_SIGNATURE, e);
+        }
+    }
+
+    /**
+     * HMAC-SHA256 验签
+     *
+     * @param params    请求参数（含 sign）
+     * @param appSecret 共享密钥
+     * @param charset   字符集
+     * @param apiConfig 接口配置
+     * @return 签名是否匹配
+     */
+    public static boolean hmacSha256Check(Map<String, ?> params, String appSecret,
+                                          String charset, ApiConfig apiConfig) throws SignException {
+        String sign = String.valueOf(params.get(apiConfig.getSignName()));
+        String content = getSignCheckContentV2(params, apiConfig);
+        String expected = hmacSha256Sign(content, appSecret, charset);
+        return expected.equals(sign);
     }
 
 }

@@ -30,7 +30,6 @@ import top.mddata.open.query.admin.AppQuery;
 import top.mddata.open.service.admin.AppGroupRelService;
 import top.mddata.open.service.admin.AppKeysService;
 import top.mddata.open.service.admin.AppService;
-import top.mddata.open.service.admin.utils.RsaTool;
 import top.mddata.open.vo.admin.AppKeysVo;
 import top.mddata.open.vo.admin.AppVo;
 
@@ -201,32 +200,32 @@ public class AppController extends SuperController<AppService, App> {
     @Operation(summary = "获取秘钥信息", description = "获取秘钥信息")
     @RequestLog(value = "获取秘钥信息")
     public R<AppKeysVo> getKeys(@RequestParam Long appId) {
-        return R.success(appKeysService.getKeys(appId, true));
+        return R.success(appKeysService.getKeys(appId));
     }
 
     /**
-     * 生成秘钥
+     * 根据appKey查询应用秘钥（含通知加密配置）
+     * 供内部Feign调用（如 api-web 的回调控制器）
      *
-     * @param keyFormat 秘钥格式，1：PKCS8(JAVA适用)，2：PKCS1(非JAVA适用)
-     * @return 秘钥
-     * @throws Exception 异常
+     * @param appKey 应用标识
+     * @return 秘钥VO
      */
-    @PostMapping("createKeys")
-    @Operation(summary = "生成秘钥", description = "生成秘钥")
-    @RequestLog(value = "生成秘钥")
-    public R<RsaTool.KeyStore> createKeys(@RequestParam Integer keyFormat) throws Exception {
-        return R.success(appKeysService.createKeys(keyFormat));
+    @GetMapping("/getAppKeysByAppKey")
+    @Operation(summary = "根据appKey查询秘钥", description = "根据appKey查询应用秘钥（含通知加密配置）")
+    @RequestLog("'根据appKey查询秘钥:' + #appKey")
+    public R<AppKeysVo> getAppKeysByAppKey(@RequestParam String appKey) {
+        return R.success(appKeysService.getByAppKey(appKey));
     }
 
     /**
-     * 修改秘钥
+     * 修改应用秘钥配置（通知地址、加密模式、Token、EncodingAESKey等）
      *
      * @param param 表单数据
      * @return 返回影响行数
      */
     @PostMapping("/updateKeys")
-    @Operation(summary = "修改秘钥", description = "修改秘钥")
-    @RequestLog(value = "修改秘钥")
+    @Operation(summary = "修改秘钥配置", description = "修改应用秘钥配置")
+    @RequestLog(value = "修改秘钥配置")
     public R<AppKeys> updateKeys(@Validated @RequestBody AppKeysDto param) {
         return R.success(appKeysService.saveDto(param));
     }

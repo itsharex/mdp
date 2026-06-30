@@ -13,9 +13,9 @@ public interface Signer {
      * 签名校验
      *
      * @param apiRequestContext 参数
-     * @param publicKey         公钥
+     * @param appSecret         应用共享密钥
      * @return true签名正确
      */
-    boolean checkSign(ApiRequestContext apiRequestContext, String publicKey);
+    boolean checkSign(ApiRequestContext apiRequestContext, String appSecret);
 
 }
