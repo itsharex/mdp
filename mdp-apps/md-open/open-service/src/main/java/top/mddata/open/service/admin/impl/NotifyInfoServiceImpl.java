@@ -227,20 +227,24 @@ public class NotifyInfoServiceImpl extends SuperServiceImpl<NotifyInfoMapper, No
         } else if (Objects.equals(encryptionType, NotifyEncryptionTypeEnum.COMPATIBLE.getCode())) {
             // 兼容模式：明文+密文共存
             String encrypt = NotifyPushUtil.encrypt(plaintext, notifyInfo.getNotifyEncodingAesKey(), appId);
+            String signature = NotifyPushUtil.calcSignature(
+                    notifyInfo.getNotifyToken(), timestamp, nonce, StrPool.EMPTY);
             String msgSignature = NotifyPushUtil.calcSignature(
                     notifyInfo.getNotifyToken(), timestamp, nonce, encrypt);
             JSONObject body = NotifyPushUtil.buildCompatibleBody(plaintext, encrypt, notifyInfo.getAppKey());
             requestBody = body.toJSONString();
-            requestUrl = appendUrlParams(notifyUrl, null, msgSignature, timestamp, nonce, "aes");
+            requestUrl = appendUrlParams(notifyUrl, signature, msgSignature, timestamp, nonce, "aes");
 
         } else {
             // 安全模式：纯密文
             String encrypt = NotifyPushUtil.encrypt(plaintext, notifyInfo.getNotifyEncodingAesKey(), appId);
+            String signature = NotifyPushUtil.calcSignature(
+                    notifyInfo.getNotifyToken(), timestamp, nonce, StrPool.EMPTY);
             String msgSignature = NotifyPushUtil.calcSignature(
                     notifyInfo.getNotifyToken(), timestamp, nonce, encrypt);
             JSONObject body = NotifyPushUtil.buildEncryptedBody(encrypt, notifyInfo.getAppKey());
             requestBody = body.toJSONString();
-            requestUrl = appendUrlParams(notifyUrl, null, msgSignature, timestamp, nonce, "aes");
+            requestUrl = appendUrlParams(notifyUrl, signature, msgSignature, timestamp, nonce, "aes");
         }
 
         notifyLog.setRequestData(requestBody);
