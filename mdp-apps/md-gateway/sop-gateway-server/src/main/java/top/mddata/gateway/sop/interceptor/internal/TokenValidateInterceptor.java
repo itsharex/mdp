@@ -29,9 +29,10 @@ public class TokenValidateInterceptor implements RouteInterceptor {
         ApiRequestContext apiRequestContext = routeContext.getApiRequestContext();
         ApiDto apiInfo = routeContext.getApi();
         // 走到这里token肯定有值
+        String appKey = apiRequestContext.getApiRequest().getAppKey();
         String accessToken = apiRequestContext.getApiRequest().getAccessToken();
 
-        if (!checkToken(accessToken, apiRequestContext, apiInfo)) {
+        if (!checkToken(appKey, accessToken, apiRequestContext, apiInfo)) {
             throw new ApiException(ErrorEnum.AOP_INVALID_AUTH_TOKEN, apiRequestContext.getLocale());
         }
     }
@@ -44,17 +45,22 @@ public class TokenValidateInterceptor implements RouteInterceptor {
     }
 
     /**
-     * 校验token是否合法（从 Redis 查询 token→appId 映射是否存在）
+     * 校验token是否合法（从 Redis 查询 {appKey}:{token}→appId 映射是否存在）。
+     * <p>
+     * 使用复合 key 将 token 与 appKey 绑定校验，防止 A 应用的 token
+     * 被用于冒充 B 应用调用接口。
      *
+     * @param appKey      应用标识
      * @param accessToken 访问令牌
      * @param context     上下文
      * @param apiInfoDTO  接口信息
      * @return 返回true表示token合法，false不合法
      */
-    protected boolean checkToken(String accessToken, ApiRequestContext context, ApiDto apiInfoDTO) {
-        Long appId = appManager.getAppIdByAccessToken(accessToken);
+    protected boolean checkToken(String appKey, String accessToken, ApiRequestContext context, ApiDto apiInfoDTO) {
+        Long appId = appManager.getAppIdByAccessToken(appKey, accessToken);
         if (appId == null) {
-            log.warn("accessToken无效或已过期, method={}", apiInfoDTO.getMethodName());
+            log.warn("accessToken无效、已过期或与当前应用不匹配, appKey={}, method={}",
+                    appKey, apiInfoDTO.getMethodName());
             return false;
         }
         return true;

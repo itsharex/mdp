@@ -109,11 +109,11 @@ public class AppManagerImpl implements AppManager {
     }
 
     @Override
-    public Long getAppIdByAccessToken(String accessToken) {
-        if (accessToken == null) {
+    public Long getAppIdByAccessToken(String appKey, String accessToken) {
+        if (appKey == null || accessToken == null) {
             return null;
         }
-        CacheKey tokenKey = AccessTokenCkBuilder.builder(accessToken);
+        CacheKey tokenKey = AccessTokenCkBuilder.builder(appKey, accessToken);
         CacheResult<Long> result = cacheOps.get(tokenKey);
         return result.isNullVal() ? null : result.asLong();
     }

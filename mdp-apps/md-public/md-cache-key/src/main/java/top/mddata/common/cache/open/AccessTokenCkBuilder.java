@@ -8,7 +8,10 @@ import java.time.Duration;
 
 /**
  * 访问令牌
- * token -> appId
+ * {appKey}:{token} -> appId
+ * <p>
+ * 复合 key 将 token 与 appKey 物理绑定，防止攻击者
+ * 用 A 应用的 token 冒充 B 应用调用接口。
  *
  * @author henhen
  * @since 2026/7/1
@@ -20,14 +23,17 @@ public class AccessTokenCkBuilder implements CacheKeyBuilder {
      */
     public static final Duration DEFAULT_EXPIRE = Duration.ofHours(2);
 
+    private static final String KEY_SEPARATOR = ":";
+
     /**
-     * 构造器
+     * 构造复合缓存 key：{appKey}:{token}
      *
-     * @param token 访问令牌
+     * @param appKey 应用标识
+     * @param token  访问令牌
      * @return key
      */
-    public static CacheKey builder(String token) {
-        return new AccessTokenCkBuilder().key(token);
+    public static CacheKey builder(String appKey, String token) {
+        return new AccessTokenCkBuilder().key(appKey + KEY_SEPARATOR + token);
     }
 
     @Override

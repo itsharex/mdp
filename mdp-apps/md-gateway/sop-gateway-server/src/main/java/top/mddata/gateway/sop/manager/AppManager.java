@@ -43,10 +43,14 @@ public interface AppManager {
     String getPublicKeyApp(Long appId);
 
     /**
-     * 校验 accessToken 是否有效，返回对应的应用ID
+     * 校验 accessToken 是否有效，返回对应的应用ID。
+     * <p>
+     * 使用 {appKey}:{token} 复合 key 查询，确保 token 与 appKey 绑定，
+     * 防止攻击者用 A 应用的 token 冒充 B 应用调用接口。
      *
+     * @param appKey      应用标识
      * @param accessToken 访问令牌
      * @return 应用ID；无效返回 null
      */
-    Long getAppIdByAccessToken(String accessToken);
+    Long getAppIdByAccessToken(String appKey, String accessToken);
 }
