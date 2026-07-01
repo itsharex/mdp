@@ -72,9 +72,9 @@ public class NotifyInfoDto implements Serializable {
     private String charset;
 
     /**
-     * token,没有返回null
+     * 访问令牌，没有返回null
      */
-    private String appAuthToken;
+    private String accessToken;
 
     /**
      * 客户端ip

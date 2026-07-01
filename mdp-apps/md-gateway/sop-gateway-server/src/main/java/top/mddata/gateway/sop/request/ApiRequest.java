@@ -18,12 +18,12 @@ import java.io.Serializable;
  * version	        String	是	    3	    调用的接口版本，固定为：1.0	1.0
  * format	        String	否	    40	    仅支持JSON	                    JSON
  * charset	        String	是	    10	    请求使用的编码格式，如utf-8,gbk,gb2312等	utf-8
- * sign_type	    String	是	    10	    商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2	RSA2
+ * signType	    String	是	    10	    商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2	RSA2
  * sign	            String	是	    344	    商户请求参数的签名串，详见签名	详见示例
  * timestamp	    String	是	    19	    发送请求的时间，格式"yyyy-MM-dd HH:mm:ss"	2014-07-24 03:07:50
  * notifyUrl	    String	否	    256	    平台服务器主动通知商户服务器里指定的页面http/https路径。	http://api.test.alipay.net/atinterface/receive_notify.htm
- * appAuthToken	    String	否	    40	    详见应用授权概述
- * biz_content	    String	是		        请求参数的集合，最大长度不限，除公共参数外所有请求参数都必须放在这个参数中传递，具体参照各产品快速接入文档
+ * accessToken	    String	否	    512	    访问令牌，通过 accessToken.get 接口获取
+ * bizContent	    String	是		        请求参数的集合，最大长度不限，除公共参数外所有请求参数都必须放在这个参数中传递，具体参照各产品快速接入文档
  *</pre>
  * @author 六如
  */
@@ -49,6 +49,15 @@ public class ApiRequest implements Serializable {
     @NotBlank(message = "method不能为空")
     @Max(128)
     private String method;
+
+    /**
+     * 调用的接口版本，固定为：1.0
+     *
+     * @mock 1.0
+     */
+    @NotBlank(message = "version不能为空")
+    @Max(10)
+    private String version;
 
     /**
      * 仅支持JSON
@@ -91,14 +100,6 @@ public class ApiRequest implements Serializable {
     @Max(19)
     private String timestamp;
 
-    /**
-     * 调用的接口版本，固定为：1.0
-     *
-     * @mock 1.0
-     */
-    @NotBlank(message = "version不能为空")
-    @Max(10)
-    private String version;
 
     /**
      * 平台服务器主动通知商户服务器里指定的页面http/https路径
@@ -114,10 +115,10 @@ public class ApiRequest implements Serializable {
     private Long apiCallLogId;
 
     /**
-     * 授权token,详见应用授权概述
+     * 访问令牌，通过 accessToken.get 接口获取
      */
-    @Max(64)
-    private String appAuthToken;
+    @Max(512)
+    private String accessToken;
 
     /**
      * 请求参数的集合，最大长度不限，除公共参数外所有请求参数都必须放在这个参数中传递，具体参照各产品快速接入文档

@@ -36,7 +36,7 @@ public class DubboConfiguration {
     /**
      * 每10 分钟执行一次
      */
-    @Scheduled(cron = "0 0/10 * * * ?")
+//    @Scheduled(cron = "0 0/10 * * * ?")
     public void runNotifyInfo() {
         notifyInfoService.retry(LocalDateTime.now());
     }
@@ -44,7 +44,7 @@ public class DubboConfiguration {
     /**
      * 每8分钟执行一次
      */
-    @Scheduled(cron = "0 0/8 * * * ?")
+//    @Scheduled(cron = "0 0/8 * * * ?")
     public void runEventPush() {
         eventPushService.retry(LocalDateTime.now());
     }

@@ -35,6 +35,11 @@
         </dependency>
         <dependency>
             <groupId>top.mddata.apps</groupId>
+            <artifactId>open-dao</artifactId>
+            <version>${revision}</version>
+        </dependency>
+        <dependency>
+            <groupId>top.mddata.apps</groupId>
             <artifactId>md-common-dao</artifactId>
             <version>${revision}</version>
         </dependency>

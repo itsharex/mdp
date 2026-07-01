@@ -19,7 +19,7 @@ import java.util.Map;
 
 /**
  * 平台签名验证实现。
- * 使用 HMAC-SHA256 对称签名，以 appSecret 作为共享密钥。
+ * 使用 RSA2（SHA256WithRSA）非对称签名，以开发者应用公钥（publicKeyApp）验证签名。
  *
  * @author 六如
  */
@@ -31,15 +31,16 @@ public class PlatformSigner implements Signer {
     private GateApiConfig apiConfig;
 
     @Override
-    public boolean checkSign(ApiRequestContext apiRequestContext, String appSecret) {
+    public boolean checkSign(ApiRequestContext apiRequestContext, String publicKeyApp) {
         ApiRequest apiRequest = apiRequestContext.getApiRequest();
         String charset = apiRequest.getCharset();
         if (charset == null) {
             throw new ApiException(ErrorEnum.ISV_INVALID_CHARSET, apiRequestContext.getLocale());
         }
+        String signType = apiRequest.getSignType();
         Map<String, String> params = buildParams(apiRequest);
         try {
-            return SignUtil.hmacSha256Check(params, appSecret, charset, apiConfig);
+            return SignUtil.rsaCheckV2(params, publicKeyApp, charset, signType, apiConfig);
         } catch (SignException e) {
             ErrorEnum errorEnum = ErrorEnum.getByCode(e.getErrCode(), e.getSubCode());
             log.error("验签错误, code={}, subCode={}, apiRequest={}",
@@ -63,7 +64,7 @@ public class PlatformSigner implements Signer {
         params.put(apiConfig.getTimestampName(), apiRequest.getTimestamp());
         params.put(apiConfig.getVersionName(), apiRequest.getVersion());
         params.put(apiConfig.getNotifyUrlName(), apiRequest.getNotifyUrl());
-        params.put(apiConfig.getAppAuthTokenName(), apiRequest.getAppAuthToken());
+        params.put(apiConfig.getAccessTokenName(), apiRequest.getAccessToken());
         params.put(apiConfig.getBizContentName(), apiRequest.getBizContent());
         return params;
     }

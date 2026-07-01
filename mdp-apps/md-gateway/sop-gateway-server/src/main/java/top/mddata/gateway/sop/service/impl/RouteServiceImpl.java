@@ -243,7 +243,7 @@ public class RouteServiceImpl implements RouteService {
         defaultOpenRequest.setAppKey(apiRequest.getAppKey());
         defaultOpenRequest.setApiName(apiRequest.getMethod());
         defaultOpenRequest.setVersion(apiRequest.getVersion());
-        defaultOpenRequest.setAppAuthToken(apiRequest.getAppAuthToken());
+        defaultOpenRequest.setAccessToken(apiRequest.getAccessToken());
         defaultOpenRequest.setClientIp(apiRequestContext.getIp());
         defaultOpenRequest.setNotifyUrl(apiRequest.getNotifyUrl());
         defaultOpenRequest.setTraceId(apiRequestContext.getTraceId());

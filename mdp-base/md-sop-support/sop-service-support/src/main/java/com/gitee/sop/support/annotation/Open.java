@@ -32,9 +32,14 @@ public @interface Open {
     boolean permission() default false;
 
     /**
-     * 是否需要appAuthToken，设置为true，网关端会校验token是否存在
+     * 是否需要accessToken，设置为true，网关端会校验token是否存在
      */
-    boolean needToken() default false;
+    boolean needToken() default true;
+
+    /**
+     * 是否需要签名校验，设置为true，网关端会校验请求签名（使用RSA2算法）
+     */
+    boolean needSign() default false;
 
     /**
      * 是否有公共响应参数,默认true
@@ -43,8 +48,8 @@ public @interface Open {
      * {
      *     "code": "0",
      *     "msg": "",
-     *     "sub_code": "",
-     *     "sub_msg": "",
+     *     "subCode": "",
+     *     "subMsg": "",
      *     "data": {
      *         "id": 1,
      *         "name": "Jim"

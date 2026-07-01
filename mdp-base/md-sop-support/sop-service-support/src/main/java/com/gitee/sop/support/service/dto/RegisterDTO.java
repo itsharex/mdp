@@ -59,9 +59,14 @@ public class RegisterDTO implements Serializable {
     private Integer permission;
 
     /**
-     * 是否需要appAuthToken
+     * 是否需要accessToken
      */
     private Integer needToken;
+
+    /**
+     * 是否需要签名校验
+     */
+    private Integer needSign;
 
     /**
      * 是否有公共响应参数

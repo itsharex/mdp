@@ -83,14 +83,14 @@ public class ApiValidator implements SopValidator {
         ApiDto apiInfo = apiManager.getByMethodAndVersion(apiRequest.getMethod(), apiRequest.getVersion());
         // 检查接口信息
         checkApiInfo(apiRequestContext, apiInfo);
-        // 校验字段完整性
-        checkField(apiRequestContext);
+        // 校验字段完整性（签名相关字段按接口 needSign 配置决定是否检查）
+        checkField(apiRequestContext, apiInfo);
         // 检查应用信息
         AppDto appDto = checkApp(apiRequestContext);
         // 检查isv接口授权
         checkPermission(apiRequestContext, apiInfo, appDto);
-        // 校验签名
-        checkSign(apiRequestContext, appDto);
+        // 校验签名（根据接口 needSign 配置决定是否校验）
+        checkSign(apiRequestContext, apiInfo, appDto);
         // 检查是否超时
         checkTimeout(apiRequestContext);
         // 检查格式化
@@ -146,7 +146,7 @@ public class ApiValidator implements SopValidator {
         }
     }
 
-    public void checkField(ApiRequestContext apiRequestContext) {
+    public void checkField(ApiRequestContext apiRequestContext, ApiDto apiInfo) {
         ApiRequest apiRequest = apiRequestContext.getApiRequest();
         if (apiRequest == null) {
             throw new ApiException(ErrorEnum.ISV_INVALID_PARAMETER, apiRequestContext.getLocale());
@@ -161,17 +161,20 @@ public class ApiValidator implements SopValidator {
         if (ObjectUtils.isEmpty(apiRequest.getVersion())) {
             throw new ApiException(ErrorEnum.ISV_MISSING_VERSION, locale);
         }
-        if (ObjectUtils.isEmpty(apiRequest.getSignType())) {
-            throw new ApiException(ErrorEnum.ISV_MISSING_SIGNATURE_CONFIG, locale);
-        }
         if (ObjectUtils.isEmpty(apiRequest.getCharset())) {
             throw new ApiException(ErrorEnum.ISV_INVALID_CHARSET, locale);
         }
-        if (ObjectUtils.isEmpty(apiRequest.getSign())) {
-            throw new ApiException(ErrorEnum.ISV_MISSING_SIGNATURE, locale);
-        }
         if (ObjectUtils.isEmpty(apiRequest.getTimestamp())) {
             throw new ApiException(ErrorEnum.ISV_MISSING_TIMESTAMP, locale);
+        }
+        // 签名相关字段仅在接口 needSign=true 时必填
+        if (BooleanEnum.TRUE.eq(apiInfo.getNeedSign())) {
+            if (ObjectUtils.isEmpty(apiRequest.getSignType())) {
+                throw new ApiException(ErrorEnum.ISV_MISSING_SIGNATURE_CONFIG, locale);
+            }
+            if (ObjectUtils.isEmpty(apiRequest.getSign())) {
+                throw new ApiException(ErrorEnum.ISV_MISSING_SIGNATURE, locale);
+            }
         }
     }
 
@@ -274,21 +277,25 @@ public class ApiValidator implements SopValidator {
         return appDto;
     }
 
-    protected void checkSign(ApiRequestContext apiRequestContext, AppDto appDto) {
+    protected void checkSign(ApiRequestContext apiRequestContext, ApiDto apiInfo, AppDto appDto) {
+        // 根据接口 needSign 配置决定是否校验签名
+        if (BooleanEnum.FALSE.eq(apiInfo.getNeedSign())) {
+            return;
+        }
         ApiRequest apiRequest = apiRequestContext.getApiRequest();
         String clientSign = apiRequest.getSign();
         if (ObjectUtils.isEmpty(clientSign)) {
             throw new ApiException(ErrorEnum.ISV_MISSING_SIGNATURE, apiRequestContext.getLocale(),
                     apiRequest.takeNameVersion(), apiConfig.getSignName());
         }
-        // 应用共享密钥（用于 HMAC-SHA256 签名校验）
-        String appSecret = appManager.getAppSecret(appDto.getId());
-        if (ObjectUtils.isEmpty(appSecret)) {
+        // 开发者应用公钥（用于 RSA2 签名校验）
+        String publicKeyApp = appManager.getPublicKeyApp(appDto.getId());
+        if (ObjectUtils.isEmpty(publicKeyApp)) {
             throw new ApiException(ErrorEnum.ISV_MISSING_SIGNATURE_CONFIG, apiRequestContext.getLocale(),
                     apiRequest.takeNameVersion());
         }
         // 错误的sign
-        if (!signer.checkSign(apiRequestContext, appSecret)) {
+        if (!signer.checkSign(apiRequestContext, publicKeyApp)) {
             throw new ApiException(ErrorEnum.ISV_INVALID_SIGNATURE, apiRequestContext.getLocale(),
                     apiRequest.takeNameVersion());
         }
@@ -310,19 +317,22 @@ public class ApiValidator implements SopValidator {
 
     /**
      * 校验token
+     * <p>
+     * 注意：accessToken.get 接口本身不需要 token（引导接口），直接跳过
      *
      * @param apiRequestContext 参数
+     * @param apiInfoDTO        接口信息
      */
     protected void checkToken(ApiRequestContext apiRequestContext, ApiDto apiInfoDTO) {
         Integer isNeedToken = apiInfoDTO.getNeedToken();
         if (BooleanEnum.of(isNeedToken) == BooleanEnum.FALSE) {
             return;
         }
-        // 这里做校验token操作
-        String appAuthToken = apiRequestContext.getApiRequest().getAppAuthToken();
-        if (StringUtils.isBlank(appAuthToken)) {
+        String accessToken = apiRequestContext.getApiRequest().getAccessToken();
+        if (StringUtils.isBlank(accessToken)) {
             throw new ApiException(ErrorEnum.AOP_INVALID_AUTH_TOKEN, apiRequestContext.getLocale());
         }
+        // Redis 真实有效性校验由 TokenValidateInterceptor 在拦截器阶段完成
     }
 
     @PostConstruct

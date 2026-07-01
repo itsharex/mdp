@@ -45,9 +45,9 @@ public abstract class OpenContext {
     public abstract String getVersion();
 
     /**
-     * 获取token,没有返回null
+     * 获取accessToken,没有返回null
      */
-    public abstract String getAppAuthToken();
+    public abstract String getAccessToken();
 
     /**
      * 获取客户端ip

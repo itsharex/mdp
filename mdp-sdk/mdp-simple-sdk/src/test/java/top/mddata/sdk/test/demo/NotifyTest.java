@@ -29,7 +29,7 @@ public class NotifyTest extends TestCase {
      * 开放平台提供的公钥
      * 前往SOP-ADMIN，ISV管理--秘钥管理，生成平台提供的公私钥，然后把【平台公钥】放到这里
      */
-    String publicKeyPlatform = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0dAa+aJQ/QFs2eq/eHxb6U6b26sBs6+8FNQOF16S8QLMzqi44bJHKPv0nTF7UkOQpCftbDYlf0vWIrB61PSi2/woGGDKRUCQSMJcWCUPO8L4GzN9qMf9I08k7rGrkt4gnb95gdQT1/Sg7KBQX5kOdOqXtcNktLJ4LxdZ3blYXSH/0cM7VB3urAgkuE80a+UdCz7DEZPpjiH9vdWpYevtp1bUfIGEdt9jS39roIsthMyABn6ty+aoruf5VbWz/K1hesWUQlwBUC8BRGrdShBPncNk++Mpf7xcIE6tgc67nY4T/2SExfjpJmZBKFe0DrtZRFr5umYMEh1Ocldd7d+/lwIDAQAB";
+    String publicKeyPlatform = "";
 
     // 声明一个就行
     OpenClient client = new OpenClient(url, appKey, privateKeyIsv, publicKeyPlatform);

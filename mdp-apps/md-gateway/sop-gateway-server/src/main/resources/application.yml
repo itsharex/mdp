@@ -33,17 +33,17 @@ mdp:
       date-format: yyyy-MM-dd HH:mm:ss
 ####### 参数名称定义 #######
   api:
-    app-key-name: app_key
+    app-key-name: appKey
     api-name: method
+    version-name: version
     format-name: format
     charset-name: charset
-    sign-type-name: sign_type
+    sign-type-name: signType
     sign-name: sign
     timestamp-name: timestamp
-    version-name: version
-    notify-url-name: notify_url
-    app-auth-token-name: app_auth_token
-    biz-content-name: biz_content
+    notify-url-name: notifyUrl
+    access-token-name: accessToken
+    biz-content-name: bizContent
     # 接口请求有效时间
     timeout-seconds: 300
     # 时间戳格式化

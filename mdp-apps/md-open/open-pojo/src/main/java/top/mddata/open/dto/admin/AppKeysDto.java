@@ -66,6 +66,12 @@ public class AppKeysDto implements Serializable {
     @Schema(description = "AES加解密密钥")
     private String notifyEncodingAesKey;
 
+    /**
+     * 开发者应用公钥（RSA2签名校验用）
+     */
+    @Schema(description = "开发者应用公钥")
+    private String publicKeyApp;
+
     @Schema(description = "订阅的事件")
     private List<Long> eventTypeIdList;
 }

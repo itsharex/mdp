@@ -37,9 +37,9 @@ public class DefaultOpenContext extends OpenContext implements Serializable {
     private String version;
 
     /**
-     * token,没有返回null
+     * accessToken,没有返回null
      */
-    private String appAuthToken;
+    private String accessToken;
 
     /**
      * 客户端ip

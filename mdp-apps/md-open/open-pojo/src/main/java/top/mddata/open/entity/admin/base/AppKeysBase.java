@@ -60,4 +60,11 @@ public class AppKeysBase extends SuperEntity<Long> implements Serializable {
      */
     private String notifyEncodingAesKey;
 
+    /**
+     * 开发者应用公钥（RSA2签名校验用）
+     * 开发者生成密钥对后将公钥上传至平台，用于验证开发者请求签名
+     * 对应地，开发者使用私钥对请求参数进行签名
+     */
+    private String publicKeyApp;
+
 }

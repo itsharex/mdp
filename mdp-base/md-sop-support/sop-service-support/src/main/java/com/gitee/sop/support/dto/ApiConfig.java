@@ -14,7 +14,7 @@ public class ApiConfig {
     /**
      * 分配给开发者的应用ID
      */
-    private String appKeyName = "app_key";
+    private String appKeyName = "appKey";
     /**
      * 接口名称
      */
@@ -30,7 +30,7 @@ public class ApiConfig {
     /**
      * 商户生成签名字符串所使用的签名算法类型，目前支持RSA2和RSA，推荐使用RSA2
      */
-    private String signTypeName = "sign_type";
+    private String signTypeName = "signType";
     /**
      * 商户请求参数的签名串
      */
@@ -46,15 +46,15 @@ public class ApiConfig {
     /**
      * 开放平台主动通知商户服务器里指定的页面http/https路径
      */
-    private String notifyUrlName = "notify_url";
+    private String notifyUrlName = "notifyUrl";
     /**
-     * OAuth 2.0授权token
+     * 访问令牌
      */
-    private String appAuthTokenName = "app_auth_token";
+    private String accessTokenName = "accessToken";
     /**
      * 请求参数的集合，最大长度不限，除公共参数外所有请求参数都必须放在这个参数中传递，具体参照各产品快速接入文档
      */
-    private String bizContentName = "biz_content";
+    private String bizContentName = "bizContent";
 
     // ========= 请求参数名 end =========
 

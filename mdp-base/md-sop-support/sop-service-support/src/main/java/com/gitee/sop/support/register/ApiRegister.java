@@ -148,6 +148,7 @@ public class ApiRegister {
         registerDTO.setParamInfo(JSON.toJSONString(paramInfos));
         registerDTO.setPermission(parseBoolean(open.permission()));
         registerDTO.setNeedToken(parseBoolean(open.needToken()));
+        registerDTO.setNeedSign(parseBoolean(open.needSign()));
         registerDTO.setCommonResponse(parseBoolean(open.hasCommonResponse()));
         OpenGroup openGroup = interfaceClass.getAnnotation(OpenGroup.class);
         ApiModeEnum apiMode = openGroup == null ? ApiModeEnum.OPEN : ApiModeEnum.RESTFUL;
@@ -166,6 +167,7 @@ public class ApiRegister {
         registerDTO.setParamInfo(JSON.toJSONString(paramInfos));
         registerDTO.setPermission(parseBoolean(open.permission()));
         registerDTO.setNeedToken(parseBoolean(open.needToken()));
+        registerDTO.setNeedSign(parseBoolean(open.needSign()));
         registerDTO.setCommonResponse(parseBoolean(open.hasCommonResponse()));
         OpenGroup openGroup = interfaceClass.getAnnotation(OpenGroup.class);
         ApiModeEnum apiMode = openGroup == null ? ApiModeEnum.OPEN : ApiModeEnum.RESTFUL;

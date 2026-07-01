@@ -49,4 +49,10 @@ public class AppKeysUpdateDto implements Serializable {
      */
     @Schema(description = "加密模式")
     private Integer notifyEncryptionType;
+
+    /**
+     * 开发者应用公钥（RSA2签名校验用）
+     */
+    @Schema(description = "开发者应用公钥")
+    private String publicKeyApp;
 }

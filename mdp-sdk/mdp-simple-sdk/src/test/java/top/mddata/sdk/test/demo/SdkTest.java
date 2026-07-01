@@ -10,8 +10,8 @@ import top.mddata.sdk.core.common.Result;
  * 测试SDK
  */
 public class SdkTest extends TestCase {
-    String url = "http://localhost:18750/api";
-    String appId = "2019032617262200001";
+    String url = "http://localhost:23456/api";
+    String appKey = "ruoyi-vue-oauth";
     /**
      * 开发者私钥
      */
@@ -23,7 +23,7 @@ public class SdkTest extends TestCase {
     String publicKeyPlatform = "";
 
     // 声明一个就行
-    OpenClient client = new OpenClient(url, appId, privateKeyIsv, publicKeyPlatform);
+    OpenClient client = new OpenClient(url, appKey, privateKeyIsv, publicKeyPlatform);
 
 
     public void testDownload() {

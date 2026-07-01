@@ -101,6 +101,13 @@ public class ApiQuery extends ExtraParams implements Serializable {
     private Integer needToken;
 
     /**
+     * 需要签名校验
+     * [0-否 1-是]
+     */
+    @Schema(description = "需要签名校验")
+    private Integer needSign;
+
+    /**
      * 公共响应参数
      * [0-否 1-是]
      */

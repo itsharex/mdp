@@ -69,5 +69,10 @@ public interface CacheKeyTable {
          * 文档
          */
         String DOC_INFO = "doc_info";
+        /**
+         * 访问令牌
+         * token -> appId
+         */
+        String ACCESS_TOKEN = "access_token";
     }
 }

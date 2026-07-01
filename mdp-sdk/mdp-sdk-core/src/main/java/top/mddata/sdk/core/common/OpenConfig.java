@@ -27,27 +27,27 @@ public class OpenConfig {
     /** 编码名称 */
     private String charsetName = "charset";
     /** appKey名称 */
-    private String appKeyName = "app_key";
+    private String appKeyName = "appKey";
     /** data名称 */
-    private String dataName = "biz_content";
+    private String dataName = "bizContent";
     /** 回调地址 */
-    private String notifyUrl = "notify_url";
+    private String notifyUrl = "notifyUrl";
     /** 时间戳名称 */
     private String timestampName = "timestamp";
     /** 签名串名称 */
     private String signName = "sign";
     /** 签名类型名称 */
-    private String signTypeName = "sign_type";
+    private String signTypeName = "signType";
     /** 格式化名称 */
     private String formatName = "format";
     /** accessToken名称 */
-    private String accessTokenName = "app_auth_token";
+    private String accessTokenName = "accessToken";
     /** 国际化语言 */
     private String locale = "zh-CN";
     /** 响应code名称 */
     private String responseCodeName = "code";
     /** 错误响应节点 */
-    private String errorResponseName = "error_response";
+    private String errorResponseName = "errorResponse";
 
     /** 请求超时时间 */
     private int connectTimeoutSeconds = 60;

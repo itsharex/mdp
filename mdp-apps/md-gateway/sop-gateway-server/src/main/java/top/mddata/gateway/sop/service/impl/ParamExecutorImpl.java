@@ -111,7 +111,7 @@ public class ParamExecutorImpl implements ParamExecutor<HttpServletRequest, Http
         apiRequest.setTimestamp(jsonObject.getString(apiConfig.getTimestampName()));
         apiRequest.setVersion(jsonObject.getString(apiConfig.getVersionName()));
         apiRequest.setNotifyUrl(jsonObject.getString(apiConfig.getNotifyUrlName()));
-        apiRequest.setAppAuthToken(jsonObject.getString(apiConfig.getAppAuthTokenName()));
+        apiRequest.setAccessToken(jsonObject.getString(apiConfig.getAccessTokenName()));
         String bizContent = jsonObject.getString(apiConfig.getBizContentName());
         apiRequest.setBizContent(bizContent);
         return apiRequest;
