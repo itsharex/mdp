@@ -78,7 +78,7 @@ public class HttpPostTest extends TestCase {
         // 公共请求参数
         Map<String, String> params = new HashMap<String, String>();
         params.put("appKey", appKey);
-        params.put("method", "openapi.wap.pay");
+        params.put("method", "user.get");
         params.put("format", "json");
         params.put("charset", "utf-8");
         params.put("signType", "RSA2");
@@ -87,10 +87,7 @@ public class HttpPostTest extends TestCase {
 
         // 业务参数
         Map<String, Object> bizContent = new HashMap<>();
-        bizContent.put("outTradeNo", "70501111111S001111119");
-        bizContent.put("totalAmount", "9.00");
-        bizContent.put("subject", "衣服");
-        bizContent.put("productCode", "QUICK_WAP_WAY");
+        bizContent.put("id", "123");
 
         params.put("bizContent", JSON.toJSONString(bizContent));
         String content = SignUtil.getSignContent(params);
@@ -115,7 +112,7 @@ public class HttpPostTest extends TestCase {
         // 公共请求参数
         Map<String, String> params = new HashMap<String, String>();
         params.put("appKey", appKey);
-        params.put("method", "openapi.wap.pay");
+        params.put("method", "org.getById");
         params.put("format", "xml");
         params.put("charset", "utf-8");
         params.put("signType", "RSA2");
@@ -124,10 +121,7 @@ public class HttpPostTest extends TestCase {
 
         // 业务参数
         Map<String, Object> bizContent = new HashMap<>();
-        bizContent.put("outTradeNo", "70501111111S001111119");
-        bizContent.put("totalAmount", "9.00");
-        bizContent.put("subject", "衣服");
-        bizContent.put("productCode", "QUICK_WAP_WAY");
+        bizContent.put("id", "70501111111S001111119L");
 
         params.put("bizContent", JSON.toJSONString(bizContent));
         String content = SignUtil.getSignContent(params);
@@ -151,7 +145,7 @@ public class HttpPostTest extends TestCase {
         // 公共请求参数
         Map<String, String> params = new HashMap<String, String>();
         params.put("appKey", appKey);
-        params.put("method", "openapi.order.search");
+        params.put("method", "org.save");
         params.put("format", "json");
         params.put("charset", "utf-8");
         params.put("signType", "RSA2");
@@ -160,7 +154,7 @@ public class HttpPostTest extends TestCase {
 
         // 业务参数
         Map<String, Object> bizContent = new HashMap<>();
-        bizContent.put("orderNo", "70501111111S001111119");
+        bizContent.put("name", "save-org-name1");
 
         params.put("bizContent", JSON.toJSONString(bizContent));
         String content = SignUtil.getSignContent(params);
