@@ -85,7 +85,7 @@ public class ApiValidator implements SopValidator {
         checkApiInfo(apiRequestContext, apiInfo);
         // 校验字段完整性
         checkField(apiRequestContext);
-        // 检查isv
+        // 检查应用信息
         AppDto appDto = checkApp(apiRequestContext);
         // 检查isv接口授权
         checkPermission(apiRequestContext, apiInfo, appDto);
