@@ -7,6 +7,8 @@ import cn.hutool.http.HttpResponse;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONException;
 import com.alibaba.fastjson2.JSONObject;
+import com.gitee.sop.support.aes.AesException;
+import com.gitee.sop.support.aes.MdpBizMsgCrypt;
 import com.gitee.sop.support.exception.OpenException;
 import com.gitee.sop.support.message.ApiResponse;
 import com.google.common.collect.Lists;
@@ -31,7 +33,6 @@ import top.mddata.open.service.admin.EventPushLogService;
 import top.mddata.open.service.admin.EventPushService;
 import top.mddata.open.service.admin.processor.MultiThreadTaskProcessor;
 import top.mddata.open.service.admin.properties.NotifyProperties;
-import com.gitee.sop.support.util.NotifyPushUtil;
 import top.mddata.open.vo.admin.AppKeysVo;
 
 import java.time.LocalDateTime;
@@ -166,58 +167,40 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
             throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, "回调接口不能为空");
         }
 
-        // 构建推送数据
-        String timestamp = NotifyPushUtil.generateTimestamp();
-        String nonce = NotifyPushUtil.generateNonce();
         String appKey = eventPush.getAppKey();
 
-        // 业务数据
+        // 业务数据（字段名小写驼峰）
         JSONObject bizData = new JSONObject();
         bizData.put("type", EventTypeEnum.EVENT_PUSH.name());
         bizData.put("method", eventPush.getEventCode());
-        bizData.put("app_key", eventPush.getAppKey());
-        bizData.put("timestamp", timestamp);
-        bizData.put("event_trigger_id", eventPush.getEventTriggerId());
-        bizData.put("biz_content", eventPush.getRequestData());
+        bizData.put("appKey", appKey);
+        bizData.put("timestamp", MdpBizMsgCrypt.generateTimestamp());
+        bizData.put("eventTriggerId", eventPush.getEventTriggerId());
+        bizData.put("bizContent", eventPush.getRequestData());
         String plaintext = bizData.toJSONString();
 
         // 根据加密模式构建请求体和URL
-        Integer encryptionType = eventPush.getNotifyEncryptionType();
-        if (encryptionType == null) {
-            encryptionType = NotifyEncryptionTypeEnum.PLAINTEXT.getCode();
-        }
+        int encryptionMode = eventPush.getNotifyEncryptionType() != null
+                ? eventPush.getNotifyEncryptionType()
+                : NotifyEncryptionTypeEnum.PLAINTEXT.getCode();
 
         String requestUrl;
         String requestBody;
-
-        if (Objects.equals(encryptionType, NotifyEncryptionTypeEnum.PLAINTEXT.getCode())) {
-            // 明文模式：直接发送明文，signature = sha1(token, timestamp, nonce)
-            requestBody = plaintext;
-            String signature = NotifyPushUtil.calcSignature(
-                    eventPush.getNotifyToken(), timestamp, nonce, StrPool.EMPTY);
-            requestUrl = appendUrlParams(notifyUrl, signature, null, timestamp, nonce, null);
-
-        } else if (Objects.equals(encryptionType, NotifyEncryptionTypeEnum.COMPATIBLE.getCode())) {
-            // 兼容模式：明文+密文共存
-            String encrypt = NotifyPushUtil.encrypt(plaintext, eventPush.getNotifyEncodingAesKey(), appKey);
-            String signature = NotifyPushUtil.calcSignature(
-                    eventPush.getNotifyToken(), timestamp, nonce, StrPool.EMPTY);
-            String msgSignature = NotifyPushUtil.calcSignature(
-                    eventPush.getNotifyToken(), timestamp, nonce, encrypt);
-            JSONObject body = NotifyPushUtil.buildCompatibleBody(plaintext, encrypt, appKey);
+        try {
+            MdpBizMsgCrypt crypt = new MdpBizMsgCrypt(
+                    eventPush.getNotifyToken(),
+                    eventPush.getNotifyEncodingAesKey(),
+                    appKey);
+            String timestamp = MdpBizMsgCrypt.generateTimestamp();
+            String nonce = MdpBizMsgCrypt.generateNonce();
+            JSONObject body = crypt.encryptMsg(plaintext, timestamp, nonce, encryptionMode);
             requestBody = body.toJSONString();
-            requestUrl = appendUrlParams(notifyUrl, signature, msgSignature, timestamp, nonce, "aes");
-
-        } else {
-            // 安全模式：纯密文
-            String encrypt = NotifyPushUtil.encrypt(plaintext, eventPush.getNotifyEncodingAesKey(), appKey);
-            String signature = NotifyPushUtil.calcSignature(
-                    eventPush.getNotifyToken(), timestamp, nonce, StrPool.EMPTY);
-            String msgSignature = NotifyPushUtil.calcSignature(
-                    eventPush.getNotifyToken(), timestamp, nonce, encrypt);
-            JSONObject body = NotifyPushUtil.buildEncryptedBody(encrypt, appKey);
-            requestBody = body.toJSONString();
-            requestUrl = appendUrlParams(notifyUrl, signature, msgSignature, timestamp, nonce, "aes");
+            requestUrl = appendUrlParams(notifyUrl,
+                    crypt.getSignature(), crypt.getMsgSignature(),
+                    timestamp, nonce,
+                    encryptionMode == NotifyEncryptionTypeEnum.PLAINTEXT.getCode() ? null : "aes");
+        } catch (AesException e) {
+            throw new OpenException(StoryMessageEnum.PARAM_VALIDATION, "消息加密失败：" + e.getMessage());
         }
 
         eventPushLog.setRequestData(requestBody);
@@ -269,7 +252,7 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
     }
 
     /**
-     * 拼接URL参数
+     * 拼接URL参数（小写驼峰命名）
      */
     private String appendUrlParams(String baseUrl, String signature, String msgSignature,
                                    String timestamp, String nonce, String encryptType) {
@@ -279,12 +262,12 @@ public class EventPushServiceImpl extends SuperServiceImpl<EventPushMapper, Even
             sb.append("signature=").append(signature).append("&");
         }
         if (StrUtil.isNotBlank(msgSignature)) {
-            sb.append("msg_signature=").append(msgSignature).append("&");
+            sb.append("msgSignature=").append(msgSignature).append("&");
         }
         sb.append("timestamp=").append(timestamp).append("&");
         sb.append("nonce=").append(nonce);
         if (StrUtil.isNotBlank(encryptType)) {
-            sb.append("&encrypt_type=").append(encryptType);
+            sb.append("&encryptType=").append(encryptType);
         }
         return sb.toString();
     }
