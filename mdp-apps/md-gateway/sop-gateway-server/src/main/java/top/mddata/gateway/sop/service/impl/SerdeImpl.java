@@ -39,12 +39,7 @@ public class SerdeImpl implements Serde {
 
     @Override
     public String toXml(Object object) {
-        return XmlUtil.beanToXml(object).toString();
-//        try {
-//            return XmlUtil.toXml(object);
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException(e);
-//        }
+        return XmlUtil.toStr(XmlUtil.beanToXml(object));
     }
 
     @Override

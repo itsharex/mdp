@@ -1,6 +1,7 @@
 package top.mddata.sdk.test.demo;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import junit.framework.TestCase;
 import okhttp3.internal.http2.Header;
 import top.mddata.sdk.core.client.OpenHttp;
@@ -24,8 +25,12 @@ public class HttpPostTest extends TestCase {
 
     String url = "http://localhost:23456/api";
     String appKey = "ruoyi-vue-sso";
+    /**
+     * 应用秘钥，用于获取 accessToken
+     */
+    protected String appSecret = "0Tvtm2xrTWG7n2azkM4FPyHwS6c3NxjQjYKh";
     // 平台提供的私钥
-    String privateKey = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCXJv1pQFqWNA/++OYEV7WYXwexZK/J8LY1OWlP9X0T6wHFOvxNKRvMkJ5544SbgsJpVcvRDPrcxmhPbi/sAhdO4x2PiPKIz9Yni2OtYCCeaiE056B+e1O2jXoLeXbfi9fPivJZkxH/tb4xfLkH3bA8ZAQnQsoXA0SguykMRZntF0TndUfvDrLqwhlR8r5iRdZLB6F8o8qXH6UPDfNEnf/K8wX5T4EB1b8x8QJ7Ua4GcIUqeUxGHdQpzNbJdaQvoi06lgccmL+PHzminkFYON7alj1CjDN833j7QMHdPtS9l7B67fOU/p2LAAkPMtoVBfxQt9aFj7B8rEhGCz02iJIBAgMBAAECggEARqOuIpY0v6WtJBfmR3lGIOOokLrhfJrGTLF8CiZMQha+SRJ7/wOLPlsH9SbjPlopyViTXCuYwbzn2tdABigkBHYXxpDV6CJZjzmRZ+FY3S/0POlTFElGojYUJ3CooWiVfyUMhdg5vSuOq0oCny53woFrf32zPHYGiKdvU5Djku1onbDU0Lw8w+5tguuEZ76kZ/lUcccGy5978FFmYpzY/65RHCpvLiLqYyWTtaNT1aQ/9pw4jX9HO9NfdJ9gYFK8r/2f36ZE4hxluAfeOXQfRC/WhPmiw/ReUhxPznG/WgKaa/OaRtAx3inbQ+JuCND7uuKeRe4osP2jLPHPP6AUwQKBgQDUNu3BkLoKaimjGOjCTAwtp71g1oo+k5/uEInAo7lyEwpV0EuUMwLA/HCqUgR4K9pyYV+Oyb8d6f0+Hz0BMD92I2pqlXrD7xV2WzDvyXM3s63NvorRooKcyfd9i6ccMjAyTR2qfLkxv0hlbBbsPHz4BbU63xhTJp3Ghi0/ey/1HQKBgQC2VsgqC6ykfSidZUNLmQZe3J0p/Qf9VLkfrQ+xaHapOs6AzDU2H2osuysqXTLJHsGfrwVaTs00ER2z8ljTJPBUtNtOLrwNRlvgdnzyVAKHfOgDBGwJgiwpeE9voB1oAV/mXqSaUWNnuwlOIhvQEBwekqNyWvhLqC7nCAIhj3yvNQKBgQCqYbeec56LAhWP903Zwcj9VvG7sESqXUhIkUqoOkuIBTWFFIm54QLTA1tJxDQGb98heoCIWf5x/A3xNI98RsqNBX5JON6qNWjb7/dobitti3t99v/ptDp9u8JTMC7penoryLKK0Ty3bkan95Kn9SC42YxaSghzqkt+uvfVQgiNGQKBgGxU6P2aDAt6VNwWosHSe+d2WWXt8IZBhO9d6dn0f7ORvcjmCqNKTNGgrkewMZEuVcliueJquR47IROdY8qmwqcBAN7Vg2K7r7CPlTKAWTRYMJxCT1Hi5gwJb+CZF3+IeYqsJk2NF2s0w5WJTE70k1BSvQsfIzAIDz2yE1oPHvwVAoGAA6e+xQkVH4fMEph55RJIZ5goI4Y76BSvt2N5OKZKd4HtaV+eIhM3SDsVYRLIm9ZquJHMiZQGyUGnsvrKL6AAVNK7eQZCRDk9KQz+0GKOGqku0nOZjUbAu6A2/vtXAaAuFSFx1rUQVVjFulLexkXR3KcztL1Qu2k5pB6Si0K/uwQ=";
+    String privateKey = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC/VS3h9FdV+k7YS0xwPZTGOuk0SQ4dWdFoxJ0cA3s63Rk0AjbU92zHj088pa56x0/xrlDQcZtI0cbuas7nU/bOx0eZ+0LY17EqPXmSLB1AdG8I9IEbaB+jzwPpznDI15MjZRaUpl4yr7syh1k2Ugzz8+pSUWzbb+urmmfqvn8POhYYSUrm4Zk5l+vrHE/u3bunogan3MK3eTPyx3Lt4jbPN6Y+znDcoawbTb/qZL75+YFFaCHndf/A7DJlBLlfMVxPQahUr5IInWjmECRNpRqLl5rOLQEsUWy1MiLBpAsesJxYzyejIZIuPnobEMfWkWDkgbwymIgWMzYvc7Q6hAhnAgMBAAECggEAJXHsKt6BASidqaMC8Kx8o1cAMOVjR8c+PnzMKqFbyqdeuVj9lixeM6gOX9YlEY5UTP5KfqDdPSEhB6QLniZGlS1XDAGqkXmVCKlDU6Iij2y6FkyTv+Ne3dYz89wdIpFeEH1GMA1nPhA6WKc4hHMGafAAmd+pqEB9JPZxA/YIM9hZtgk+aBUSgRVBxFPfaVXdaRjRmnCtW6hdee/GePH6R0X/ieFjIlFd+BVWsbSr3N8BKq18kWsh+pGzZXsR47aVEwwJwRrbFWjABjH0IS4wEuMQCi5B8VCEq0nb2Iz06y0IJ1Yaex5OPC7n0yjAJwgKDEsOsRIYIIOmkCv3+AM5QQKBgQDjUwY25HDT4jKBh56yKSAbZk9L9vRK6PCHwZ2yXQ0pyTPmpsqqk6VdbHmPZzs09CmSwLg/GxBdK21E/3OFJIjqLQ/+pqj/HTy7cSTqBEDNqNPE4FPz1UaWGOI8jm/Q8q+fxK0K/yGP/grWBohWKLKqZiBE7Bgd9z/DtC91ymKgsQKBgQDXd+FO0tPguQCu5dVIj7R4PLpYRAspXAMU0EFBm/XrbT1Ll4RpuBHl07AWWDjgapcWH8yF2WBq8WVCmZy2lrObfzkIJSGs0k/X1OyeTQShLFAXnF4POYh2pj3LFj8s9MHO8ah7ix1m2qH6BjsD3dlDKUqc1idzh5U3kJKaF5tAlwKBgQCYIZDwHXNQqXlpbCyNSK5/B7obuXqFw1xtTerOWi2cAFXmj0rkWwj4+8ZibRCXgKtt1eG4AdGyuIRY/6f8u5WROnUQ09IXYSaqvq6Ymh4QRGLsx8AHV3z0qFSHeD9mk3NrNcEksddxOO9hil+lYXkoRk5kMah2LWiT/Tsh1j6pEQKBgQC2O4mvJNhWA6H0SiYtDH1SA+qGpGXcQRnKDKhkWQeQaf+hYzB2SVu5yWPwQgU4qG3IJHTR75uAV1GRFmJYevTE2sDdhqoIhIdKv6av6+uydMv4bCORNNOZpdg1X0dnOkqAQBqDApGHX/oGgCaBiqwqBU45f1Y2e8FUEU4sTTLdWQKBgHFcgjZ5VZcS+1m+pVuHPxQx7anYodjknKCE/sB7Cw3pC0CsV0Etwn1Yg3MM6oAicJpqURYUyXKqn1L43xGiqlEn0CWUphGzf12Q9+W90QAPsItDfUXuJVnDOeOqUQZd9ryDiX/Gdf4rj4E2JjlYqP+/n4dI7g9dGDhWMRjhrWtk";
 
     public static String postJson(String url, Map<String, String> params, Header... headers) {
         try {
@@ -59,6 +64,49 @@ public class HttpPostTest extends TestCase {
         return sb.toString().substring(1);
     }
 
+    public void testToken() throws Exception {
+        getToken();
+    }
+
+    private String getToken() throws Exception {
+        // 公共请求参数
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("appKey", appKey);
+        params.put("method", "accessToken.get");
+        params.put("version", "1.0");
+        params.put("format", "json");
+        params.put("charset", "utf-8");
+        params.put("signType", "RSA2");
+        params.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+
+        // 业务参数
+        Map<String, Object> bizContent = new HashMap<>();
+        bizContent.put("appKey", appKey);
+        bizContent.put("appSecret", appSecret);
+
+        params.put("bizContent", JSON.toJSONString(bizContent));
+        String content = SignUtil.getSignContent(params);
+
+        String sign = SignUtil.rsaSign(content, privateKey, params.get("charset"), params.get("signType"));
+        params.put("sign", sign);
+
+        System.out.println("----------- 请求信息 -----------");
+        System.out.println("请求参数：" + buildParamQuery(params));
+        System.out.println("商户秘钥：" + privateKey);
+        System.out.println("待签名内容：" + content);
+        System.out.println("签名(sign)：" + sign);
+        System.out.println("URL参数：" + buildUrlQuery(params));
+
+        System.out.println("----------- 返回结果 -----------");
+        String responseData = postJson(url, params);// 发送请求
+        System.out.println(responseData);
+
+        JSONObject jsonObject = JSON.parseObject(responseData);
+        JSONObject data = jsonObject.getJSONObject("data");
+        return data.getString("accessToken");
+    }
+
+
     /**
      参数	            类型	    是否必填	    最大长度	    描述	            示例值
      appKey	        String	是	        32	    平台分配给开发者的应用ID	2014072300007148
@@ -73,32 +121,30 @@ public class HttpPostTest extends TestCase {
      bizContent	    String	是		请求参数的集合，最大长度不限，除公共参数外所有请求参数都必须放在这个参数中传递，具体参照各产品快速接入文档
      */
     // 这个请求会路由到story服务
-    public void testGet() throws Exception {
+    public void testGetJson() throws Exception {
+
+        String token = getToken();
 
         // 公共请求参数
         Map<String, String> params = new HashMap<String, String>();
         params.put("appKey", appKey);
-        params.put("method", "user.get");
+        params.put("method", "user.getById");
         params.put("format", "json");
         params.put("charset", "utf-8");
         params.put("signType", "RSA2");
         params.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         params.put("version", "1.0");
+        params.put("accessToken", token);
 
         // 业务参数
         Map<String, Object> bizContent = new HashMap<>();
-        bizContent.put("id", "123");
+        bizContent.put("id", "45946774154457094");
 
         params.put("bizContent", JSON.toJSONString(bizContent));
-        String content = SignUtil.getSignContent(params);
-        String sign = SignUtil.rsa256Sign(content, privateKey, "utf-8");
-        params.put("sign", sign);
 
         System.out.println("----------- 请求信息 -----------");
         System.out.println("请求参数：" + buildParamQuery(params));
         System.out.println("商户秘钥：" + privateKey);
-        System.out.println("待签名内容：" + content);
-        System.out.println("签名(sign)：" + sign);
         System.out.println("URL参数：" + buildUrlQuery(params));
 
         System.out.println("----------- 返回结果 -----------");
@@ -109,30 +155,28 @@ public class HttpPostTest extends TestCase {
     // 输出返回xml格式
     public void testGetXml() throws Exception {
 
+        String token = getToken();
         // 公共请求参数
         Map<String, String> params = new HashMap<String, String>();
         params.put("appKey", appKey);
-        params.put("method", "org.getById");
+        params.put("method", "user.getById");
+        params.put("version", "1.0");
         params.put("format", "xml");
         params.put("charset", "utf-8");
         params.put("signType", "RSA2");
         params.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        params.put("version", "1.0");
+
+        params.put("accessToken", token);
 
         // 业务参数
         Map<String, Object> bizContent = new HashMap<>();
-        bizContent.put("id", "70501111111S001111119L");
+        bizContent.put("id", "45946774154457094");
 
         params.put("bizContent", JSON.toJSONString(bizContent));
-        String content = SignUtil.getSignContent(params);
-        String sign = SignUtil.rsa256Sign(content, privateKey, "utf-8");
-        params.put("sign", sign);
 
         System.out.println("----------- 请求信息 -----------");
         System.out.println("请求参数：" + buildParamQuery(params));
         System.out.println("商户秘钥：" + privateKey);
-        System.out.println("待签名内容：" + content);
-        System.out.println("签名(sign)：" + sign);
         System.out.println("URL参数：" + buildUrlQuery(params));
 
         System.out.println("----------- 返回结果 -----------");
@@ -140,38 +184,4 @@ public class HttpPostTest extends TestCase {
         System.out.println(responseData);
     }
 
-    public void testSearch() throws Exception {
-
-        // 公共请求参数
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("appKey", appKey);
-        params.put("method", "org.save");
-        params.put("format", "json");
-        params.put("charset", "utf-8");
-        params.put("signType", "RSA2");
-        params.put("timestamp", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-        params.put("version", "1.0");
-
-        // 业务参数
-        Map<String, Object> bizContent = new HashMap<>();
-        bizContent.put("name", "save-org-name1");
-
-        params.put("bizContent", JSON.toJSONString(bizContent));
-        String content = SignUtil.getSignContent(params);
-        String sign = SignUtil.rsa256Sign(content, privateKey, "utf-8");
-        params.put("sign", sign);
-
-        System.out.println("----------- 请求信息 -----------");
-        System.out.println("请求参数：" + buildParamQuery(params));
-        System.out.println("商户秘钥：" + privateKey);
-        System.out.println("待签名内容：" + content);
-        System.out.println("签名(sign)：" + sign);
-        System.out.println("URL参数：" + buildUrlQuery(params));
-
-        System.out.println("----------- 返回结果 -----------");
-        Header[] header = {new Header("open-env", "gray")};
-//        Header[] header = new Header[0];
-        String responseData = postJson(url, params, header);// 发送请求
-        System.out.println(responseData);
-    }
 }

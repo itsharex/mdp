@@ -75,11 +75,13 @@ public class NotifyTest extends TestCase {
         List<UserSaveDto> list = new ArrayList<>();
         UserSaveDto user1 = new UserSaveDto();
         user1.setUsername("test" + new Random().nextInt(5000));
+        user1.setUserSource("111");
         user1.setName("test1");
         list.add(user1);
         user1 = new UserSaveDto();
         user1.setUsername("test" + new Random().nextInt(5000));
         user1.setName("test2");
+        user1.setUserSource("111");
         list.add(user1);
 
         UserBatchSaveDto dto = new UserBatchSaveDto();
