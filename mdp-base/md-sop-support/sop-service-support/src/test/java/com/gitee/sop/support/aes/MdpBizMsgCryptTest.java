@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -102,7 +102,7 @@ class MdpBizMsgCryptTest {
             String nonce = MdpBizMsgCrypt.generateNonce();
 
             JSONObject body = crypt.encryptMsg(plaintext, timestamp, nonce, MdpBizMsgCrypt.MODE_ENCRYPTED);
-            String decrypted = crypt.decryptMsg(body, timestamp, nonce, crypt.getMsgSignature());
+            String decrypted = crypt.decryptMsg(body.getString("encrypt"), timestamp, nonce, crypt.getMsgSignature());
 
             assertEquals(plaintext, decrypted);
         }
@@ -115,7 +115,7 @@ class MdpBizMsgCryptTest {
             String nonce = MdpBizMsgCrypt.generateNonce();
 
             JSONObject body = crypt.encryptMsg(plaintext, timestamp, nonce, MdpBizMsgCrypt.MODE_COMPATIBLE);
-            String decrypted = crypt.decryptMsg(body, timestamp, nonce, crypt.getMsgSignature());
+            String decrypted = crypt.decryptMsg(body.getString("encrypt"), timestamp, nonce, crypt.getMsgSignature());
 
             assertEquals(plaintext, decrypted);
         }
@@ -128,7 +128,7 @@ class MdpBizMsgCryptTest {
             String nonce = MdpBizMsgCrypt.generateNonce();
 
             JSONObject body = crypt.encryptMsg(plaintext, timestamp, nonce, MdpBizMsgCrypt.MODE_ENCRYPTED);
-            String decrypted = crypt.decryptMsg(body, timestamp, nonce, crypt.getMsgSignature());
+            String decrypted = crypt.decryptMsg(body.getString("encrypt"), timestamp, nonce, crypt.getMsgSignature());
 
             assertEquals(plaintext, decrypted);
         }
@@ -147,7 +147,7 @@ class MdpBizMsgCryptTest {
             String nonce = MdpBizMsgCrypt.generateNonce();
 
             JSONObject body = crypt.encryptMsg(plaintext, timestamp, nonce, MdpBizMsgCrypt.MODE_ENCRYPTED);
-            String decrypted = crypt.decryptMsg(body, timestamp, nonce, crypt.getMsgSignature());
+            String decrypted = crypt.decryptMsg(body.getString("encrypt"), timestamp, nonce, crypt.getMsgSignature());
 
             assertEquals(plaintext, decrypted);
         }
@@ -160,7 +160,7 @@ class MdpBizMsgCryptTest {
             String nonce = MdpBizMsgCrypt.generateNonce();
 
             JSONObject body = crypt.encryptMsg(plaintext, timestamp, nonce, MdpBizMsgCrypt.MODE_ENCRYPTED);
-            String decrypted = crypt.decryptMsg(body, timestamp, nonce, crypt.getMsgSignature());
+            String decrypted = crypt.decryptMsg(body.getString("encrypt"), timestamp, nonce, crypt.getMsgSignature());
 
             assertEquals(plaintext, decrypted);
         }
@@ -189,7 +189,7 @@ class MdpBizMsgCryptTest {
 
             MdpBizMsgCrypt wrongCrypt = new MdpBizMsgCrypt(TOKEN, ENCODING_AES_KEY, "wrong_app_key");
             assertThrows(AesException.class,
-                    () -> wrongCrypt.decryptMsg(body, timestamp, nonce, crypt.getMsgSignature()));
+                    () -> wrongCrypt.decryptMsg(body.getString("encrypt"), timestamp, nonce, crypt.getMsgSignature()));
         }
 
         @Test
@@ -203,7 +203,7 @@ class MdpBizMsgCryptTest {
             String msgSignature = MdpBizMsgCrypt.calcSignature(TOKEN, timestamp, nonce, "invalid_base64_data!!");
 
             assertThrows(AesException.class,
-                    () -> crypt.decryptMsg(body, timestamp, nonce, msgSignature));
+                    () -> crypt.decryptMsg(body.getString("encrypt"), timestamp, nonce, msgSignature));
         }
 
         @Test
@@ -216,7 +216,7 @@ class MdpBizMsgCryptTest {
             JSONObject body = crypt.encryptMsg(plaintext, timestamp, nonce, MdpBizMsgCrypt.MODE_ENCRYPTED);
 
             assertThrows(AesException.class,
-                    () -> crypt.decryptMsg(body, timestamp, nonce, "wrong_signature"));
+                    () -> crypt.decryptMsg(body.getString("encrypt"), timestamp, nonce, "wrong_signature"));
         }
 
         @Test
@@ -493,7 +493,7 @@ class MdpBizMsgCryptTest {
                     sendBody.getString("encrypt"),
                     msgSignature));
 
-            String decrypted = crypt.decryptMsg(sendBody, timestamp, nonce, msgSignature);
+            String decrypted = crypt.decryptMsg(sendBody.getString("encrypt"), timestamp, nonce, msgSignature);
             assertEquals(plaintext, decrypted);
 
             // body 仅含 encrypt 和 appKey
@@ -521,7 +521,7 @@ class MdpBizMsgCryptTest {
                     sendBody.getString("encrypt"),
                     msgSignature));
 
-            String decrypted = crypt.decryptMsg(sendBody, timestamp, nonce, msgSignature);
+            String decrypted = crypt.decryptMsg(sendBody.getString("encrypt"), timestamp, nonce, msgSignature);
             assertEquals(plaintext, decrypted);
 
             // 兼容模式也可直接读取明文业务字段

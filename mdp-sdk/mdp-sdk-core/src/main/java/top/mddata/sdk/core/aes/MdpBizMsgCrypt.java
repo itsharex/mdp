@@ -124,16 +124,15 @@ public final class MdpBizMsgCrypt {
     /**
      * 解密消息。从 JSON 请求体中提取密文，验证签名后解密得到明文。
      *
-     * @param body         JSON 请求体
+     * @param encrypt      加密提
      * @param timestamp    时间戳（URL 参数）
      * @param nonce        随机字符串（URL 参数）
      * @param msgSignature 消息签名（URL 参数，密文模式需传入）
      * @return 解密后的明文 JSON 字符串
      * @throws AesException 验签失败或解密失败时抛出
      */
-    public String decryptMsg(JSONObject body, String timestamp, String nonce, String msgSignature)
+    public String decryptMsg(String encrypt, String timestamp, String nonce, String msgSignature)
             throws AesException {
-        String encrypt = body.getString("encrypt");
         if (StringUtils.isEmpty(encrypt)) {
             throw new AesException(AesException.PARSE_JSON_ERROR);
         }
