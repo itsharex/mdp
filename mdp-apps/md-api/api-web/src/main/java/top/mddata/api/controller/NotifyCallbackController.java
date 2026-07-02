@@ -168,7 +168,8 @@ public class NotifyCallbackController {
 
         if ("aes".equals(encryptType)) {
             try {
-                return crypt.decryptMsg(body, timestamp, nonce, msgSignature);
+                String encrypt = body.getString("encrypt");
+                return crypt.decryptMsg(encrypt, timestamp, nonce, msgSignature);
             } catch (AesException e) {
                 throw new RuntimeException("消息解密失败：" + e.getMessage(), e);
             }
