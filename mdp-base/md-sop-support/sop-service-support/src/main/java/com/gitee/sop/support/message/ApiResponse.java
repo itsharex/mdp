@@ -75,12 +75,12 @@ public class ApiResponse implements Response {
     /**
      * 业务异常码
      */
-    private String sub_code = "";
+    private String subCode = "";
 
     /**
      * 业务异常信息
      */
-    private String sub_msg = "";
+    private String subMsg = "";
 
     /**
      * 解决方案
@@ -113,8 +113,8 @@ public class ApiResponse implements Response {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setCode(error.getCode());
         apiResponse.setMsg(error.getMsg());
-        apiResponse.setSub_code(subCode);
-        apiResponse.setSub_msg(subMsg);
+        apiResponse.setSubCode(subCode);
+        apiResponse.setSubMsg(subMsg);
         apiResponse.setSolution(solution);
         return apiResponse;
     }
@@ -126,8 +126,8 @@ public class ApiResponse implements Response {
 
     public static ApiResponse error(IError error) {
         ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setSub_code(error.getSubCode());
-        apiResponse.setSub_msg(error.getSubMsg());
+        apiResponse.setSubCode(error.getSubCode());
+        apiResponse.setSubMsg(error.getSubMsg());
         apiResponse.setCode(error.getCode());
         apiResponse.setMsg(error.getMsg());
         apiResponse.setSolution(error.getSolution());
@@ -136,7 +136,7 @@ public class ApiResponse implements Response {
 
     private static ApiResponse error(IError error, String subMsg) {
         ApiResponse response = error(error);
-        response.setSub_msg(subMsg);
+        response.setSubMsg(subMsg);
         return response;
     }
 }

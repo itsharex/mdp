@@ -76,6 +76,11 @@ public class OpenClient {
     private final DataNameBuilder dataNameBuilder;
 
     /**
+     * 默认访问令牌，设置后所有请求会自动携带
+     */
+    private String defaultAccessToken;
+
+    /**
      * 构建请求客户端
      *
      * @param url           接口url
@@ -169,26 +174,34 @@ public class OpenClient {
         RequestForm requestForm = param.createRequestForm(this.openConfig);
         // 表单数据
         Map<String, String> form = requestForm.getForm();
-        if (accessToken != null) {
-            form.put(this.openConfig.getAccessTokenName(), accessToken);
+        // 优先使用传入的 accessToken，其次使用默认 accessToken
+        String token = StringUtils.isEmpty(accessToken) ? this.defaultAccessToken : accessToken;
+        if (token != null) {
+            form.put(this.openConfig.getAccessTokenName(), token);
         }
         form.put(this.openConfig.getAppKeyName(), this.appKey);
 
-        String content = SignUtil.getSignContent(form);
-        String sign;
-        try {
-            sign = SignUtil.rsaSign(content, privateKey, openConfig.getCharset(), openConfig.getSignType());
-        } catch (SopSignException e) {
-            throw new SdkException("构建签名错误", e);
-        }
+        // 根据配置决定是否签名
+        if (openConfig.isSignEnabled()) {
+            String content = SignUtil.getSignContent(form);
+            String sign;
+            try {
+                sign = SignUtil.rsaSign(content, privateKey, openConfig.getCharset(), openConfig.getSignType());
+            } catch (SopSignException e) {
+                throw new SdkException("构建签名错误", e);
+            }
+            form.put(this.openConfig.getSignName(), sign);
 
-        form.put(this.openConfig.getSignName(), sign);
-
-        if (log.isDebugEnabled()) {
-            log.debug("----------- 请求信息 -----------"
+            if (log.isDebugEnabled()) {
+                log.debug("----------- 请求信息 -----------"
+                          + "\n请求参数：" + SignUtil.getSignContent(form)
+                          + "\n待签名内容：" + content
+                          + "\n签名(sign)：" + sign
+                );
+            }
+        } else if (log.isDebugEnabled()) {
+            log.debug("----------- 请求信息（未签名） -----------"
                       + "\n请求参数：" + SignUtil.getSignContent(form)
-                      + "\n待签名内容：" + content
-                      + "\n签名(sign)：" + sign
             );
         }
 
@@ -206,6 +219,26 @@ public class OpenClient {
             }
             return this.parseResponse(resp, param);
         }
+    }
+
+    /**
+     * 获取默认访问令牌
+     *
+     * @return 默认访问令牌
+     */
+    public String getDefaultAccessToken() {
+        return defaultAccessToken;
+    }
+
+    /**
+     * 设置默认访问令牌，设置后所有请求会自动携带
+     *
+     * @param defaultAccessToken 默认访问令牌
+     * @return 当前客户端实例
+     */
+    public OpenClient setDefaultAccessToken(String defaultAccessToken) {
+        this.defaultAccessToken = defaultAccessToken;
+        return this;
     }
 
     protected FileResult buildFileResult(Response response) {

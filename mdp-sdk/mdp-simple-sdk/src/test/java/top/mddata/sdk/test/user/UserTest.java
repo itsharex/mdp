@@ -28,6 +28,12 @@ import java.util.Random;
 
 public class UserTest extends BaseTest {
 
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        // 获取 accessToken，用于需要认证的接口
+        getAccessToken();
+    }
 
     public void testGetById() {
         UserGetByIdApi api = new UserGetByIdApi();

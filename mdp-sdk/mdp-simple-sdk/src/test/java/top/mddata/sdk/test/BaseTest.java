@@ -6,6 +6,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import top.mddata.sdk.core.client.OpenClient;
 import top.mddata.sdk.core.common.Result;
+import top.mddata.sdk.simple.api.token.AccessTokenGetApi;
+import top.mddata.sdk.simple.request.token.AccessTokenGetDto;
+import top.mddata.sdk.simple.response.token.AccessTokenGetResp;
 
 /**
  * 测试基类
@@ -17,7 +20,11 @@ public abstract class BaseTest extends TestCase {
 
 
     String url = "http://localhost:23456/api";
-    String appKey = "ruoyi-vue-oauth";
+    protected String appKey = "ruoyi-vue-sso";
+    /**
+     * 应用秘钥，用于获取 accessToken
+     */
+    protected String appSecret = "0Tvtm2xrTWG7n2azkM4FPyHwS6c3NxjQjYKh";
     /**
      * 开发者私钥
      */
@@ -30,6 +37,30 @@ public abstract class BaseTest extends TestCase {
 
     // 声明一个就行
     protected OpenClient client = new OpenClient(url, appKey, privateKeyIsv, publicKeyPlatform);
+
+    /**
+     * 获取访问令牌并设置到客户端
+     *
+     * @return 访问令牌
+     */
+    protected String getAccessToken() {
+        AccessTokenGetApi api = new AccessTokenGetApi();
+        AccessTokenGetDto dto = new AccessTokenGetDto()
+                .setAppKey(appKey)
+                .setAppSecret(appSecret);
+        api.setBizModel(dto);
+
+        Result<AccessTokenGetResp> result = client.execute(api);
+        if (result.isSuccess() && result.getData() != null) {
+            String token = result.getData().getAccessToken();
+            client.setDefaultAccessToken(token);
+            logger.info("获取accessToken成功: {}...", token.substring(0, Math.min(20, token.length())));
+            return token;
+        } else {
+            logger.error("获取accessToken失败: {}", JSON.toJSONString(result));
+            return null;
+        }
+    }
 
     protected void logResult(Result<?> result) {
         if (result.isSuccess()) {

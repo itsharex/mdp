@@ -21,6 +21,13 @@ import java.util.List;
  */
 public class MsgTest extends BaseTest {
 
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        // 获取 accessToken，用于需要认证的接口
+        getAccessToken();
+    }
+
     public void testSendSms() {
         List<Kv> paramList = new ArrayList<>();
         paramList.add(new Kv("code", "1113"));

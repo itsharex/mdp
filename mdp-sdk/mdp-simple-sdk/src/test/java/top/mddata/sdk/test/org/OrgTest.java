@@ -23,9 +23,16 @@ import java.util.Random;
  */
 public class OrgTest extends BaseTest {
 
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        // 获取 accessToken，用于需要认证的接口
+        getAccessToken();
+    }
+
     public void testGetById() {
         OrgGetByIdApi api = new OrgGetByIdApi();
-        api.setBizModel(new IdRequest().setId(43373586232915972L));
+        api.setBizModel(new IdRequest().setId(100565911912586431L));
         Result<OrgResp> result = client.execute(api);
         logResult(result);
     }

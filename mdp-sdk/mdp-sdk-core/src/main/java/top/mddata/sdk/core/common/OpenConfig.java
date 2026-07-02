@@ -48,6 +48,8 @@ public class OpenConfig {
     private String responseCodeName = "code";
     /** 错误响应节点 */
     private String errorResponseName = "errorResponse";
+    /** 是否启用签名（默认启用，某些接口如accessToken.get需要签名，但某些测试场景可能不需要） */
+    private boolean signEnabled = true;
 
     /** 请求超时时间 */
     private int connectTimeoutSeconds = 60;
@@ -274,6 +276,15 @@ public class OpenConfig {
 
     public OpenConfig setDataNameBuilder(DataNameBuilder dataNameBuilder) {
         this.dataNameBuilder = dataNameBuilder;
+        return this;
+    }
+
+    public boolean isSignEnabled() {
+        return signEnabled;
+    }
+
+    public OpenConfig setSignEnabled(boolean signEnabled) {
+        this.signEnabled = signEnabled;
         return this;
     }
 }
