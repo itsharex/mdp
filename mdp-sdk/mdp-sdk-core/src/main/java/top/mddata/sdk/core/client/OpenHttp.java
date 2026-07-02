@@ -78,7 +78,10 @@ public class OpenHttp {
 
         Request request = builder.build();
         Response response = httpClient.newCall(request).execute();
-        return response.body().string();
+        if (response.body() != null) {
+            return response.body().string();
+        }
+        return "";
     }
 
     /**
@@ -120,7 +123,10 @@ public class OpenHttp {
                 .newCall(request)
                 .execute();
         try {
-            return response.body().string();
+            if (response.body() != null) {
+                return response.body().string();
+            }
+            return "";
         } finally {
             response.close();
         }
@@ -143,7 +149,10 @@ public class OpenHttp {
 
         Request request = requestBuilder.build();
         try (Response response = httpClient.newCall(request).execute()) {
-            return response.body().string();
+            if (response.body() != null) {
+                return response.body().string();
+            }
+            return "";
         }
     }
 
@@ -223,11 +232,11 @@ public class OpenHttp {
      */
     public String requestFile(String url, Map<String, String> form, Map<String, String> header, List<UploadFile> files)
             throws IOException {
-        Response response = requestFileAndDownload(url, form, header, files);
-        try {
-            return response.body().string();
-        } finally {
-            response.close();
+        try (Response response = requestFileAndDownload(url, form, header, files)) {
+            if (response.body() != null) {
+                return response.body().string();
+            }
+            return "";
         }
     }
 

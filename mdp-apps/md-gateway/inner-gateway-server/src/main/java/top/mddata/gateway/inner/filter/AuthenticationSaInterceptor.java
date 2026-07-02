@@ -32,8 +32,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- *注册 Sa-Token全局过滤器
- * @author tangyh
+ * 注册 Sa-Token全局过滤器
+ * @author henhen
  * @since 2024/8/6 16:33
  */
 @Component

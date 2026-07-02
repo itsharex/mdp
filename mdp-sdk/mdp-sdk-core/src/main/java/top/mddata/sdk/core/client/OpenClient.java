@@ -13,8 +13,6 @@ import top.mddata.sdk.core.common.FileResult;
 import top.mddata.sdk.core.common.OpenConfig;
 import top.mddata.sdk.core.common.RequestForm;
 import top.mddata.sdk.core.common.Result;
-import top.mddata.sdk.core.common.SopSdkConstants;
-import top.mddata.sdk.core.common.SopSdkErrors;
 import top.mddata.sdk.core.exception.SdkException;
 import top.mddata.sdk.core.exception.SopSignException;
 import top.mddata.sdk.core.param.BaseParam;
@@ -175,9 +173,9 @@ public class OpenClient {
 
         if (param instanceof DownloadAware) {
             try (Response response = openRequest.download(url, requestForm, Collections.emptyMap())) {
-                Result result = new Result<>();
+                Result<Resp> result = new Result<>();
                 FileResult fileResult = buildFileResult(response);
-                result.setData(fileResult);
+                result.setData((Resp) fileResult);
                 return result;
             }
         } else {
@@ -213,7 +211,10 @@ public class OpenClient {
         FileResult fileResult = new FileResult();
         Headers headers = response.headers();
         try {
-            byte[] bytes = response.body().bytes();
+            byte[] bytes = null;
+            if (response.body() != null) {
+                bytes = response.body().bytes();
+            }
             fileResult.setFileData(bytes);
         } catch (IOException e) {
             log.error("文件不存在", e);
@@ -249,8 +250,7 @@ public class OpenClient {
             result.setData(null);
             return result;
         }
-        if (data instanceof JSONArray) {
-            JSONArray arr = (JSONArray) data;
+        if (data instanceof JSONArray arr) {
             dataObj = (Resp) arr.toJavaList(param.getResponseClass());
         } else {
             dataObj = ((JSONObject) data).toJavaObject(param.getResponseClass());
