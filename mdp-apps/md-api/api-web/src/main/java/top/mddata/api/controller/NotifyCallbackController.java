@@ -70,15 +70,17 @@ public class NotifyCallbackController {
             return ApiResponse.error("无法识别应用标识");
         }
 
-        // 通过 appKey 查询应用的加密配置（跨模块 Feign 调用）
+        // 通过 appKey 查询应用的加密配置
         R<AppKeysVo> result = appKeysFacade.getByAppKey(appKey);
         AppKeysVo appKeys = result != null ? result.getData() : null;
         if (appKeys == null) {
             return ApiResponse.error("应用不存在：" + appKey);
         }
 
+        // 第三方开发者应该将 token/encodingAesKey/encryptionMode 储存在自己项目的 配置文件或nacos中妥善保管，防止泄露
         String token = appKeys.getNotifyToken();
         String encodingAesKey = appKeys.getNotifyEncodingAesKey();
+        // 加密模式可以根据你在MDP后台配置的固定值，只实现一种加密模式。
         Integer encryptionMode = appKeys.getNotifyEncryptionType();
         if (encryptionMode == null) {
             encryptionMode = NotifyEncryptionTypeEnum.PLAINTEXT.getCode();
@@ -95,7 +97,9 @@ public class NotifyCallbackController {
         // 根据加密模式解析明文
         String plaintext;
         try {
+            // 验签
             verifySignature(body, encryptType, signature, crypt, timestamp, nonce, encryptionMode);
+            // 解密内容
             plaintext = decryptBody(body, encryptType, encryptionMode, crypt, timestamp, nonce, msgSignature);
         } catch (Exception e) {
             log.error("消息解密或验签失败", e);
