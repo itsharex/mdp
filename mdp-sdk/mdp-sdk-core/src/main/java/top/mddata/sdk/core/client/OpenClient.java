@@ -105,6 +105,11 @@ public class OpenClient {
         this.dataNameBuilder = openConfig.getDataNameBuilder();
     }
 
+    public <Req> FileResult download(DownloadRequest<Req> request) {
+        Result<FileResult> result = execute(request);
+        return result.getData();
+    }
+
     /**
      * 请求接口
      *
@@ -114,41 +119,19 @@ public class OpenClient {
      * @return 返回Response
      */
     public <Req, Resp> Result<Resp> execute(BaseParam<Req, Resp> param) {
-        return this.execute(param, null);
-    }
-
-    public <Req> FileResult download(DownloadRequest<Req> request) {
-        return download(request, null);
-    }
-
-    public <Req> FileResult download(DownloadRequest<Req> request, String accessToken) {
-        Result<FileResult> result = execute(request, accessToken);
-        return result.getData();
-    }
-
-
-    /**
-     * 请求接口
-     *
-     * @param param     请求对象
-     * @param accessToken jwt
-     * @param <Req> 对应的Request对象
-     * @param <Resp> 对应的Response对象
-     * @return 返回Response
-     */
-    public <Req, Resp> Result<Resp> execute(BaseParam<Req, Resp> param, String accessToken) {
         RequestForm requestForm = param.createRequestForm(this.openConfig);
         // 表单数据
         Map<String, String> form = requestForm.getForm();
-        // 优先使用传入的 accessToken，其次使用默认 accessToken
-        String token = StringUtils.isEmpty(accessToken) ? this.defaultAccessToken : accessToken;
+        // 优先使用请求中的 accessToken，其次使用默认 accessToken
+        String token = StringUtils.isEmpty(param.getAccessToken()) ? this.defaultAccessToken : param.getAccessToken();
         if (token != null) {
             form.put(this.openConfig.getAccessTokenName(), token);
         }
         form.put(this.openConfig.getAppKeyName(), this.appKey);
 
-        // 根据配置决定是否签名
-        if (openConfig.isSignEnabled()) {
+        // 根据请求参数或全局配置决定是否签名
+        boolean needSign = param.getSignEnabled() != null ? param.getSignEnabled() : openConfig.isSignEnabled();
+        if (needSign) {
             String content = SignUtil.getSignContent(form);
             String sign;
             try {

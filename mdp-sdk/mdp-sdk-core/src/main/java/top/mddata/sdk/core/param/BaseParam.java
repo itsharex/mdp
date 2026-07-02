@@ -57,6 +57,14 @@ public abstract class BaseParam<Req, Resp> {
      * 上传文件
      */
     private List<UploadFile> files;
+    /**
+     * 是否启用签名，为 null 时使用 OpenConfig 的默认值
+     */
+    private Boolean signEnabled;
+    /**
+     * 本次请求的访问令牌，为空时使用 OpenClient 的默认令牌
+     */
+    private String accessToken;
 
     public BaseParam() {
         this.method = method();
@@ -201,6 +209,24 @@ public abstract class BaseParam<Req, Resp> {
 
     public BaseParam<Req, Resp> setFiles(List<UploadFile> files) {
         this.files = files;
+        return this;
+    }
+
+    public Boolean getSignEnabled() {
+        return signEnabled;
+    }
+
+    public BaseParam<Req, Resp> setSignEnabled(Boolean signEnabled) {
+        this.signEnabled = signEnabled;
+        return this;
+    }
+
+    public String getAccessToken() {
+        return accessToken;
+    }
+
+    public BaseParam<Req, Resp> setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
         return this;
     }
 }

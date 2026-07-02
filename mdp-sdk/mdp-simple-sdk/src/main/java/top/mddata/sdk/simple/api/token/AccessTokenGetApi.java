@@ -19,4 +19,9 @@ public class AccessTokenGetApi extends BaseParam<AccessTokenGetDto, AccessTokenG
     protected String method() {
         return "accessToken.get";
     }
+
+    @Override
+    public Boolean getSignEnabled() {
+        return true;
+    }
 }

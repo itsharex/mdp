@@ -48,8 +48,8 @@ public class OpenConfig {
     private String responseCodeName = "code";
     /** 错误响应节点 */
     private String errorResponseName = "errorResponse";
-    /** 是否启用签名（默认启用，某些接口如accessToken.get需要签名，但某些测试场景可能不需要） */
-    private boolean signEnabled = true;
+    /** 是否启用签名（默认不启用，某些安全性较高的接口如accessToken.get需要签名，但某些测试场景可能不需要） */
+    private boolean signEnabled = false;
 
     /** 请求超时时间 */
     private int connectTimeoutSeconds = 60;
