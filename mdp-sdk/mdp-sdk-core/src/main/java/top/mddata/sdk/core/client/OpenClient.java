@@ -56,11 +56,6 @@ public class OpenClient {
     private final String privateKey;
 
     /**
-     * 开放平台提供的公钥
-     */
-    private String publicKeyPlatform;
-
-    /**
      * 配置项
      */
     private final OpenConfig openConfig;
@@ -94,19 +89,6 @@ public class OpenClient {
     /**
      * 构建请求客户端
      *
-     * @param url               接口url
-     * @param appKey             平台分配的appKey
-     * @param privateKeyIsv     平台分配的私钥
-     * @param publicKeyPlatform 平台分配的公钥
-     */
-    public OpenClient(String url, String appKey, String privateKeyIsv, String publicKeyPlatform) {
-        this(url, appKey, privateKeyIsv);
-        this.publicKeyPlatform = publicKeyPlatform;
-    }
-
-    /**
-     * 构建请求客户端
-     *
      * @param url           接口url
      * @param appKey         平台分配的appKey
      * @param privateKeyIsv 平台分配的私钥
@@ -123,20 +105,6 @@ public class OpenClient {
 
         this.openRequest = new OpenRequest(openConfig);
         this.dataNameBuilder = openConfig.getDataNameBuilder();
-    }
-
-    /**
-     * 构建请求客户端
-     *
-     * @param url               接口url
-     * @param appKey             平台分配的appKey
-     * @param privateKeyIsv     平台分配的私钥
-     * @param publicKeyPlatform 平台分配的公钥
-     * @param openConfig        配置项
-     */
-    public OpenClient(String url, String appKey, String privateKeyIsv, String publicKeyPlatform, OpenConfig openConfig) {
-        this(url, appKey, privateKeyIsv, openConfig);
-        this.publicKeyPlatform = publicKeyPlatform;
     }
 
     /**
@@ -272,14 +240,6 @@ public class OpenClient {
         String rootNodeName = dataNameBuilder.build(method);
         JSONObject jsonObject = JSON.parseObject(resp, JSONReader.Feature.FieldBased);
 
-        String sign = jsonObject.getString(openConfig.getSignName());
-        // 是否要验证返回的sign
-        if (StringUtils.areNotEmpty(sign, publicKeyPlatform)) {
-            String signContent = buildBizJson(rootNodeName, resp);
-            if (!this.checkResponseSign(signContent, sign, publicKeyPlatform)) {
-                return SopSdkErrors.CHECK_RESPONSE_SIGN_ERROR.getErrorResult();
-            }
-        }
         // 指定下划线转驼峰
         Result<Resp> result = jsonObject.toJavaObject(Result.class, JSONReader.Feature.SupportSmartMatch);
 
@@ -297,76 +257,6 @@ public class OpenClient {
         }
         result.setData(dataObj);
         return result;
-    }
-
-    /**
-     * 构建业务json内容。
-     * 假设返回的结果是：<br>
-     * {"alipay_story_get_response":{"msg":"Success","code":"10000","name":"海底小纵队","id":1},"sign":"xxx"}
-     * 将解析得到：<br>
-     * {"msg":"Success","code":"10000","name":"海底小纵队","id":1}
-     *
-     * @param rootNodeName 根节点名称
-     * @param body         返回内容
-     * @return 返回业务json
-     */
-    protected String buildBizJson(String rootNodeName, String body) {
-        int indexOfRootNode = body.indexOf(rootNodeName);
-        if (indexOfRootNode < 0) {
-            rootNodeName = SopSdkConstants.ERROR_RESPONSE_KEY;
-            indexOfRootNode = body.indexOf(rootNodeName);
-        }
-        String result = null;
-        if (indexOfRootNode > 0) {
-            result = buildJsonNodeData(body, rootNodeName, indexOfRootNode);
-        }
-        return result;
-    }
-
-    /**
-     * 获取业务结果，如下结果：<br>
-     * {"alipay_story_get_response":{"msg":"Success","code":"10000","name":"海底小纵队","id":1},"sign":"xxx"}
-     * 将返回：<br>
-     * {"msg":"Success","code":"10000","name":"海底小纵队","id":1}
-     *
-     * @param body            返回内容
-     * @param rootNodeName    根节点名称
-     * @param indexOfRootNode 根节点名称位置
-     * @return 返回业务json内容
-     */
-    protected String buildJsonNodeData(String body, String rootNodeName, int indexOfRootNode) {
-        /*
-          得到起始索引位置。{"alipay_story_get_response":{"msg":"Success","code":"10000","name":"海底小纵队","id":1},"sign":"xxx"}
-          得到第二个`{`索引位置
-         */
-        int signDataStartIndex = indexOfRootNode + rootNodeName.length() + 2;
-        // 然后这里计算出"sign"字符串所在位置
-        int indexOfSign = body.indexOf("\"" + openConfig.getSignName() + "\"");
-        if (indexOfSign < 0) {
-            return null;
-        }
-        int length = indexOfSign - 1;
-        // 根据起始位置和长度，截取出json：{"msg":"Success","code":"10000","name":"海底小纵队","id":1}
-        return body.substring(signDataStartIndex, length);
-    }
-
-    /**
-     * 校验返回结果中的sign
-     *
-     * @param signContent       校验内容
-     * @param sign              sign
-     * @param publicKeyPlatform 平台公钥
-     * @return true：正确
-     */
-    protected boolean checkResponseSign(String signContent, String sign, String publicKeyPlatform) {
-        try {
-            String charset = this.openConfig.getCharset();
-            String signType = this.openConfig.getSignType();
-            return SignUtil.rsaCheck(signContent, sign, publicKeyPlatform, charset, signType);
-        } catch (SopSignException e) {
-            log.error("验证服务端sign出错，signContent：" + signContent, e);
-            return false;
-        }
     }
 
 
