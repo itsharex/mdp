@@ -5,7 +5,6 @@ import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 
-import javax.crypto.Cipher;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
@@ -16,7 +15,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Objects;
 
 /**
- * RSA加解密工具。
+ * RSA加解密工具。 公私钥生成工具
  *
  * @author henhen6
  */
@@ -31,6 +30,12 @@ public class RsaTool {
         this.keyLength = keyLength;
     }
 
+    /**
+     * 将PKCS8编码的私钥转换为PKCS1编码
+     * @param privateKeyData PKCS8编码的私钥
+     * @return PKCS1编码的私钥
+     * @throws Exception 异常
+     */
     public static String convertPkcs8ToPkcs1(byte[] privateKeyData) throws Exception {
         PrivateKeyInfo pkInfo = PrivateKeyInfo.getInstance(privateKeyData);
         ASN1Encodable encodable = pkInfo.parsePrivateKey();
@@ -52,9 +57,13 @@ public class RsaTool {
         return bcd;
     }
 
+    /**
+     * ASC转换为BCD
+     * @param asc asc
+     * @return bcd
+     */
     public static byte ascToBcd(byte asc) {
         byte bcd;
-
         if ((asc >= '0') && (asc <= '9')) {
             bcd = (byte) (asc - '0');
         } else if ((asc >= 'A') && (asc <= 'F')) {
@@ -142,147 +151,6 @@ public class RsaTool {
 
     }
 
-    /**
-     * 公钥加密
-     *
-     * @param data      待加密内容
-     * @param publicKey 公钥
-     * @return 返回密文
-     * @throws Exception 异常
-     */
-    public String encryptByPublicKey(String data, RSAPublicKey publicKey) throws Exception {
-        Cipher cipher = Cipher.getInstance(keyFormat.getCipherAlgorithm());
-        cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-        // 模长
-        int keyLen = publicKey.getModulus().bitLength() / 8;
-        // 加密数据长度 <= 模长-11
-        String[] datas = splitString(data, keyLen - 11);
-        StringBuilder mi = new StringBuilder();
-        // 如果明文长度大于模长-11则要分组加密
-        for (String s : datas) {
-            mi.append(bcd2Str(cipher.doFinal(s.getBytes())));
-        }
-        return mi.toString();
-    }
-
-    public String encryptByPrivateKey(String data, String privateKey) throws Exception {
-        return encryptByPrivateKey(data, getPrivateKey(privateKey));
-    }
-
-    /**
-     * 私钥加密
-     *
-     * @param data       待加密数据
-     * @param privateKey 私钥
-     * @return 返回密文
-     * @throws Exception 异常
-     */
-    public String encryptByPrivateKey(String data, RSAPrivateKey privateKey) throws Exception {
-        Cipher cipher = Cipher.getInstance(keyFormat.getCipherAlgorithm());
-        cipher.init(Cipher.ENCRYPT_MODE, privateKey);
-        // 模长
-        int keyLen = privateKey.getModulus().bitLength() / 8;
-        // 加密数据长度 <= 模长-11
-        String[] datas = splitString(data, keyLen - 11);
-        StringBuilder mi = new StringBuilder();
-        // 如果明文长度大于模长-11则要分组加密
-        for (String s : datas) {
-            mi.append(bcd2Str(cipher.doFinal(s.getBytes())));
-        }
-        return mi.toString();
-    }
-
-    public String decryptByPrivateKey(String data, String privateKey) throws Exception {
-        return decryptByPrivateKey(data, getPrivateKey(privateKey));
-    }
-
-    /**
-     * 私钥解密
-     *
-     * @param data       待解密内容
-     * @param privateKey 私钥
-     * @return 返回明文
-     * @throws Exception 异常
-     */
-    public String decryptByPrivateKey(String data, RSAPrivateKey privateKey) throws Exception {
-        Cipher cipher = Cipher.getInstance(keyFormat.getCipherAlgorithm());
-        cipher.init(Cipher.DECRYPT_MODE, privateKey);
-        // 模长
-        int keyLen = privateKey.getModulus().bitLength() / 8;
-        byte[] bytes = data.getBytes();
-        byte[] bcd = asciiToBcd(bytes, bytes.length);
-        // 如果密文长度大于模长则要分组解密
-        StringBuilder ming = new StringBuilder();
-        byte[][] arrays = splitArray(bcd, keyLen);
-        for (byte[] arr : arrays) {
-            ming.append(new String(cipher.doFinal(arr)));
-        }
-        return ming.toString();
-    }
-
-    /**
-     * 公钥解密
-     *
-     * @param data         待解密内容
-     * @param rsaPublicKey 公钥
-     * @return 返回明文
-     * @throws Exception 异常
-     */
-    public String decryptByPublicKey(String data, RSAPublicKey rsaPublicKey) throws Exception {
-        Cipher cipher = Cipher.getInstance(keyFormat.getCipherAlgorithm());
-        cipher.init(Cipher.DECRYPT_MODE, rsaPublicKey);
-        // 模长
-        int keyLen = rsaPublicKey.getModulus().bitLength() / 8;
-        byte[] bytes = data.getBytes();
-        byte[] bcd = asciiToBcd(bytes, bytes.length);
-        // 如果密文长度大于模长则要分组解密
-        StringBuilder ming = new StringBuilder();
-        byte[][] arrays = splitArray(bcd, keyLen);
-        for (byte[] arr : arrays) {
-            ming.append(new String(cipher.doFinal(arr)));
-        }
-        return ming.toString();
-    }
-
-    /**
-     * BCD转字符串
-     */
-    public String bcd2Str(byte[] bytes) {
-        char[] temp = new char[bytes.length * 2];
-        char val;
-
-        for (int i = 0; i < bytes.length; i++) {
-            val = (char) (((bytes[i] & 0xf0) >> 4) & 0x0f);
-            temp[i * 2] = (char) (val > 9 ? val + 'A' - 10 : val + '0');
-
-            val = (char) (bytes[i] & 0x0f);
-            temp[i * 2 + 1] = (char) (val > 9 ? val + 'A' - 10 : val + '0');
-        }
-        return new String(temp);
-    }
-
-    /**
-     * 拆分字符串
-     */
-    public String[] splitString(String string, int len) {
-        int x = string.length() / len;
-        int y = string.length() % len;
-        int z = 0;
-        if (y != 0) {
-            z = 1;
-        }
-        String[] strings = new String[x + z];
-        String str = "";
-        for (int i = 0; i < x + z; i++) {
-            if (i == x + z - 1 && y != 0) {
-                str = string.substring(i * len, i * len + y);
-            } else {
-                str = string.substring(i * len, i * len + len);
-            }
-            strings[i] = str;
-        }
-        return strings;
-    }
 
     /**
      * 拆分数组
