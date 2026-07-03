@@ -1,15 +1,9 @@
-package top.mddata.open.service.admin.utils;
+package top.mddata.sdk.test.rsa;
 
-import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.experimental.Accessors;
 import org.apache.commons.codec.binary.Base64;
 import org.bouncycastle.asn1.ASN1Encodable;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
-import top.mddata.base.interfaces.BaseEnum;
 
 import javax.crypto.Cipher;
 import java.security.KeyFactory;
@@ -23,16 +17,9 @@ import java.util.Objects;
 
 /**
  * RSA加解密工具。
- * 已废弃：消息加解密已迁移为 Token + EncodingAESKey 对称加密方案，
- * 请使用 {@link com.gitee.sop.support.aes.MdpBizMsgCrypt}。
  *
  * @author henhen6
- * @deprecated 已迁移至 Token + EncodingAESKey 方案，请使用
- *     {@link com.gitee.sop.support.aes.MdpBizMsgCrypt}
  */
-@Deprecated
-@Accessors(chain = true)
-@Getter
 public class RsaTool {
     private static final String RSA_ALGORITHM = "RSA";
 
@@ -321,7 +308,6 @@ public class RsaTool {
         return arrays;
     }
 
-    @Getter
     public enum KeyLength {
         /**
          * 秘钥长度：1024
@@ -337,12 +323,12 @@ public class RsaTool {
             this.length = length;
         }
 
+        public int getLength() {
+            return length;
+        }
     }
 
-    @AllArgsConstructor
-    @Getter
-    @Schema(description = "秘钥格式")
-    public enum KeyFormat implements BaseEnum<Integer> {
+    public enum KeyFormat {
         /**
          * java适用
          */
@@ -356,6 +342,24 @@ public class RsaTool {
         private final String cipherAlgorithm;
         private final String desc;
 
+        KeyFormat(Integer code, String cipherAlgorithm, String desc) {
+            this.code = code;
+            this.cipherAlgorithm = cipherAlgorithm;
+            this.desc = desc;
+        }
+
+        public Integer getCode() {
+            return code;
+        }
+
+        public String getCipherAlgorithm() {
+            return cipherAlgorithm;
+        }
+
+        public String getDesc() {
+            return desc;
+        }
+
         public static KeyFormat of(Integer value) {
             for (KeyFormat keyFormat : KeyFormat.values()) {
                 if (Objects.equals(value, keyFormat.code)) {
@@ -366,11 +370,27 @@ public class RsaTool {
         }
     }
 
-    @Setter
-    @Getter
     public static class KeyStore {
         private String publicKey;
         private String privateKey;
+
+        public String getPublicKey() {
+            return publicKey;
+        }
+
+        public KeyStore setPublicKey(String publicKey) {
+            this.publicKey = publicKey;
+            return this;
+        }
+
+        public String getPrivateKey() {
+            return privateKey;
+        }
+
+        public KeyStore setPrivateKey(String privateKey) {
+            this.privateKey = privateKey;
+            return this;
+        }
 
         @Override
         public String toString() {
