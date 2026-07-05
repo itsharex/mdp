@@ -16,6 +16,8 @@ import top.mddata.base.mvcflex.service.impl.SuperServiceImpl;
 import top.mddata.base.utils.ArgumentAssert;
 import top.mddata.common.cache.open.AppKeysCkBuilder;
 import top.mddata.open.dto.admin.AppKeysDto;
+import top.mddata.open.dto.client.AppEventSubscriptionDto;
+import top.mddata.open.dto.client.AppKeysUpdateDto;
 import top.mddata.open.entity.admin.App;
 import top.mddata.open.entity.admin.AppKeys;
 import top.mddata.open.entity.admin.EventSubscription;
@@ -26,8 +28,6 @@ import top.mddata.open.service.admin.AppService;
 import top.mddata.open.service.admin.EventSubscriptionService;
 import top.mddata.open.vo.admin.AppKeysVo;
 import top.mddata.open.vo.admin.AppVo;
-import top.mddata.open.dto.client.AppEventSubscriptionDto;
-import top.mddata.open.dto.client.AppKeysUpdateDto;
 
 import java.util.List;
 
@@ -179,6 +179,8 @@ public class AppKeysServiceImpl extends SuperServiceImpl<AppKeysMapper, AppKeys>
         appKeys.setNotifyUrl(param.getNotifyUrl());
         appKeys.setNotifyEncryptionType(param.getNotifyEncryptionType());
         appKeys.setNotifyState(param.getNotifyState());
+        appKeys.setNotifyToken(param.getNotifyToken());
+        appKeys.setNotifyEncodingAesKey(param.getNotifyEncodingAesKey());
         eventSubscriptionService.saveEventSubscriptionByAppId(param.getAppId(), param.getEventTypeIdList());
 
         saveOrUpdate(appKeys);

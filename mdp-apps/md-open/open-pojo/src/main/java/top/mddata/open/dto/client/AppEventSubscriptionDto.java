@@ -59,6 +59,19 @@ public class AppEventSubscriptionDto implements Serializable {
     @Schema(description = "加密模式")
     private Integer notifyEncryptionType;
 
+
+    /**
+     * 签名校验令牌
+     */
+    @Schema(description = "签名校验令牌")
+    private String notifyToken;
+
+    /**
+     * AES加解密密钥（43字符）
+     */
+    @Schema(description = "AES加解密密钥")
+    private String notifyEncodingAesKey;
+
     @Schema(description = "订阅的事件")
     private List<Long> eventTypeIdList;
 }
