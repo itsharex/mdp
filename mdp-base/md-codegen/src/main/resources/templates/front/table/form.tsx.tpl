@@ -11,6 +11,8 @@ import { reactive } from 'vue';
 
 import { ActionEnum } from '@vben/constants';
 
+import { App, } from 'antdv-next';
+
 import { useVbenForm } from '@vben/components/adapter';
 import { getValidateRuleByVben } from '#/api/common/validate';
 import { $t } from '#/locales';
@@ -49,6 +51,7 @@ export function useForm(emit: Emits) {
     type: ActionEnum.ADD,
     formData: {},
   });
+  const { message } = App.useApp();
 
   const [EditForm, formApi] = useVbenForm({
     schema: useSchema(state),
@@ -94,6 +97,7 @@ export function useForm(emit: Emits) {
         ? #(table.buildEntityClassName())Api.save(data)
         : #(table.buildEntityClassName())Api.update(data));
       wrapperApi.close();
+      message.success($t(`common.tips.${state.type}Success`));
       emit('success');
     } finally {
       wrapperApi.unlock();
