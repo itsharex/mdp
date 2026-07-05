@@ -1,6 +1,7 @@
 package top.mddata.open.service.admin.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.gitee.sop.support.util.RsaTool;
 import com.mybatisflex.core.query.QueryColumn;
 import com.mybatisflex.core.query.QueryMethods;
 import com.mybatisflex.core.query.QueryWrapper;
@@ -189,4 +190,29 @@ public class AppKeysServiceImpl extends SuperServiceImpl<AppKeysMapper, AppKeys>
         CacheKey cacheKey = AppKeysCkBuilder.builder(appId);
         cacheOps.del(cacheKey);
     }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public RsaTool.KeyStore resetAppKeys(Long appId, Integer keyFormat) throws Exception {
+        RsaTool.KeyStore keyStore = createKeys(keyFormat);
+
+        AppKeysDto dto = new AppKeysDto();
+        dto.setAppId(appId);
+        dto.setPublicKeyApp(keyStore.getPublicKey());
+        updateAppKeys(dto);
+        delCacheByAppId(appId);
+        return keyStore;
+    }
+
+    @Override
+    public RsaTool.KeyStore createKeys(Integer keyFormat) throws Exception {
+        RsaTool.KeyFormat format = RsaTool.KeyFormat.of(keyFormat);
+        if (format == null) {
+            format = RsaTool.KeyFormat.PKCS8;
+        }
+        RsaTool rsaTool = new RsaTool(format, RsaTool.KeyLength.LENGTH_2048);
+        return rsaTool.createKeys();
+    }
+
 }

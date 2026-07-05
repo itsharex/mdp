@@ -1,6 +1,7 @@
 package top.mddata.open.controller.client;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.gitee.sop.support.util.RsaTool;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -20,6 +21,10 @@ import top.mddata.base.mvcflex.controller.SuperController;
 import top.mddata.base.mvcflex.request.PageParams;
 import top.mddata.base.mvcflex.utils.WrapperUtil;
 import top.mddata.base.util.ContextUtil;
+import top.mddata.open.dto.client.AppDevInfoDto;
+import top.mddata.open.dto.client.AppEventSubscriptionDto;
+import top.mddata.open.dto.client.AppInfoUpdateDto;
+import top.mddata.open.dto.client.AppKeysUpdateDto;
 import top.mddata.open.entity.admin.App;
 import top.mddata.open.entity.admin.AppKeys;
 import top.mddata.open.query.admin.AppQuery;
@@ -27,10 +32,6 @@ import top.mddata.open.service.admin.AppKeysService;
 import top.mddata.open.service.admin.AppService;
 import top.mddata.open.vo.admin.AppKeysVo;
 import top.mddata.open.vo.admin.AppVo;
-import top.mddata.open.dto.client.AppDevInfoDto;
-import top.mddata.open.dto.client.AppEventSubscriptionDto;
-import top.mddata.open.dto.client.AppInfoUpdateDto;
-import top.mddata.open.dto.client.AppKeysUpdateDto;
 
 import java.util.List;
 
@@ -104,6 +105,22 @@ public class ClientAppController extends SuperController<AppService, App> {
     public R<AppKeys> updateKeys(@Validated @RequestBody AppKeysUpdateDto param) {
         return R.success(appKeysService.updateKeysByClient(param));
     }
+
+
+    /**
+     * 重置开发者秘钥
+     *
+     * @param appId 应用ID
+     * @return 秘钥
+     * @throws Exception 异常
+     */
+    @PostMapping("resetAppKeys")
+    @Operation(summary = "重置秘钥", description = "重置秘钥")
+    @RequestLog(value = "重置秘钥")
+    public R<RsaTool.KeyStore> resetAppKeys(@RequestParam Long appId) throws Exception {
+        return R.success(appKeysService.resetAppKeys(appId, RsaTool.KeyFormat.PKCS8.getCode()));
+    }
+
     // 应用秘钥 相关接口 end
 
     // 开发配置 相关接口 start

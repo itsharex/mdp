@@ -1,11 +1,12 @@
 package top.mddata.open.service.admin;
 
+import com.gitee.sop.support.util.RsaTool;
 import top.mddata.base.mvcflex.service.SuperService;
 import top.mddata.open.dto.admin.AppKeysDto;
-import top.mddata.open.entity.admin.AppKeys;
-import top.mddata.open.vo.admin.AppKeysVo;
 import top.mddata.open.dto.client.AppEventSubscriptionDto;
 import top.mddata.open.dto.client.AppKeysUpdateDto;
+import top.mddata.open.entity.admin.AppKeys;
+import top.mddata.open.vo.admin.AppKeysVo;
 
 import java.util.List;
 
@@ -71,4 +72,22 @@ public interface AppKeysService extends SuperService<AppKeys> {
      * @return 应用id
      */
     Long updateEventSubscription(AppEventSubscriptionDto param);
+
+    /**
+     * 重置应用秘钥
+     * @param appId 应用ID
+     * @param keyFormat 秘钥格式
+     * @return 秘钥
+     * @throws Exception 异常
+     */
+    RsaTool.KeyStore resetAppKeys(Long appId, Integer keyFormat) throws Exception;
+
+    /**
+     * 创建应用秘钥
+     *
+     * @param keyFormat 秘钥格式
+     * @return 秘钥
+     * @throws Exception 异常
+     */
+    RsaTool.KeyStore createKeys(Integer keyFormat) throws Exception;
 }
