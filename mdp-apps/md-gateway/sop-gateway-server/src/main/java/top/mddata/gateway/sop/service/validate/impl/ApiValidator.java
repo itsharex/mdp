@@ -96,7 +96,7 @@ public class ApiValidator implements SopValidator {
         // 检查格式化
         checkFormat(apiRequestContext);
         // IP能否访问
-        checkIP(apiRequestContext);
+        checkIP(apiRequestContext, appDto);
         // 检查上传文件
         checkUploadFile(apiRequestContext);
         // 检查token
@@ -115,8 +115,10 @@ public class ApiValidator implements SopValidator {
             log.error("Open模式接口不允许使用Restful进行访问, apiInfo={}", apiInfo);
             throw new ApiException(ErrorEnum.ISV_INVALID_METHOD, apiRequestContext.getLocale());
         }
+        // 检查应用信息
+        AppDto appDto = checkApp(apiRequestContext);
         // IP能否访问
-        checkIP(apiRequestContext);
+        checkIP(apiRequestContext, appDto);
         // 检查上传文件
         checkUploadFile(apiRequestContext);
         // 检查token
@@ -179,13 +181,13 @@ public class ApiValidator implements SopValidator {
     }
 
     /**
-     * 是否在IP黑名单中
+     * 校验IP访问权限
      *
      * @param apiRequestContext 接口参数
+     * @param appDto            应用信息
      */
-    protected void checkIP(ApiRequestContext apiRequestContext) {
-        String ip = apiRequestContext.getIp();
-        if (ipBlacklistManager.contains(ip)) {
+    protected void checkIP(ApiRequestContext apiRequestContext, AppDto appDto) {
+        if (!ipBlacklistManager.isAllowed(apiRequestContext.getIp(), appDto)) {
             throw new ApiException(ErrorEnum.ISV_IP_FORBIDDEN, apiRequestContext.getLocale());
         }
     }
