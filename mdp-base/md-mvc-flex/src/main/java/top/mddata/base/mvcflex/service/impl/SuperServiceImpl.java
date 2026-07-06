@@ -157,7 +157,6 @@ public abstract class SuperServiceImpl<M extends BaseMapper<Entity>, Entity exte
     @Transactional(rollbackFor = Exception.class)
     public boolean save(Entity model) {
         boolean save = super.save(model);
-        setCache(model);
         return save;
     }
 
